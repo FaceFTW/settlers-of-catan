@@ -1,7 +1,7 @@
-# CSSE376 Project: [GAME CHOICE]
+# CSSE376 Project: Settlers of Catan
 
 ## Contributors
-Team [X]: [TEAM MEMBER NAME], [TEAM MEMBER NAME], [TEAM MEMBER NAME]
+Team 7: Alex Westerman, JL Koenig, Nicholas Carlson
 
 ## Dependencies
 - Java: JDK 11
