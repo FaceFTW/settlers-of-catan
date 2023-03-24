@@ -1,0 +1,143 @@
+@startuml "Catan Draft"
+
+skinparam componentStyle uml2
+skinparam Linetype ortho
+
+class Game{
+	- playerList: Player[4]
+	- currentTurn: int
+	- developmentCardDeck: List<DevelopmentCardType>
+
+	+ gameLoop(): void
+	- rollDie(): int
+	- distributeResources(int): void
+	- distributeDevelopmentCard(): void
+	- shuffleDevelopmentCardDeck(): void
+	- determineLargestArmy(): void
+	- determineWinner(): void
+	- determineLoser(): void
+	- determineVictoryPoints(): void
+	+ getTilesWithDieTrigger(int): List<Tile>
+}
+
+class Board{
+	- {const} ports: Map<int, (ResourceType, int)>
+	- tileList: Tile[19]
+	- settlementList: List<Settlement>
+	- roadList: List<Road>
+
+	+ Board()
+	- determineLongestRoad(): int
+	- determineSettlementVictoryPoints(): int
+	- checkPortOwnership(): void
+	+ distributeResources(int, List<Player>): void
+}
+
+
+class Player{
+	- playerNumber: int
+	- woodCount: int
+	- clayCount: int
+	- sheepCount: int
+	- wheatCount: int
+	- oreCount: int
+	- victoryPointCount: int
+	- internalVictoryPointCount: int
+	- developmentCards: Map<DevelopmentCardType, int>
+	+ Player(int)
+	+ getPlayerNumber(): int
+	+ getResourceCount(ResourceType): int
+	+ getVictoryPointCount(): int
+	+ getInternalVictoryPointCount(): int
+	+ setInternalVictoryPointCount(int): void
+	+ addResource(ResourceType, int): void
+	+ removeResource(ResourceType, int): void
+	+ addDevelopmentCard(DevelopmentCardType): void
+	+ removeDevelopmentCard(DevelopmentCardType): void
+	+ getDevelopmentCardCount(DevelopmentCardType): int
+	+ addVictoryPoint(): void
+	+ removeVictoryPoint(): void
+}
+
+enum DevelopmentCardType{
+	KNIGHT
+	VICTORY_POINT
+	MONOPOLY
+	ROAD_BUILDING
+	YEAR_OF_PLENTY
+}
+
+class Settlement{
+	- settlementPosition: (int,int,int)
+	- settlementOwner: int
+	- isCity: boolean
+
+	+ Settlement((int,int,int), int)
+	+ getSettlementPosition(): (int,int,int)
+	+ getSettlementOwner(): int
+	+ getIsCity(): boolean
+	+ upgradeCity(): void
+}
+
+class Road{
+	- roadStart: (int,int,int)
+	- roadEnd: (int,int,int)
+	- roadOwner: int
+
+	+ Road((int,int,int), (int,int,int), int)
+	+ getRoadStart(): (int,int,int)
+	+ getRoadEnd(): (int,int,int)
+	+ getRoadOwner(): int
+}
+
+enum ResourceType{
+	WOOD
+	CLAY
+	SHEEP
+	WHEAT
+	ORE
+}
+
+
+
+abstract class Tile{
+	- dieTrigger: int
+	- hasThief: boolean
+	- tileCorners: Tuple<int,int,int>[6]
+	+ {abstract} determineResourceDistribution(List<Settlements>): Map<int, (ResourceType, int)>
+	+ getDieTrigger(): int
+	+ getHasThief(): boolean
+	+ setHasThief(boolean): void
+}
+
+class PlainsTile extends Tile{
+}
+
+class ForestTile extends Tile{
+}
+
+class HillTile extends Tile{
+}
+
+class QuarryTile extends Tile{
+}
+
+class FieldsTile extends Tile{
+}
+
+class DesertTile extends Tile{
+}
+
+Game --> "1..4" Player
+Game --> "0..*" Settlement
+Game --> "0..*" Road
+Game --> "19" Tile
+Game ----> Board
+
+Player ..> DevelopmentCardType
+Game ..> DevelopmentCardType
+
+Player ..> ResourceType
+Tile ..> ResourceType
+
+@enduml
