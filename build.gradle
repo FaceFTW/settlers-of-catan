@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'checkstyle'
     id "com.github.spotbugs" version "5.0.13"
+    id 'jacoco'
 }
 
 group 'edu.rose-hulman.csse'
@@ -32,3 +33,17 @@ spotbugsMain {
 test {
     useJUnitPlatform()
 }
+
+jacocoTestReport {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled true
+    }
+}
+
+test.finalizedBy(jacocoTestReport)
+
