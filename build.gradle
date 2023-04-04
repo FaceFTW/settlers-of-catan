@@ -17,6 +17,7 @@ dependencies {
     testImplementation 'org.easymock:easymock:4.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     implementation 'org.javatuples:javatuples:1.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.9.2'
 }
 
 spotbugsMain {
