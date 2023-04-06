@@ -3,6 +3,7 @@ plugins {
     id 'checkstyle'
     id "com.github.spotbugs" version "5.0.13"
     id 'jacoco'
+    id 'info.solidsoft.pitest' version '1.9.0'
 }
 
 group 'edu.rose-hulman.csse'
