@@ -10,14 +10,18 @@ import java.util.Map;
  */
 public class Player {
 	private final int playerId;
-	private int wood, brick, sheep, wheat, ore; // Resources
+	private int wood;
+	private int brick;
+	private int sheep;
+	private int wheat;
+	private int ore;
 	private int victoryPoints;
 	private int knightsPlayed;
 	private int internalVictoryPoints;
 	private final Map<DevelopmentCard, Integer> developmentCards;
 
-	public Player(int playerId) {
-		this.playerId = playerId;
+	public Player(final int id) {
+		this.playerId = id;
 		this.wood = 0;
 		this.brick = 0;
 		this.sheep = 0;
@@ -32,6 +36,9 @@ public class Player {
 		}
 	}
 
+	/**
+	 * @return The player's id
+	 */
 	public int getPlayerId() {
 		return playerId;
 	}
@@ -81,6 +88,8 @@ public class Player {
 				break;
 			case ORE:
 				ore += amount;
+				break;
+			default:
 				break;
 		}
 	}

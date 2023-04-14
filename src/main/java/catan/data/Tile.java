@@ -11,6 +11,7 @@ import java.util.Map;
  * The only unit testable method in this class is the distributeResources method.
  */
 public class Tile {
+	public static final int DESERT_DIE_ROLL = 7;
 	private final Triplet<Integer, Integer, Integer> position;
 	private final ResourceType resourceType;
 	private final List<Triplet<Integer, Integer, Integer>> corners;
@@ -18,13 +19,13 @@ public class Tile {
 	private final int dieRoll;
 
 	public Tile(Triplet<Integer, Integer, Integer> position,
-	            ResourceType resourceType,
-	            List<Triplet<Integer, Integer, Integer>> corners,
-	            int dieRoll) {
+				ResourceType resourceType,
+				List<Triplet<Integer, Integer, Integer>> corners,
+				int dieRoll) {
 		this.position = position;
 		this.resourceType = resourceType;
 		this.corners = corners;
-		this.hasThief = dieRoll == 7;
+		this.hasThief = dieRoll == DESERT_DIE_ROLL;
 		this.dieRoll = dieRoll;
 	}
 
@@ -59,11 +60,11 @@ public class Tile {
 	/**
 	 * Clears or sets the thief on this tile
 	 *
-	 * @param hasThief If true, the thief will be set on this tile. If false, the thief will be
+	 * @param thief If true, the thief will be set on this tile. If false, the thief will be
 	 * cleared from this tile.
 	 */
-	public void setThief(boolean hasThief) {
-		this.hasThief = hasThief;
+	public void setThief(boolean thief) {
+		this.hasThief = thief;
 	}
 
 	/**
