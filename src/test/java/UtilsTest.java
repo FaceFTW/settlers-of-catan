@@ -67,7 +67,13 @@ public class UtilsTest {
 
 	@ParameterizedTest
 	@ValueSource(strings = {
-		"0,0,0,0,0,0"
+		"0,0,0,0,0,0",
+		"5,0,0,5,0,0",
+		"-5,0,0,-5,0,0",
+		"0,5,0,0,5,0",
+		"0,-5,0,0,-5,0",
+		"0,0,5,0,0,5",
+		"0,0,-5,0,0,-5",
 	})
 	public void testResolveToValid_allBoundries_returnsValidTuple(String values) {
 		String[] valuesAsStrings = values.split(",");
@@ -83,5 +89,4 @@ public class UtilsTest {
 
 		assertEquals(expected, actual);
 	}
-
 }

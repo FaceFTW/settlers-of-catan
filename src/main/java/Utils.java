@@ -18,6 +18,9 @@ public class Utils {
 	}
 
 	public static Triplet<Integer, Integer, Integer> resolveToValid(Triplet<Integer, Integer, Integer> input) {
-		return new Triplet<Integer, Integer, Integer>(0, 0, 0);
+		int x = input.getValue0();
+		int y = input.getValue1();
+		int z = input.getValue2();
+		return new Triplet<Integer, Integer, Integer>(x, y, z);
 	}
 }
