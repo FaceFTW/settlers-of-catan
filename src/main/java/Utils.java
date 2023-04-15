@@ -22,6 +22,20 @@ public class Utils {
 		int y = input.getValue1();
 		int z = input.getValue2();
 
+		if (x != 0 && y != 0 && z != 0) {
+			if (x > 0) {
+				for (;x > 0;x --) {
+					y ++;
+					z --;
+				}
+			} else {
+				for (;x < 0;x ++) {
+					y --;
+					z ++;
+				}
+			}
+		}
+
 		if (x * y < 0 || x * z > 0) {
 			if (x > 0) {
 				for (;x > 0;x --) {

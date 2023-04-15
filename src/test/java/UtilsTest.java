@@ -90,6 +90,15 @@ public class UtilsTest {
 		"0,5,-5,5,0,0",
 		"5,-5,0,0,0,-5",
 		"5,0,5,0,5,0",
+		// tri value (needs to change)
+		"-5,-5,-5,0,-10,0",
+		"-5,-5,5,-10,0,0",
+		"-5,5,-5,0,0,0",
+		"-5,5,5,0,0,10",
+		"5,-5,-5,0,0,-10",
+		"5,-5,5,0,0,0",
+		"5,5,-5,10,0,0",
+		"5,5,5,0,10,0"
 	})
 	public void testResolveToValid_allBoundries_returnsValidTuple(String values) {
 		String[] valuesAsStrings = values.split(",");
