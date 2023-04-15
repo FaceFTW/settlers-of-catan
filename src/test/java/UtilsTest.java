@@ -67,13 +67,22 @@ public class UtilsTest {
 
 	@ParameterizedTest
 	@ValueSource(strings = {
+		// zero case (needs no change)
 		"0,0,0,0,0,0",
+		// single value (needs no change)
 		"5,0,0,5,0,0",
 		"-5,0,0,-5,0,0",
 		"0,5,0,0,5,0",
 		"0,-5,0,0,-5,0",
 		"0,0,5,0,0,5",
 		"0,0,-5,0,0,-5",
+		// dual value (needs no change)
+		"-5,-5,0,-5,-5,0",
+		"-5,0,5,-5,0,5",
+		"0,-5,-5,0,-5,-5",
+		"0,-5,-5,0,-5,-5",
+		"5,0,-5,5,0,-5",
+		"5,5,0,5,5,0"
 	})
 	public void testResolveToValid_allBoundries_returnsValidTuple(String values) {
 		String[] valuesAsStrings = values.split(",");
