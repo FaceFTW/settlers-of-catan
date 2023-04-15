@@ -21,6 +21,33 @@ public class Utils {
 		int x = input.getValue0();
 		int y = input.getValue1();
 		int z = input.getValue2();
+
+		if (x * y < 0 || x * z > 0) {
+			if (x > 0) {
+				for (;x > 0;x --) {
+					y ++;
+					z --;
+				}
+			} else {
+				for (;x < 0;x ++) {
+					y --;
+					z ++;
+				}
+			}
+		} else if (y * z < 0) {
+			if (y > 0) {
+				for (;y > 0;y --) {
+					x ++;
+					z ++;
+				}
+			} else {
+				for (;y < 0;y ++) {
+					x --;
+					z --;
+				}
+			}
+		}
+
 		return new Triplet<Integer, Integer, Integer>(x, y, z);
 	}
 }

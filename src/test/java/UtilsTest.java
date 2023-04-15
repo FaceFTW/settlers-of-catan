@@ -82,7 +82,14 @@ public class UtilsTest {
 		"0,-5,-5,0,-5,-5",
 		"0,-5,-5,0,-5,-5",
 		"5,0,-5,5,0,-5",
-		"5,5,0,5,5,0"
+		"5,5,0,5,5,0",
+		// dual value (needs to change)
+		"-5,0,-5,0,-5,0",
+		"-5,5,0,0,0,5",
+		"0,-5,5,-5,0,0",
+		"0,5,-5,5,0,0",
+		"5,-5,0,0,0,-5",
+		"5,0,5,0,5,0",
 	})
 	public void testResolveToValid_allBoundries_returnsValidTuple(String values) {
 		String[] valuesAsStrings = values.split(",");
