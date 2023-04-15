@@ -16,4 +16,8 @@ public class Utils {
 
 		return returnArray;
 	}
+
+	public static Triplet<Integer, Integer, Integer> resolveToValid(Triplet<Integer, Integer, Integer> input) {
+		return new Triplet<Integer, Integer, Integer>(0, 0, 0);
+	}
 }

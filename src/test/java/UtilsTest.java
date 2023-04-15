@@ -1,10 +1,12 @@
 import org.javatuples.Triplet;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import javax.management.MBeanTrustPermission;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UtilsTest {
 	@ParameterizedTest
@@ -61,6 +63,25 @@ public class UtilsTest {
 		Triplet<Integer, Integer, Integer>[] actualOutput = Utils.getAdjacent(input);
 		for (int i = 0;i < 6; i ++)
 			assertTrue(expectedOutputs.contains(actualOutput[i]));
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {
+		"0,0,0,0,0,0"
+	})
+	public void testResolveToValid_allBoundries_returnsValidTuple(String values) {
+		String[] valuesAsStrings = values.split(",");
+		int[] valuesAsInts = new int[6];
+
+		for (int i = 0;i < 6;i ++)
+			valuesAsInts[i] = Integer.parseInt(valuesAsStrings[i]);
+
+		Triplet<Integer, Integer, Integer> input = new Triplet<Integer, Integer, Integer>(valuesAsInts[0], valuesAsInts[1], valuesAsInts[2]);
+		Triplet<Integer, Integer, Integer> expected = new Triplet<Integer, Integer, Integer>(valuesAsInts[3], valuesAsInts[4], valuesAsInts[5]);
+
+		Triplet<Integer, Integer, Integer> actual = Utils.resolveToValid(input);
+
+		assertEquals(expected, actual);
 	}
 
 }
