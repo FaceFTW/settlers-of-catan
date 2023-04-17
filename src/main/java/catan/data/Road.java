@@ -18,8 +18,8 @@ public class Road {
 	 * player.
 	 */
 	public Road(final Triplet<Integer, Integer, Integer> start,
-				final Triplet<Integer, Integer, Integer> end,
-				final int owner) {
+	            final Triplet<Integer, Integer, Integer> end,
+	            final int owner) {
 		roadStart = new Triplet<>(start.getValue0(), start.getValue1(), start.getValue2());
 		roadEnd = new Triplet<>(end.getValue0(), end.getValue1(), end.getValue2());
 		roadOwner = owner;

@@ -18,11 +18,11 @@ public class Settlement {
 	 * @param city
 	 */
 	public Settlement(final Triplet<Integer, Integer, Integer> location,
-					  final int owner,
-					  final boolean city) {
+	                  final int owner,
+	                  final boolean city) {
 		settlementLocation = new Triplet<>(location.getValue0(),
-										location.getValue1(),
-										location.getValue2());
+		                                   location.getValue1(),
+		                                   location.getValue2());
 		setlementOwner = owner;
 		isCity = city;
 	}
@@ -32,8 +32,8 @@ public class Settlement {
 	 */
 	public Triplet<Integer, Integer, Integer> getLocation() {
 		return new Triplet<>(settlementLocation.getValue0(),
-							settlementLocation.getValue1(),
-							settlementLocation.getValue2());
+		                     settlementLocation.getValue1(),
+		                     settlementLocation.getValue2());
 	}
 
 	/**
