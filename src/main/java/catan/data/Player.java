@@ -16,7 +16,7 @@ public class Player {
 	private int wheat;
 	private int ore;
 	private int victoryPoints;
-	private int knightsPlayed;
+//	private int knightsPlayed;
 	private int internalVictoryPoints;
 	private final Map<DevelopmentCard, Integer> developmentCards;
 
@@ -28,7 +28,7 @@ public class Player {
 		this.wheat = 0;
 		this.ore = 0;
 		this.victoryPoints = 0;
-		this.knightsPlayed = 0;
+//		this.knightsPlayed = 0;
 		this.internalVictoryPoints = 0;
 		this.developmentCards = new HashMap<>();
 		for (DevelopmentCard card : DevelopmentCard.values()) {

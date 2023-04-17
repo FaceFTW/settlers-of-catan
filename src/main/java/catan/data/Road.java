@@ -12,7 +12,7 @@ public class Road {
 
 	/**
 	 * @param start The starting coordinate of the road.
-	 * @param end   The ending coordinate of the road.
+	 * @param end The ending coordinate of the road.
 	 * @param owner The player who owns the road.
 	 * @brief Creates a new road from the given start and end points, owned by the specified
 	 * player.
@@ -20,8 +20,8 @@ public class Road {
 	public Road(final Triplet<Integer, Integer, Integer> start,
 				final Triplet<Integer, Integer, Integer> end,
 				final int owner) {
-		roadStart = start;
-		roadEnd = end;
+		roadStart = new Triplet<>(start.getValue0(), start.getValue1(), start.getValue2());
+		roadEnd = new Triplet<>(end.getValue0(), end.getValue1(), end.getValue2());
 		roadOwner = owner;
 	}
 
@@ -30,7 +30,7 @@ public class Road {
 	 * @brief Gets the starting coordinate of the road.
 	 */
 	public Triplet<Integer, Integer, Integer> getStart() {
-		return roadStart;
+		return new Triplet<>(roadStart.getValue0(), roadStart.getValue1(), roadStart.getValue2());
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class Road {
 	 * @brief Gets the ending coordinate of the road.
 	 */
 	public Triplet<Integer, Integer, Integer> getEnd() {
-		return roadEnd;
+		return new Triplet<>(roadEnd.getValue0(), roadEnd.getValue1(), roadEnd.getValue2());
 	}
 
 	/**

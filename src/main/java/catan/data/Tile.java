@@ -2,6 +2,7 @@ package catan.data;
 
 import org.javatuples.Triplet;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +23,11 @@ public class Tile {
 				ResourceType resourceType,
 				List<Triplet<Integer, Integer, Integer>> corners,
 				int dieRoll) {
-		this.position = position;
+		this.position = new Triplet<>(position.getValue0(),
+									position.getValue1(),
+									position.getValue2());
 		this.resourceType = resourceType;
-		this.corners = corners;
+		this.corners = new ArrayList<>(corners);
 		this.hasThief = dieRoll == DESERT_DIE_ROLL;
 		this.dieRoll = dieRoll;
 	}
@@ -33,7 +36,7 @@ public class Tile {
 	 * @return The coordinate of the center of the tile
 	 */
 	public Triplet<Integer, Integer, Integer> getPosition() {
-		return position;
+		return new Triplet<>(position.getValue0(), position.getValue1(), position.getValue2());
 	}
 
 	/**
