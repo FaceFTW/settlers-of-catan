@@ -30,7 +30,9 @@ public class Road {
 	 * @brief Gets the starting coordinate of the road.
 	 */
 	public Triplet<Integer, Integer, Integer> getStart() {
-		return new Triplet<>(roadStart.getValue0(), roadStart.getValue1(), roadStart.getValue2());
+		return new Triplet<>(roadStart.getValue0(),
+		                     roadStart.getValue1(),
+		                     roadStart.getValue2());
 	}
 
 	/**
@@ -38,7 +40,9 @@ public class Road {
 	 * @brief Gets the ending coordinate of the road.
 	 */
 	public Triplet<Integer, Integer, Integer> getEnd() {
-		return new Triplet<>(roadEnd.getValue0(), roadEnd.getValue1(), roadEnd.getValue2());
+		return new Triplet<>(roadEnd.getValue0(),
+		                     roadEnd.getValue1(),
+		                     roadEnd.getValue2());
 	}
 
 	/**
