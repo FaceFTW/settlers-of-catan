@@ -57,7 +57,7 @@
     <!-- See https://checkstyle.org/config_sizes.html -->
     <module name="LineLength">
         <property name="fileExtensions" value="java"/>
-        <property name="max" value="100"/>
+        <property name="max" value="120"/>
     </module>
 
     <!-- Miscellaneous other checks.                   -->
@@ -70,11 +70,11 @@
     </module>
 
     <module name="TreeWalker">
-        <module name="RegexpSinglelineJava">
-            <property name="format" value="^\t* "/>
-            <property name="message" value="Indent must use tab characters"/>
-            <property name="ignoreComments" value="true"/>
-        </module>
+<!--        <module name="RegexpSinglelineJava">-->
+<!--            <property name="format" value="^\t* {0,3} "/>-->
+<!--            <property name="message" value="Indent must use tab characters"/>-->
+<!--            <property name="ignoreComments" value="true"/>-->
+<!--        </module>-->
         <!-- Checks for Javadoc comments.                     -->
         <!-- See https://checkstyle.org/config_javadoc.html -->
         <module name="InvalidJavadocPosition"/>
@@ -134,7 +134,10 @@
         <!-- See https://checkstyle.org/config_coding.html -->
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
-        <module name="HiddenField"/>
+        <module name="HiddenField">
+            <property name="ignoreConstructorParameter" value="true"/>
+            <property name="ignoreSetter" value="true"/>
+        </module>
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
         <module name="MagicNumber"/>
@@ -154,7 +157,6 @@
         <!-- Miscellaneous other checks.                   -->
         <!-- See https://checkstyle.org/config_misc.html -->
         <module name="ArrayTypeStyle"/>
-        <module name="FinalParameters"/>
         <module name="TodoComment"/>
         <module name="UpperEll"/>
 
