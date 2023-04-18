@@ -35,5 +35,13 @@ public class CoordinateTest {
 		assertFalse(a.equals(b));
 	}
 
+	@Test
+	public void testEquals_onlyDifferentZ_expectFalse() {
+		Coordinate a = new Coordinate(0, 0, 0);
+		Coordinate b = new Coordinate(0, 0, 1);
+
+		assertFalse(a.equals(b));
+	}
+
 
 }
