@@ -26,4 +26,14 @@ public class CoordinateTest {
 
 		assertFalse(a.equals(b));
 	}
+
+	@Test
+	public void testEquals_onlyDifferentY_expectFalse() {
+		Coordinate a = new Coordinate(0, 0, 0);
+		Coordinate b = new Coordinate(0, 1, 0);
+
+		assertFalse(a.equals(b));
+	}
+
+
 }
