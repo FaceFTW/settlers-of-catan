@@ -117,8 +117,14 @@ public class UtilsTest {
 	}
 
 	@Test
-	public void testIsRealCoordinate_realCoordinate_returnsTrue() {
+	public void testIsRealCoordinate_withRealCoordinate_returnsTrue() {
 		Coordinate input = new Coordinate(0, 0, 0);
 		assertTrue(Utils.isRealCoordinate(input));
+	}
+
+	@Test
+	public void testIsRealCoordinate_withUnRealCoordinate_returnsFalse() {
+		Coordinate input = new Coordinate(5, 0, 0);
+		assertFalse(Utils.isRealCoordinate(input));
 	}
 }

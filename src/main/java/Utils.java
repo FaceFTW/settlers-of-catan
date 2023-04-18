@@ -150,6 +150,9 @@ public class Utils {
 	}
 
 	public static boolean isRealCoordinate(Coordinate input) {
-		throw new UnsupportedOperationException();
+		for (int i = 0;i < realList.length;i ++)
+			if (realList[i].equals(input))
+				return true;
+		return false;
 	}
 }
