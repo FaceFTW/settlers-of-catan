@@ -18,4 +18,12 @@ public class CoordinateTest {
 
 		assertTrue(a.equals(b));
 	}
+
+	@Test
+	public void testEquals_onlyDifferentX_expectFalse() {
+		Coordinate a = new Coordinate(0, 0, 0);
+		Coordinate b = new Coordinate(1, 0, 0);
+
+		assertFalse(a.equals(b));
+	}
 }
