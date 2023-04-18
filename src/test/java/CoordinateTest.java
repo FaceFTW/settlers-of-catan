@@ -10,4 +10,12 @@ public class CoordinateTest {
 
 		assertTrue(a.equals(b));
 	}
+
+	@Test
+	public void testEquals_withDifferentBoundaryValues_expectTrue() {
+		Coordinate a = new Coordinate(Integer.MAX_VALUE, 0, Integer.MIN_VALUE);
+		Coordinate b = new Coordinate(Integer.MAX_VALUE, 0, Integer.MIN_VALUE);
+
+		assertTrue(a.equals(b));
+	}
 }
