@@ -4,6 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.management.MBeanTrustPermission;
+import java.security.spec.RSAOtherPrimeInfo;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,13 +55,13 @@ public class UtilsTest {
 		for (int i = 0;i < 18;i ++)
 			expectedOutputValues[i] = Integer.parseInt(expectedOutputValuesAsStrings[i]);
 
-		Triplet<Integer, Integer, Integer> input = new Triplet<Integer, Integer, Integer>(inputValues[0], inputValues[1], inputValues[2]);
+		Coordinate input = new Coordinate(inputValues[0], inputValues[1], inputValues[2]);
 
-		ArrayList<Triplet<Integer, Integer, Integer>> expectedOutputs = new ArrayList<Triplet<Integer, Integer, Integer>>();
+		ArrayList<Coordinate> expectedOutputs = new ArrayList<Coordinate>();
 		for (int i = 0;i < 18;i += 3)
-			expectedOutputs.add(new Triplet<Integer, Integer, Integer>(expectedOutputValues[i], expectedOutputValues[i + 1], expectedOutputValues[i + 2]));
+			expectedOutputs.add(new Coordinate(expectedOutputValues[i], expectedOutputValues[i + 1], expectedOutputValues[i + 2]));
 
-		Triplet<Integer, Integer, Integer>[] actualOutput = Utils.getAdjacent(input);
+		Coordinate[] actualOutput = Utils.getAdjacent(input);
 		for (int i = 0;i < 6; i ++)
 			assertTrue(expectedOutputs.contains(actualOutput[i]));
 	}
@@ -107,11 +108,17 @@ public class UtilsTest {
 		for (int i = 0;i < 6;i ++)
 			valuesAsInts[i] = Integer.parseInt(valuesAsStrings[i]);
 
-		Triplet<Integer, Integer, Integer> input = new Triplet<Integer, Integer, Integer>(valuesAsInts[0], valuesAsInts[1], valuesAsInts[2]);
-		Triplet<Integer, Integer, Integer> expected = new Triplet<Integer, Integer, Integer>(valuesAsInts[3], valuesAsInts[4], valuesAsInts[5]);
+		Coordinate input = new Coordinate(valuesAsInts[0], valuesAsInts[1], valuesAsInts[2]);
+		Coordinate expected = new Coordinate(valuesAsInts[3], valuesAsInts[4], valuesAsInts[5]);
 
-		Triplet<Integer, Integer, Integer> actual = Utils.resolveToValid(input);
+		Coordinate actual = Utils.resolveToValid(input);
 
 		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testIsRealCoordinate_realCoordinate_returnsTrue() {
+		Coordinate input = new Coordinate(0, 0, 0);
+		assertTrue(Utils.isRealCoordinate(input));
 	}
 }
