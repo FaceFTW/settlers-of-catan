@@ -69,12 +69,22 @@
         <property name="message" value="Line has trailing spaces."/>
     </module>
 
+	<module name="SuppressWarningsFilter"/>
+
     <module name="TreeWalker">
-<!--        <module name="RegexpSinglelineJava">-->
-<!--            <property name="format" value="^\t* {0,3} "/>-->
-<!--            <property name="message" value="Indent must use tab characters"/>-->
-<!--            <property name="ignoreComments" value="true"/>-->
-<!--        </module>-->
+		<property name="tabWidth" value="4"/>
+		<module name="SuppressWarningsHolder"/>
+		<module name="SuppressWarnings">
+			<property name="id" value="checkstyle:suppresswarnings"/>
+		</module>
+
+		<module name="SuppressWithNearbyCommentFilter"/>
+
+		<module name="SuppressionCommentFilter">
+			<property name="offCommentFormat" value="CHECKSTYLE\:OFF\: ([\w\|]+)"/>
+			<property name="onCommentFormat" value="CHECKSTYLE\:ON\: ([\w\|]+)"/>
+			<property name="checkFormat" value="$1"/>
+		</module>
         <!-- Checks for Javadoc comments.                     -->
         <!-- See https://checkstyle.org/config_javadoc.html -->
         <module name="InvalidJavadocPosition"/>
@@ -85,7 +95,9 @@
         <module name="LocalFinalVariableName"/>
         <module name="LocalVariableName"/>
         <module name="MemberName"/>
-        <module name="MethodName"/>
+		<module name="MethodName">
+			<property name="format" value="^[a-z](_?[a-zA-Z0-9]+)*$"/>
+		</module>
         <module name="PackageName"/>
         <module name="ParameterName"/>
         <module name="StaticVariableName"/>
@@ -93,7 +105,9 @@
 
         <!-- Checks for imports                              -->
         <!-- See https://checkstyle.org/config_imports.html -->
-        <module name="AvoidStarImport"/>
+		<module name="AvoidStarImport">
+			<property name="allowStaticMemberImports" value="true"/>
+		</module>
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <module name="RedundantImport"/>
         <module name="UnusedImports">
@@ -128,7 +142,7 @@
         <module name="EmptyBlock"/>
         <module name="LeftCurly"/>
         <module name="NeedBraces"/>
-        <module name="RightCurly"/>
+        <module name="RightCurly"></module>
 
         <!-- Checks for common coding problems               -->
         <!-- See https://checkstyle.org/config_coding.html -->
@@ -166,6 +180,8 @@
                       default="checkstyle-xpath-suppressions.xml"/>
             <property name="optional" value="true"/>
         </module>
+
+
 
     </module>
 
