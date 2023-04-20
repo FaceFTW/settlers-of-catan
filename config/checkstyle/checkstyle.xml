@@ -69,8 +69,11 @@
         <property name="message" value="Line has trailing spaces."/>
     </module>
 
-    <module name="TreeWalker">
+	<module name="SuppressWarningsFilter"/>
 
+    <module name="TreeWalker">
+		<property name="tabWidth" value="4"/>
+		<module name="SuppressWarningsHolder"/>
 		<module name="SuppressWarnings">
 			<property name="id" value="checkstyle:suppresswarnings"/>
 		</module>
@@ -92,7 +95,9 @@
         <module name="LocalFinalVariableName"/>
         <module name="LocalVariableName"/>
         <module name="MemberName"/>
-        <module name="MethodName"/>
+		<module name="MethodName">
+			<property name="format" value="^[a-z](_?[a-zA-Z0-9]+)*$"/>
+		</module>
         <module name="PackageName"/>
         <module name="ParameterName"/>
         <module name="StaticVariableName"/>
@@ -100,7 +105,9 @@
 
         <!-- Checks for imports                              -->
         <!-- See https://checkstyle.org/config_imports.html -->
-        <module name="AvoidStarImport"/>
+		<module name="AvoidStarImport">
+			<property name="allowStaticMemberImports" value="true"/>
+		</module>
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <module name="RedundantImport"/>
         <module name="UnusedImports">

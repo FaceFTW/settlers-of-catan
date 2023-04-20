@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CoordinateTest {
+public final class CoordinateTest {
 	@Test
 	public void testEquals_withAllZero_expectTrue() {
 		Coordinate a = new Coordinate(0, 0, 0);
