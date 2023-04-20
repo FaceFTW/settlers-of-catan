@@ -1,7 +1,7 @@
 import org.javatuples.Triplet;
 
 public class Utils {
-	private static Coordinate[] realList = new Coordinate[] {
+	private static Coordinate[] realList = new Coordinate[]{
 			new Coordinate(2, 0, -3),
 			new Coordinate(3, 0, -2),
 
@@ -85,7 +85,8 @@ public class Utils {
 
 			new Coordinate(-3, 0, 2),
 			new Coordinate(-2, 0, 3),
-	};
+			};
+
 	public static Coordinate[] getAdjacent(Coordinate input) {
 		int x = input.x;
 		int y = input.y;
@@ -101,6 +102,7 @@ public class Utils {
 
 		return returnArray;
 	}
+
 	public static Coordinate resolveToValid(Coordinate input) {
 		int x = input.x;
 		int y = input.y;
@@ -108,40 +110,40 @@ public class Utils {
 
 		if (x != 0 && y != 0 && z != 0) {
 			if (x > 0) {
-				for (;x > 0;x --) {
-					y ++;
-					z --;
+				for (; x > 0; x--) {
+					y++;
+					z--;
 				}
 			} else {
-				for (;x < 0;x ++) {
-					y --;
-					z ++;
+				for (; x < 0; x++) {
+					y--;
+					z++;
 				}
 			}
 		}
 
 		if (x * y < 0 || x * z > 0) {
 			if (x > 0) {
-				for (;x > 0;x --) {
-					y ++;
-					z --;
+				for (; x > 0; x--) {
+					y++;
+					z--;
 				}
 			} else {
-				for (;x < 0;x ++) {
-					y --;
-					z ++;
+				for (; x < 0; x++) {
+					y--;
+					z++;
 				}
 			}
 		} else if (y * z < 0) {
 			if (y > 0) {
-				for (;y > 0;y --) {
-					x ++;
-					z ++;
+				for (; y > 0; y--) {
+					x++;
+					z++;
 				}
 			} else {
-				for (;y < 0;y ++) {
-					x --;
-					z --;
+				for (; y < 0; y++) {
+					x--;
+					z--;
 				}
 			}
 		}
@@ -150,9 +152,7 @@ public class Utils {
 	}
 
 	public static boolean isRealCoordinate(Coordinate input) {
-		for (int i = 0;i < realList.length;i ++)
-			if (realList[i].equals(input))
-				return true;
+		for (int i = 0; i < realList.length; i++) {if (realList[i].equals(input)) {return true;}}
 		return false;
 	}
 }
