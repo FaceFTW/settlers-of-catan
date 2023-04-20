@@ -1,7 +1,5 @@
-import org.javatuples.Triplet;
-
 public class Utils {
-	private static Coordinate[] realList = new Coordinate[]{
+	private static final Coordinate[] REAL_LIST = new Coordinate[]{
 			new Coordinate(2, 0, -3),
 			new Coordinate(3, 0, -2),
 
@@ -87,11 +85,18 @@ public class Utils {
 			new Coordinate(-2, 0, 3),
 			};
 
+	/**
+	 * Empty constructor to prevent non-static usage
+	 */
+	protected Utils() {
+
+	}
+
+	//CHECKSTYLE:OFF: checkstyle:magicnumber
 	public static Coordinate[] getAdjacent(Coordinate input) {
 		int x = input.getX();
 		int y = input.getY();
 		int z = input.getZ();
-
 		Coordinate[] returnArray = new Coordinate[6];
 		returnArray[0] = new Coordinate(x - 1, y, z);
 		returnArray[1] = new Coordinate(x + 1, y, z);
@@ -101,7 +106,9 @@ public class Utils {
 		returnArray[5] = new Coordinate(x, y, z + 1);
 
 		return returnArray;
+
 	}
+	//CHECKSTYLE:ON: checkstyle:magicnumber
 
 	public static Coordinate resolveToValid(Coordinate input) {
 		int x = input.getX();
@@ -152,7 +159,11 @@ public class Utils {
 	}
 
 	public static boolean isRealCoordinate(Coordinate input) {
-		for (int i = 0; i < realList.length; i++) {if (realList[i].equals(input)) {return true;}}
+		for (Coordinate coordinate : REAL_LIST) {
+			if (coordinate.equals(input)) {
+				return true;
+			}
+		}
 		return false;
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * A data class representing a single location on the board
  */
-public class Coordinate {
+public final class Coordinate {
 	private final int x;
 	private final int y;
 	private final int z;
@@ -20,27 +20,33 @@ public class Coordinate {
 	/**
 	 * @return the x coordinate value
 	 */
-	public int getX () {
+	public int getX() {
 		return this.x;
 	}
 
 	/**
 	 * @return the y coordinate value
 	 */
-	public int getY () {
+	public int getY() {
 		return this.y;
 	}
 
 	/**
 	 * @return the x coordinate value
 	 */
-	public int getZ () {
+	public int getZ() {
 		return this.z;
 	}
 
+	/**
+	 * @param o
+	 * @return the comparison between this and o
+	 */
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) {return true;}
+		if (this == o) {
+			return true;
+		}
 		if (o instanceof Coordinate) {
 			Coordinate c = (Coordinate) o;
 			return this.x == c.x && this.y == c.y && this.z == c.z;
