@@ -1,3 +1,5 @@
+package catan;
+
 public class Utils {
 	private static final Coordinate[] REAL_LIST = new Coordinate[]{
 			new Coordinate(2, 0, -3),

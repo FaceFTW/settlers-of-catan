@@ -1,28 +1,27 @@
 package catan.data;
 
-import org.javatuples.Triplet;
+import catan.Coordinate;
 
 /**
  * A data class representing a settlement on the board.
  */
 public class Settlement {
-	private final Triplet<Integer, Integer, Integer> settlementLocation;
+	private final Coordinate settlementLocation;
 	private final int setlementOwner;
 	private boolean isCity;
 
 	/**
-	 * Creates a new settlement at the given location, owned by the specified player.
+	 * Creates a new settlement at the given location, owned by the specified
+	 * player.
 	 *
 	 * @param location
 	 * @param owner
 	 * @param city
 	 */
-	public Settlement(final Triplet<Integer, Integer, Integer> location,
-	                  final int owner,
-	                  final boolean city) {
-		settlementLocation = new Triplet<>(location.getValue0(),
-		                                   location.getValue1(),
-		                                   location.getValue2());
+	public Settlement(final Coordinate location,
+			final int owner,
+			final boolean city) {
+		settlementLocation = location;
 		setlementOwner = owner;
 		isCity = city;
 	}
@@ -30,10 +29,8 @@ public class Settlement {
 	/**
 	 * @return The location of the settlement.
 	 */
-	public Triplet<Integer, Integer, Integer> getLocation() {
-		return new Triplet<>(settlementLocation.getValue0(),
-		                     settlementLocation.getValue1(),
-		                     settlementLocation.getValue2());
+	public Coordinate getLocation() {
+		return settlementLocation;
 	}
 
 	/**
@@ -51,7 +48,8 @@ public class Settlement {
 	}
 
 	/**
-	 * Upgrades the settlement to a city. You cannot reverse this action by intention
+	 * Upgrades the settlement to a city. You cannot reverse this action by
+	 * intention
 	 */
 	public void upgradeToCity() {
 		isCity = true;
