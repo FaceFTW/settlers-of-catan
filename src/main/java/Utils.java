@@ -88,9 +88,9 @@ public class Utils {
 			};
 
 	public static Coordinate[] getAdjacent(Coordinate input) {
-		int x = input.x;
-		int y = input.y;
-		int z = input.z;
+		int x = input.getX();
+		int y = input.getY();
+		int z = input.getZ();
 
 		Coordinate[] returnArray = new Coordinate[6];
 		returnArray[0] = new Coordinate(x - 1, y, z);
@@ -104,9 +104,9 @@ public class Utils {
 	}
 
 	public static Coordinate resolveToValid(Coordinate input) {
-		int x = input.x;
-		int y = input.y;
-		int z = input.z;
+		int x = input.getX();
+		int y = input.getY();
+		int z = input.getZ();
 
 		if (x != 0 && y != 0 && z != 0) {
 			if (x > 0) {

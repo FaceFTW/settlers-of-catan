@@ -2,9 +2,9 @@
  * A data class representing a single location on the board
  */
 public class Coordinate {
-	public final int x;
-	public final int y;
-	public final int z;
+	private final int x;
+	private final int y;
+	private final int z;
 
 	/**
 	 * @param x the x coordinate
@@ -15,6 +15,27 @@ public class Coordinate {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+
+	/**
+	 * @return the x coordinate value
+	 */
+	public int getX () {
+		return this.x;
+	}
+
+	/**
+	 * @return the y coordinate value
+	 */
+	public int getY () {
+		return this.y;
+	}
+
+	/**
+	 * @return the x coordinate value
+	 */
+	public int getZ () {
+		return this.z;
 	}
 
 	@Override
