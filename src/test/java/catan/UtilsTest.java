@@ -1,3 +1,5 @@
+package catan;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -39,7 +41,7 @@ public final class UtilsTest {
 			"4,4,4|3,4,4,5,4,4,4,3,4,4,5,4,4,4,3,4,4,5"
 	})
 
-	//CHECKSTYLE:OFF: LineLength
+	// CHECKSTYLE:OFF: LineLength
 	public void testGetAdjacent_allInputs_returnsListOfSixTuples(String values) {
 		String[] set = values.split("\\|");
 
@@ -63,8 +65,8 @@ public final class UtilsTest {
 
 		for (int i = 0; i < 18; i += 3) {
 			expectedOutputs.add(new Coordinate(expectedOutputValues[i],
-			  expectedOutputValues[i + 1],
-			  expectedOutputValues[i + 2]));
+					expectedOutputValues[i + 1],
+					expectedOutputValues[i + 2]));
 		}
 
 		Coordinate[] actualOutput = Utils.getAdjacent(input);
@@ -72,7 +74,7 @@ public final class UtilsTest {
 			assertTrue(expectedOutputs.contains(actualOutput[i]));
 		}
 	}
-	//CHECKSTYLE:ON: LineLength
+	// CHECKSTYLE:ON: LineLength
 
 	@ParameterizedTest
 	@ValueSource(strings = {

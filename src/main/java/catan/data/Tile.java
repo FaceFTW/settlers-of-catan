@@ -1,31 +1,30 @@
 package catan.data;
 
-import org.javatuples.Triplet;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import catan.Coordinate;
+
 /**
  * A data class representing a tile on the board.
  * By default, the tile will not have a thief unless the die roll given is 7.
- * The only unit testable method in this class is the distributeResources method.
+ * The only unit testable method in this class is the distributeResources
+ * method.
  */
 public class Tile {
 	public static final int DESERT_DIE_ROLL = 7;
-	private final Triplet<Integer, Integer, Integer> position;
+	private final Coordinate position;
 	private final ResourceType resourceType;
-	private final List<Triplet<Integer, Integer, Integer>> corners;
+	private final List<Coordinate> corners;
 	private boolean hasThief;
 	private final int dieRoll;
 
-	public Tile(Triplet<Integer, Integer, Integer> position,
-				ResourceType resourceType,
-				List<Triplet<Integer, Integer, Integer>> corners,
-				int dieRoll) {
-		this.position = new Triplet<>(position.getValue0(),
-									position.getValue1(),
-									position.getValue2());
+	public Tile(Coordinate position,
+			ResourceType resourceType,
+			List<Coordinate> corners,
+			int dieRoll) {
+		this.position = position;
 		this.resourceType = resourceType;
 		this.corners = new ArrayList<>(corners);
 		this.hasThief = dieRoll == DESERT_DIE_ROLL;
@@ -35,8 +34,8 @@ public class Tile {
 	/**
 	 * @return The coordinate of the center of the tile
 	 */
-	public Triplet<Integer, Integer, Integer> getPosition() {
-		return new Triplet<>(position.getValue0(), position.getValue1(), position.getValue2());
+	public Coordinate getPosition() {
+		return position;
 	}
 
 	/**
@@ -63,8 +62,9 @@ public class Tile {
 	/**
 	 * Clears or sets the thief on this tile
 	 *
-	 * @param thief If true, the thief will be set on this tile. If false, the thief will be
-	 * cleared from this tile.
+	 * @param thief If true, the thief will be set on this tile. If false, the thief
+	 *              will be
+	 *              cleared from this tile.
 	 */
 	public void setThief(boolean thief) {
 		this.hasThief = thief;

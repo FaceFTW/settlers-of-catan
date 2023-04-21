@@ -1,3 +1,5 @@
+package catan;
+
 /**
  * A data class representing a single location on the board
  */
