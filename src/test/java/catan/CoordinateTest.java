@@ -1,6 +1,8 @@
 package catan;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public final class CoordinateTest {
@@ -48,6 +50,13 @@ public final class CoordinateTest {
 	public void testEquals_sameCoordinate_expectTrue() {
 		Coordinate a = new Coordinate(1, 3, 5);
 		assertTrue(a.equals(a));
+	}
+
+	@Test
+	public void testEquals_notACoordinate_expectFalse() {
+		ArrayList<Integer> dummy = new ArrayList<Integer>();
+		Coordinate a = new Coordinate(1, 2, 3);
+		assertFalse(a.equals(dummy));
 	}
 
 
