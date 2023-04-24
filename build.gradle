@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+	id 'application'
     id 'checkstyle'
     id "com.github.spotbugs" version "5.0.13"
     id 'jacoco'
@@ -24,7 +25,7 @@ dependencies {
 }
 
 javafx{
-	version ="19"
+	version ="11"
 	modules = [ 'javafx.controls', 'javafx.fxml' , 'javafx.graphics', 'javafx.swing' ];
 }
 
@@ -60,3 +61,4 @@ jacocoTestReport {
 
 test.finalizedBy(jacocoTestReport)
 
+mainClassName = 'catan.Main'
