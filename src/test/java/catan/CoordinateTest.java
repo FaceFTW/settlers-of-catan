@@ -44,5 +44,11 @@ public final class CoordinateTest {
 		assertFalse(a.equals(b));
 	}
 
+	@Test
+	public void testEquals_sameCoordinate_expectTrue() {
+		Coordinate a = new Coordinate(1, 3, 5);
+		assertTrue(a.equals(a));
+	}
+
 
 }

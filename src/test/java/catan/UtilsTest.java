@@ -72,6 +72,7 @@ public final class UtilsTest {
 		Coordinate[] actualOutput = Utils.getAdjacent(input);
 		for (int i = 0; i < 6; i++) {
 			assertTrue(expectedOutputs.contains(actualOutput[i]));
+			expectedOutputs.remove(actualOutput[i]);
 		}
 	}
 	// CHECKSTYLE:ON: LineLength
