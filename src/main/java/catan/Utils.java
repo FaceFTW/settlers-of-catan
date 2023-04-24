@@ -124,7 +124,7 @@ public class Utils {
 
 		if (numZero < 2) { return new Coordinate(x, y, z); }
 
-		if ((x != 0 && y != 0 && z != 0) || x * y < 0 || x * z > 0) {
+		if (numZero == 3 || (x * y < 0 ^ x * z > 0)) {
 			int factor = Integer.signum(x);
 			for (; x != 0; x -= factor) {
 				y += factor;
