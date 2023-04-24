@@ -117,43 +117,26 @@ public class Utils {
 		int y = input.getY();
 		int z = input.getZ();
 
-		if (x != 0 && y != 0 && z != 0) {
-			if (x > 0) {
-				for (; x > 0; x--) {
-					y++;
-					z--;
-				}
-			} else {
-				for (; x < 0; x++) {
-					y--;
-					z++;
-				}
+		int numZero = 0;
+		if (x != 0) { numZero ++; }
+		if (y != 0) { numZero ++; }
+		if (z != 0) { numZero ++; }
+
+		if (numZero < 2) { return new Coordinate(x, y, z); }
+
+		if ((x != 0 && y != 0 && z != 0) || x * y < 0 || x * z > 0) {
+			int factor = Integer.signum(x);
+			for (; x != 0; x -= factor) {
+				y += factor;
+				z -= factor;
 			}
 		}
 
-		if (x * y < 0 || x * z > 0) {
-			if (x > 0) {
-				for (; x > 0; x--) {
-					y++;
-					z--;
-				}
-			} else {
-				for (; x < 0; x++) {
-					y--;
-					z++;
-				}
-			}
-		} else if (y * z < 0) {
-			if (y > 0) {
-				for (; y > 0; y--) {
-					x++;
-					z++;
-				}
-			} else {
-				for (; y < 0; y++) {
-					x--;
-					z--;
-				}
+		if (y * z < 0) {
+			int factor = Integer.signum(y);
+			for (; y != 0; y -= factor) {
+				x += factor;
+				z += factor;
 			}
 		}
 
