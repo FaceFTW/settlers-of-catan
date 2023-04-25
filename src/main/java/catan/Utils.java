@@ -1,6 +1,9 @@
 package catan;
 
 public class Utils {
+
+	private static final int MAX_NON_ZERO = 2;
+	private static final int NON_ZERO_OVER = 3;
 	private static final Coordinate[] REAL_LIST = new Coordinate[]{
 			new Coordinate(2, 0, -3),
 			new Coordinate(3, 0, -2),
@@ -117,43 +120,34 @@ public class Utils {
 		int y = input.getY();
 		int z = input.getZ();
 
-		if (x != 0 && y != 0 && z != 0) {
-			if (x > 0) {
-				for (; x > 0; x--) {
-					y++;
-					z--;
-				}
-			} else {
-				for (; x < 0; x++) {
-					y--;
-					z++;
-				}
+		int numZero = 0;
+		if (x != 0) {
+			numZero++;
+		}
+		if (y != 0) {
+			numZero++;
+		}
+		if (z != 0) {
+			numZero++;
+		}
+
+		if (numZero < MAX_NON_ZERO) {
+			return new Coordinate(x, y, z);
+		}
+
+		if (numZero == NON_ZERO_OVER || (x * y < 0 ^ x * z > 0)) {
+			int factor = Integer.signum(x);
+			for (; x != 0; x -= factor) {
+				y += factor;
+				z -= factor;
 			}
 		}
 
-		if (x * y < 0 || x * z > 0) {
-			if (x > 0) {
-				for (; x > 0; x--) {
-					y++;
-					z--;
-				}
-			} else {
-				for (; x < 0; x++) {
-					y--;
-					z++;
-				}
-			}
-		} else if (y * z < 0) {
-			if (y > 0) {
-				for (; y > 0; y--) {
-					x++;
-					z++;
-				}
-			} else {
-				for (; y < 0; y++) {
-					x--;
-					z--;
-				}
+		if (y * z < 0) {
+			int factor = Integer.signum(y);
+			for (; y != 0; y -= factor) {
+				x += factor;
+				z += factor;
 			}
 		}
 

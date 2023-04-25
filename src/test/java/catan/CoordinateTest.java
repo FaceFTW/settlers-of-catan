@@ -1,5 +1,8 @@
 package catan;
+
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,7 +12,7 @@ public final class CoordinateTest {
 		Coordinate a = new Coordinate(0, 0, 0);
 		Coordinate b = new Coordinate(0, 0, 0);
 
-		assertTrue(a.equals(b));
+		assertEquals(a, b);
 	}
 
 	@Test
@@ -17,7 +20,7 @@ public final class CoordinateTest {
 		Coordinate a = new Coordinate(Integer.MAX_VALUE, 0, Integer.MIN_VALUE);
 		Coordinate b = new Coordinate(Integer.MAX_VALUE, 0, Integer.MIN_VALUE);
 
-		assertTrue(a.equals(b));
+		assertEquals(a, b);
 	}
 
 	@Test
@@ -25,7 +28,7 @@ public final class CoordinateTest {
 		Coordinate a = new Coordinate(0, 0, 0);
 		Coordinate b = new Coordinate(1, 0, 0);
 
-		assertFalse(a.equals(b));
+		assertNotEquals(a, b);
 	}
 
 	@Test
@@ -33,7 +36,7 @@ public final class CoordinateTest {
 		Coordinate a = new Coordinate(0, 0, 0);
 		Coordinate b = new Coordinate(0, 1, 0);
 
-		assertFalse(a.equals(b));
+		assertNotEquals(a, b);
 	}
 
 	@Test
@@ -41,8 +44,33 @@ public final class CoordinateTest {
 		Coordinate a = new Coordinate(0, 0, 0);
 		Coordinate b = new Coordinate(0, 0, 1);
 
-		assertFalse(a.equals(b));
+		assertNotEquals(a, b);
 	}
 
+	//CHECKSTYLE:OFF: checkstyle:magicnumber
+	@Test
+	public void testEquals_sameCoordinate_expectTrue() {
+		Coordinate a = new Coordinate(1, 3, 5);
+		assertEquals(a, a);
+	}
+	//CHECKSTYLE:ON: checkstyle:magicnumber
+
+	//CHECKSTYLE:OFF: checkstyle:magicnumber
+	@Test
+	public void testEquals_notACoordinate_expectFalse() {
+		ArrayList<Integer> dummy = new ArrayList<Integer>();
+		Coordinate a = new Coordinate(1, 2, 3);
+		assertNotEquals(a, dummy);
+	}
+	//CHECKSTYLE:ON: checkstyle:magicnumber
+
+	//CHECKSTYLE:OFF: checkstyle:magicnumber
+	@Test
+	public void testHashing_basicCoordinate_expectEqual() {
+		int expected = "1,2,3".hashCode();
+		Coordinate a = new Coordinate(1, 2, 3);
+		assertEquals(a.hashCode(), expected);
+	}
+	//CHECKSTYLE:ON: checkstyle:magicnumber
 
 }
