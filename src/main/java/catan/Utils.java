@@ -1,6 +1,8 @@
 package catan;
 
 public class Utils {
+
+	private static final int maxNonZero = 2;
 	private static final Coordinate[] REAL_LIST = new Coordinate[]{
 			new Coordinate(2, 0, -3),
 			new Coordinate(3, 0, -2),
@@ -118,11 +120,11 @@ public class Utils {
 		int z = input.getZ();
 
 		int numZero = 0;
-		if (x != 0) { numZero ++; }
-		if (y != 0) { numZero ++; }
-		if (z != 0) { numZero ++; }
+		if (x != 0) {numZero++;}
+		if (y != 0) {numZero++;}
+		if (z != 0) {numZero++;}
 
-		if (numZero < 2) { return new Coordinate(x, y, z); }
+		if (numZero < maxNonZero) {return new Coordinate(x, y, z);}
 
 		if (numZero == 3 || (x * y < 0 ^ x * z > 0)) {
 			int factor = Integer.signum(x);

@@ -65,8 +65,8 @@ public final class UtilsTest {
 
 		for (int i = 0; i < 18; i += 3) {
 			expectedOutputs.add(new Coordinate(expectedOutputValues[i],
-					expectedOutputValues[i + 1],
-					expectedOutputValues[i + 2]));
+											   expectedOutputValues[i + 1],
+											   expectedOutputValues[i + 2]));
 		}
 
 		Coordinate[] actualOutput = Utils.getAdjacent(input);

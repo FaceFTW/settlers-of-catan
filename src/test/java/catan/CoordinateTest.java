@@ -1,4 +1,5 @@
 package catan;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public final class CoordinateTest {
 	@Test
 	public void testHashing_basicCoordinate_expectEqual() {
 		int expected = "1,2,3".hashCode();
-		Coordinate a = new Coordinate(1,2, 3);
+		Coordinate a = new Coordinate(1, 2, 3);
 		assertEquals(a.hashCode(), expected);
 	}
 
