@@ -3,6 +3,7 @@ package catan;
 public class Utils {
 
 	private static final int MAX_NON_ZERO = 2;
+	private static final int NON_ZERO_OVER = 3;
 	private static final Coordinate[] REAL_LIST = new Coordinate[]{
 			new Coordinate(2, 0, -3),
 			new Coordinate(3, 0, -2),
@@ -134,7 +135,7 @@ public class Utils {
 			return new Coordinate(x, y, z);
 		}
 
-		if (numZero == 3 || (x * y < 0 ^ x * z > 0)) {
+		if (numZero == NON_ZERO_OVER || (x * y < 0 ^ x * z > 0)) {
 			int factor = Integer.signum(x);
 			for (; x != 0; x -= factor) {
 				y += factor;
