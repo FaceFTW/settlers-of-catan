@@ -59,5 +59,12 @@ public final class CoordinateTest {
 		assertFalse(a.equals(dummy));
 	}
 
+	@Test
+	public void testHashing_basicCoordinate_expectEqual() {
+		int expected = "1,2,3".hashCode();
+		Coordinate a = new Coordinate(1,2, 3);
+		assertEquals(a.hashCode(), expected);
+	}
+
 
 }
