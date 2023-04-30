@@ -1,12 +1,15 @@
 package catan;
 
 import catan.data.ResourceType;
+import catan.data.Tile;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BoardTest {
 	@Test
@@ -39,5 +42,45 @@ public class BoardTest {
 
 		// VERIFY
 		EasyMock.verify(r);
+	}
+
+	@Test
+	public void testCreateBoard_lookAtSpiralStart_checkCorrectCornerPlacement() {
+		ArrayList<Coordinate> expected = new ArrayList<>();
+		expected.add(new Coordinate(-2, 0, 1));
+		expected.add(new Coordinate(-1, 0, 2));
+		expected.add(new Coordinate(-1, 0, 3));
+		expected.add(new Coordinate(-2, 0, 3));
+		expected.add(new Coordinate(-3, 0, 2));
+		expected.add(new Coordinate(-3, 0, 1));
+
+		Board board = new Board(new Random());
+		Tile tileInQuestion = board.tileList[0];
+
+		for (Coordinate c: tileInQuestion.getCorners()) {
+			assertTrue(expected.remove(c));
+		}
+
+		assertTrue(expected.isEmpty());
+	}
+
+	@Test
+	public void testCreateBoard_lookAtSpiralEnd_checkCorrectCornerPlacement() {
+		ArrayList<Coordinate> expected = new ArrayList<>();
+		expected.add(new Coordinate(-1, 0, 0));
+		expected.add(new Coordinate(1, 0, 0));
+		expected.add(new Coordinate(0, -1, 0));
+		expected.add(new Coordinate(0, 1, 0));
+		expected.add(new Coordinate(0, 0, -1));
+		expected.add(new Coordinate(0, 0, 1));
+
+		Board board = new Board(new Random());
+		Tile tileInQuestion = board.tileList[18];
+
+		for (Coordinate c: tileInQuestion.getCorners()) {
+			assertTrue(expected.remove(c));
+		}
+
+		assertTrue(expected.isEmpty());
 	}
 }

@@ -39,6 +39,13 @@ public class Tile {
 	}
 
 	/**
+	 * @return The coordinates of the corners of the tile
+	 */
+	public List<Coordinate> getCorners() {
+		return corners;
+	}
+
+	/**
 	 * @return The type of resource this tile has
 	 */
 	public ResourceType getResourceType() {
