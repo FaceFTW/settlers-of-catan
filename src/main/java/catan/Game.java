@@ -1,11 +1,15 @@
 package catan;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import catan.data.Board;
 import catan.data.Player;
 import catan.data.ResourceType;
+import catan.data.Road;
+import catan.data.Settlement;
 import catan.data.TradeOffer;
 
 public class Game {
@@ -16,32 +20,46 @@ public class Game {
 	private int currentTurn;
 	private int numberOfPlayers;
 	private List<Player> players;
+	private Board board;
 
 	public Game() {
 		this.random = new Random();
 		this.numberOfPlayers = DEFAULT_NUM_PLAYERS;
 		this.players = new ArrayList<>();
+		this.board = new Board();
 	}
 
-	/**
-	 * DI constructor, only injects the random object
-	 *
-	 * @param random
-	 */
+	/**************************************************
+	 * DI Constructors
+	 **************************************************/
+
 	public Game(Random random) {
 		this.random = random;
 	}
 
-	/**
-	 * DI constructor, only injects the number of players and the current turn
-	 *
-	 * @param numberOfPlayers
-	 */
 	public Game(int numberOfPlayers, int currentTurn) {
 		this.numberOfPlayers = numberOfPlayers;
 		this.currentTurn = currentTurn;
 	}
 
+	public Game(Board b) {
+		this.board = b;
+	}
+
+	public Game(Board b, List<Player> p) {
+		this.board = b;
+		this.players = p;
+	}
+
+	/**************************************************
+	 * Game Methods
+	 **************************************************/
+
+	/**
+	 * Simulates a dice roll
+	 *
+	 * @return the sum of two random numbers between 1 and 6
+	 */
 	public final int rollDie() {
 		int result = random.nextInt(MAX_DICE_VALUE) + 1;
 		result += random.nextInt(MAX_DICE_VALUE) + 1;
@@ -74,6 +92,47 @@ public class Game {
 		to.modifyResource(ResourceType.SHEEP, offer.getGivenSheep() - offer.getReceivedSheep());
 		to.modifyResource(ResourceType.WHEAT, offer.getGivenWheat() - offer.getReceivedWheat());
 		to.modifyResource(ResourceType.ORE, offer.getGivenOre() - offer.getReceivedOre());
+	}
+
+	public boolean buildSettlement(int playerId, Coordinate c) {
+		Player p = this.players.get(playerId - 1);
+		if (p.getResourceCount(ResourceType.WOOD) < 1 || p.getResourceCount(ResourceType.BRICK) < 1
+				|| p.getResourceCount(ResourceType.SHEEP) < 1 || p.getResourceCount(ResourceType.WHEAT) < 1) {
+			return false;
+		}
+
+		Settlement[] settlements = this.board.getSettlements();
+		List<Coordinate> settlementPositions = new ArrayList<>();
+
+		for (Settlement s : settlements) {
+			if (s.getLocation().equals(c)) {
+				return false;
+			}
+			settlementPositions.add(s.getLocation());
+		}
+
+		Road[] roads = this.board.getRoads();
+		for (Road r : roads) {
+			if (r.getOwner() == playerId && (r.getStart().equals(c) || r.getEnd().equals(c))) {
+				List<Coordinate> adjacent = Arrays.asList(Utils.getBoardAdjacents(c));
+				for (Coordinate adj : adjacent) {
+					if (settlementPositions.contains(adj)) {
+						return false;
+					}
+				}
+
+				this.board.createNewSettlement(c, playerId);
+				p.modifyResource(ResourceType.WOOD, -1);
+				p.modifyResource(ResourceType.BRICK, -1);
+				p.modifyResource(ResourceType.SHEEP, -1);
+				p.modifyResource(ResourceType.WHEAT, -1);
+				p.setVictoryPoints(p.getVictoryPoints() + 1);
+				p.setInternalVictoryPoints(p.getInternalVictoryPoints() + 1);
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**************************************************
