@@ -2,9 +2,6 @@ package catan.game;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 
 import catan.Game;
@@ -80,9 +77,6 @@ public class PlayerResourceTests {
 			player1.modifyResource(type, 5);
 			player2.modifyResource(type, 5);
 		}
-		List<Player> players = new ArrayList<>();
-		players.add(player1);
-		players.add(player2);
 
 		Game game = new Game();
 		game.addPlayer(player1);
@@ -112,9 +106,6 @@ public class PlayerResourceTests {
 			player1.modifyResource(type, 5);
 			player2.modifyResource(type, 5);
 		}
-		List<Player> players = new ArrayList<>();
-		players.add(player1);
-		players.add(player2);
 
 		Game game = new Game();
 		game.addPlayer(player1);
