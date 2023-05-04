@@ -96,28 +96,6 @@ public class Utils {
 			new Coordinate(-2, 0, 3),
 	};
 
-	public static final Coordinate[] TILES_SPIRAL_LOCATION = {
-			new Coordinate(-2, 0, 2),
-			new Coordinate(0, 0, 3),
-			new Coordinate(0, 2, 2),
-			new Coordinate(0, 3, 0),
-			new Coordinate(2, 2, 0),
-			new Coordinate(3, 0, 0),
-			new Coordinate(2, 0, -2),
-			new Coordinate(0, 0, -3),
-			new Coordinate(0, -2, -2),
-			new Coordinate(0, -3, 0),
-			new Coordinate(-2, -2, 0),
-			new Coordinate(-3, 0, 0),
-			new Coordinate(-1, 0, 1),
-			new Coordinate(0, 1, 1),
-			new Coordinate(1, 1, 0),
-			new Coordinate(1, 0, -1),
-			new Coordinate(0, -1, -1),
-			new Coordinate(-1, -1, 0),
-			new Coordinate(0, 0, 0),
-	};
-
 	static final ResourceType[] ALL_TILES_RESOURCES = {
 			ResourceType.DESERT,
 			ResourceType.WOOD,
