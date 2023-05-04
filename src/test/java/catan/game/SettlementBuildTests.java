@@ -147,6 +147,7 @@ public class SettlementBuildTests {
 		});
 
 		b.createNewSettlement(new Coordinate(1, 0, 0), 1);
+		EasyMock.expectLastCall();
 		EasyMock.replay(b);
 
 		Game game = new Game(b, player);
@@ -177,6 +178,7 @@ public class SettlementBuildTests {
 		});
 
 		b.createNewSettlement(new Coordinate(1, 0, 0), 1);
+		EasyMock.expectLastCall();
 		EasyMock.replay(b);
 
 		Game game = new Game(b, player);

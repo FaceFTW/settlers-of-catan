@@ -141,6 +141,7 @@ public class RoadBuildTests {
 				new Settlement(new Coordinate(1, 0, 0), 1, false) });
 		EasyMock.expect(b.getRoads()).andReturn(new Road[] {});
 		b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
+		EasyMock.expectLastCall();
 		EasyMock.replay(b);
 		Game g = new Game(b, player);
 
@@ -215,6 +216,7 @@ public class RoadBuildTests {
 		EasyMock.expect(b.getRoads()).andReturn(new Road[] {
 				new Road(new Coordinate(1, 0, 0), new Coordinate(0, 0, -1), 1) });
 		b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
+		EasyMock.expectLastCall();
 		EasyMock.replay(b);
 		Game g = new Game(b, player);
 
@@ -235,7 +237,7 @@ public class RoadBuildTests {
 		EasyMock.expect(b.getRoads()).andReturn(new Road[] {
 				new Road(new Coordinate(2, 0, 0), new Coordinate(2, 1, 0), 1) });
 		b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
-
+		EasyMock.expectLastCall();
 		EasyMock.replay(b);
 		Game g = new Game(b, player);
 
@@ -260,6 +262,7 @@ public class RoadBuildTests {
 				new Road(new Coordinate(1, 0, 0), new Coordinate(0, 0, -1), 1),
 				new Road(new Coordinate(2, 0, 0), new Coordinate(2, 1, 0), 2) });
 		b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
+		EasyMock.expectLastCall();
 		EasyMock.replay(b);
 		Game g = new Game(b, player);
 
