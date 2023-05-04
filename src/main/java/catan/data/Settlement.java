@@ -52,7 +52,7 @@ public class Settlement {
 	 * intention
 	 */
 	public void upgradeToCity() {
-		isCity = true;
+		this.isCity = true;
 	}
 
 }

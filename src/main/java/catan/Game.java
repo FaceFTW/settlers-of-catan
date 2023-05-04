@@ -157,7 +157,7 @@ public class Game {
 
 		for (Settlement s : settlements) {
 			if (s.getOwner() == playerId
-				&& (s.getLocation().equals(start) || s.getLocation().equals(end))) {
+					&& (s.getLocation().equals(start) || s.getLocation().equals(end))) {
 				doRoadBuild(playerId, start, end);
 				return true;
 			}
@@ -172,6 +172,39 @@ public class Game {
 		p.modifyResource(ResourceType.WOOD, -1);
 		p.modifyResource(ResourceType.BRICK, -1);
 		this.board.createNewRoad(playerId, start, end);
+	}
+
+	/**
+	 * Upgrades a settlement to a city if it is owned by the player and the player
+	 * has the resources to do so
+	 *
+	 * @param playerId The ID of the player upgrading the settlement
+	 * @param pos      The position of the settlement to upgrade
+	 * @return True if the settlement was upgraded, false otherwise
+	 */
+	public boolean upgradeSettlement(int playerId, Coordinate pos) {
+		Player p = this.players.get(playerId - 1);
+		if (p.getResourceCount(ResourceType.ORE) < 3 || p.getResourceCount(ResourceType.WHEAT) < 2) {
+			return false;
+		}
+
+		Settlement[] settlements = this.board.getSettlements();
+		for (Settlement settlement : settlements) {
+			if (settlement.getLocation().equals(pos)) {
+				if (settlement.getOwner() == playerId && !settlement.isCity()) {
+					p.modifyResource(ResourceType.ORE, -3);
+					p.modifyResource(ResourceType.WHEAT, -2);
+					board.upgradeSettlement(pos);
+					p.setVictoryPoints(p.getVictoryPoints() + 1);
+					p.setInternalVictoryPoints(p.getInternalVictoryPoints() + 1);
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	/**************************************************

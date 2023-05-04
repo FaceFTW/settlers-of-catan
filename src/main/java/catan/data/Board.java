@@ -25,6 +25,20 @@ public class Board {
 		roads.add(new Road(start, end, owner));
 	}
 
+	/**
+	 * Assumes the coordinate already has a settlement, and upgrades it to a city
+	 *
+	 * @param location
+	 */
+	public void upgradeSettlement(Coordinate location) {
+		for (Settlement s : settlements) {
+			if (s.getLocation().equals(location)) {
+				s.upgradeToCity();
+				return;
+			}
+		}
+	}
+
 	/*********************************
 	 * Getters
 	 *********************************/
@@ -39,4 +53,5 @@ public class Board {
 	public Tile[] getTiles() {
 		return tiles.toArray(new Tile[tiles.size()]);
 	}
+
 }
