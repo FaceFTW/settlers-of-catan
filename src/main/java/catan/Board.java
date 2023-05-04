@@ -9,16 +9,18 @@ import java.util.List;
 import java.util.Random;
 
 public class Board {
-	public Tile[] tileList;
+	private Tile[] tileList;
+
+	private static final int THIEF_ROLL = 4;
 
 	public Board(Random random) {
-		this.tileList = new Tile[19];
+		this.tileList = new Tile[Utils.TILES_SPIRAL_LOCATION.length];
 
 		List<ResourceType> resources = new ArrayList<>(
 				Arrays.asList(Utils.ALL_TILES_RESOURCES));
 
 		int desertEffect = 0;
-		for (int i = 0; i < 19; i++) {
+		for (int i = 0; i < Utils.TILES_SPIRAL_LOCATION.length; i++) {
 			// Tile Coordinate
 			Coordinate coordinate = Utils.TILES_SPIRAL_LOCATION[i];
 
@@ -28,7 +30,7 @@ public class Board {
 			// Tile corners
 			ArrayList<Coordinate> corners = new ArrayList<>();
 			Coordinate[] possibleCorners = Utils.getAdjacent(coordinate);
-			for (int j = 0; j < 6; j++) {
+			for (int j = 0; j < possibleCorners.length; j++) {
 				possibleCorners[j] = Utils.resolveToValid(possibleCorners[j]);
 				if (Utils.isRealCoordinate(possibleCorners[j])) {
 					corners.add(possibleCorners[j]);
@@ -38,7 +40,7 @@ public class Board {
 			// Tile die roll
 			int dieRoll;
 			if (resource == ResourceType.DESERT) {
-				dieRoll = 7;
+				dieRoll = THIEF_ROLL;
 				desertEffect = -1;
 			} else {
 				dieRoll = Utils.TILES_ROLL_NUMBERS[i + desertEffect];
@@ -49,4 +51,11 @@ public class Board {
 			tileList[i] = t;
 		}
 	}
+
+	/**
+	 * Returns all the tiles
+	 *
+	 * @return
+	 */
+	public Tile[] getTiles() {return this.tileList;}
 }

@@ -25,18 +25,18 @@ public class BoardTest {
 		Board board = new Board(r);
 
 		for (int i = 0; i < 19; i++) {
-			assertEquals(Utils.ALL_TILES_RESOURCES[i], board.tileList[i].getResourceType());
-			assertEquals(Utils.TILES_SPIRAL_LOCATION[i], board.tileList[i].getPosition());
+			assertEquals(Utils.ALL_TILES_RESOURCES[i], board.getTiles()[i].getResourceType());
+			assertEquals(Utils.TILES_SPIRAL_LOCATION[i], board.getTiles()[i].getPosition());
 		}
 
 		int desertEffect = 0;
 		for (int i = 0; i < 18; i++) {
-			if (board.tileList[i].getResourceType() == ResourceType.DESERT) {
+			if (board.getTiles()[i].getResourceType() == ResourceType.DESERT) {
 				desertEffect = -1;
 				continue;
 			}
 			assertEquals(Utils.TILES_ROLL_NUMBERS[i + desertEffect],
-						 board.tileList[i].getDieRoll());
+						 board.getTiles()[i].getDieRoll());
 		}
 
 
@@ -55,9 +55,9 @@ public class BoardTest {
 		expected.add(new Coordinate(-3, 0, 1));
 
 		Board board = new Board(new Random());
-		Tile tileInQuestion = board.tileList[0];
+		Tile tileInQuestion = board.getTiles()[0];
 
-		for (Coordinate c: tileInQuestion.getCorners()) {
+		for (Coordinate c : tileInQuestion.getCorners()) {
 			assertTrue(expected.remove(c));
 		}
 
@@ -75,12 +75,13 @@ public class BoardTest {
 		expected.add(new Coordinate(0, 0, 1));
 
 		Board board = new Board(new Random());
-		Tile tileInQuestion = board.tileList[18];
+		Tile tileInQuestion = board.getTiles()[18];
 
-		for (Coordinate c: tileInQuestion.getCorners()) {
+		for (Coordinate c : tileInQuestion.getCorners()) {
 			assertTrue(expected.remove(c));
 		}
 
 		assertTrue(expected.isEmpty());
 	}
+
 }
