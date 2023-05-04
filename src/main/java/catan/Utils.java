@@ -92,7 +92,7 @@ public class Utils {
 			new Coordinate(-2, 0, 3),
 			};
 
-	public static final ResourceType[] ALL_TILES_RESOURCES = {
+	static final ResourceType[] ALL_TILES_RESOURCES = {
 			ResourceType.DESERT,
 			ResourceType.WOOD,
 			ResourceType.WOOD,
@@ -114,7 +114,7 @@ public class Utils {
 			ResourceType.ORE,
 	};
 
-	public static final Coordinate[] TILES_SPIRAL_LOCATION = {
+	static final Coordinate[] TILES_SPIRAL_LOCATION = {
 			new Coordinate(-2, 0, 2),
 			new Coordinate(0, 0, 3),
 			new Coordinate(0, 2, 2),
@@ -136,7 +136,7 @@ public class Utils {
 			new Coordinate(0, 0, 0),
 	};
 
-	public static final int[] TILES_ROLL_NUMBERS = {
+	static final int[] TILES_ROLL_NUMBERS = {
 			5,
 			2,
 			6,

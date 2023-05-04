@@ -58,6 +58,6 @@ public class Board {
 	 * @return
 	 */
 	public Tile[] getTiles() {
-		return this.tileList;
+		return this.tileList.clone();
 	}
 }

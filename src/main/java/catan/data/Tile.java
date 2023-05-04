@@ -17,7 +17,6 @@ public class Tile {
 	private final Coordinate position;
 	private final ResourceType resourceType;
 	private final List<Coordinate> corners;
-	private boolean hasThief;
 	private final int dieRoll;
 
 	public Tile(Coordinate position,
@@ -27,7 +26,6 @@ public class Tile {
 		this.position = position;
 		this.resourceType = resourceType;
 		this.corners = new ArrayList<>(corners);
-		this.hasThief = dieRoll == DESERT_DIE_ROLL;
 		this.dieRoll = dieRoll;
 	}
 
@@ -42,7 +40,7 @@ public class Tile {
 	 * @return The coordinates of the corners of the tile
 	 */
 	public List<Coordinate> getCorners() {
-		return corners;
+		return new ArrayList<>(this.corners);
 	}
 
 	/**
@@ -59,23 +57,6 @@ public class Tile {
 		return dieRoll;
 	}
 
-	/**
-	 * @return Returns if this tile has a thief on it
-	 */
-	public boolean hasThief() {
-		return hasThief;
-	}
-
-	/**
-	 * Clears or sets the thief on this tile
-	 *
-	 * @param thief If true, the thief will be set on this tile. If false, the thief
-	 *              will be
-	 *              cleared from this tile.
-	 */
-	public void setThief(boolean thief) {
-		this.hasThief = thief;
-	}
 
 	/**
 	 * TODO Implement this method, check wiki for specifics.
