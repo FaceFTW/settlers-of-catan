@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import catan.data.Board;
 import catan.data.Player;
 import catan.data.ResourceType;
 import catan.data.Road;
@@ -26,7 +25,7 @@ public class Game {
 		this.random = new Random();
 		this.numberOfPlayers = DEFAULT_NUM_PLAYERS;
 		this.players = new ArrayList<>();
-		this.board = new Board();
+		this.board = new Board(random);
 	}
 
 	// **************************************************
@@ -119,7 +118,7 @@ public class Game {
 			return false;
 		}
 
-		Settlement[] settlements = this.board.getSettlements();
+		List<Settlement> settlements = this.board.getSettlements();
 		List<Coordinate> settlementPositions = new ArrayList<>();
 
 		for (Settlement s : settlements) {
@@ -129,7 +128,7 @@ public class Game {
 			settlementPositions.add(s.getLocation());
 		}
 
-		Road[] roads = this.board.getRoads();
+		List<Road> roads = this.board.getRoads();
 		for (Road r : roads) {
 			if (r.getOwner() == playerId && (r.getStart().equals(c) || r.getEnd().equals(c))) {
 				List<Coordinate> adjacent = Arrays.asList(Utils.getBoardAdjacents(c));
@@ -168,8 +167,8 @@ public class Game {
 			return false;
 		}
 
-		Settlement[] settlements = this.board.getSettlements();
-		Road[] roads = this.board.getRoads();
+		List<Settlement> settlements = this.board.getSettlements();
+		List<Road> roads = this.board.getRoads();
 
 		for (Road r : roads) {
 			if (r.getStart().equals(start) && r.getEnd().equals(end)) {
@@ -201,7 +200,7 @@ public class Game {
 		this.board.createNewRoad(playerId, start, end);
 	}
 
-	//CHECKSTYLE:OFF: checkstyle:magicnumber
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	/**
 	 * Upgrades a settlement to a city if it is owned by the player and the player
 	 * has the resources to do so
@@ -217,7 +216,7 @@ public class Game {
 			return false;
 		}
 
-		Settlement[] settlements = this.board.getSettlements();
+		List<Settlement> settlements = this.board.getSettlements();
 		for (Settlement settlement : settlements) {
 			if (settlement.getLocation().equals(pos)) {
 				if (settlement.getOwner() == playerId && !settlement.isCity()) {
@@ -235,7 +234,7 @@ public class Game {
 
 		return false;
 	}
-	//CHECKSTYLE:ON: checkstyle:magicnumber
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
 	// **************************************************
 	// Getters and Setters

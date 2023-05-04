@@ -1,8 +1,6 @@
 package catan.game;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import catan.Coordinate;
 import catan.Game;
-import catan.data.Board;
+import catan.Board;
 import catan.data.Player;
 import catan.data.ResourceType;
 import catan.data.Road;
@@ -38,11 +36,11 @@ public class RoadBuildTests {
 		Coordinate end = new Coordinate(1, 0, 1);
 		b.createNewRoad(1, start, end);
 
-		Road[] roads = b.getRoads();
-		assertEquals(1, roads.length);
-		assertEquals(start, roads[0].getStart());
-		assertEquals(end, roads[0].getEnd());
-		assertEquals(1, roads[0].getOwner());
+		List<Road> roads = b.getRoads();
+		assertEquals(1, roads.size());
+		assertEquals(start, roads.get(0).getStart());
+		assertEquals(end, roads.get(0).getEnd());
+		assertEquals(1, roads.get(0).getOwner());
 	}
 
 	@Test
@@ -86,10 +84,12 @@ public class RoadBuildTests {
 	@Test
 	void buildRoad_BothStartEndOccupiedByRoad_ReturnsFalse() {
 		List<Player> player = createPlayerWithSettlementResources();
-		Board b = EasyMock.mock(Board.class);
-		EasyMock.expect(b.getSettlements()).andReturn(new Settlement[] {});
-		EasyMock.expect(b.getRoads()).andReturn(new Road[] {
-				new Road(new Coordinate(1, 0, 0), new Coordinate(2, 0, 0), 1) });
+		Board b = EasyMock.createMock(Board.class);
+		EasyMock.expect(b.getSettlements()).andReturn(new ArrayList<>());
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(1, 0, 0), new Coordinate(2, 0, 0), 1));
+		roads.add(new Road(new Coordinate(2, 0, 0), new Coordinate(1, 0, 0), 1));
+		EasyMock.expect(b.getRoads()).andReturn(roads);
 		EasyMock.replay(b);
 		Game g = new Game(b, player);
 
@@ -103,9 +103,10 @@ public class RoadBuildTests {
 	void buildRoad_StartHasSettlementNotOwnedByPlayer_ReturnsFalse() {
 		List<Player> player = createPlayerWithSettlementResources();
 		Board b = EasyMock.createMock(Board.class);
-		EasyMock.expect(b.getSettlements()).andReturn(new Settlement[] {
-				new Settlement(new Coordinate(1, 0, 0), 2, false) });
-		EasyMock.expect(b.getRoads()).andReturn(new Road[] {});
+		List<Settlement> settlements = new ArrayList<>();
+		settlements.add(new Settlement(new Coordinate(1, 0, 0), 2, false));
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		EasyMock.expect(b.getRoads()).andReturn(new ArrayList<>());
 		EasyMock.replay(b);
 		Game g = new Game(b, player);
 
@@ -120,9 +121,10 @@ public class RoadBuildTests {
 	void buildRoad_EndHasSettlementNotOwnedByPlayer_ReturnsFalse() {
 		List<Player> player = createPlayerWithSettlementResources();
 		Board b = EasyMock.createMock(Board.class);
-		EasyMock.expect(b.getSettlements()).andReturn(new Settlement[] {
-				new Settlement(new Coordinate(2, 0, 0), 2, false) });
-		EasyMock.expect(b.getRoads()).andReturn(new Road[] {});
+		List<Settlement> settlements = new ArrayList<>();
+		settlements.add(new Settlement(new Coordinate(2, 0, 0), 2, false));
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		EasyMock.expect(b.getRoads()).andReturn(new ArrayList<>());
 		EasyMock.replay(b);
 		Game g = new Game(b, player);
 
@@ -136,10 +138,11 @@ public class RoadBuildTests {
 	@Test
 	void buildRoad_StartHasSettlementOwnedByPlayer_BuildsRoad() {
 		List<Player> player = createPlayerWithSettlementResources();
+		List<Settlement> settlements = new ArrayList<>();
+		settlements.add(new Settlement(new Coordinate(1, 0, 0), 1, false));
 		Board b = EasyMock.createMock(Board.class);
-		EasyMock.expect(b.getSettlements()).andReturn(new Settlement[] {
-				new Settlement(new Coordinate(1, 0, 0), 1, false) });
-		EasyMock.expect(b.getRoads()).andReturn(new Road[] {});
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		EasyMock.expect(b.getRoads()).andReturn(new ArrayList<>());
 		b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
 		EasyMock.expectLastCall();
 		EasyMock.replay(b);
@@ -157,10 +160,11 @@ public class RoadBuildTests {
 	@Test
 	void buildRoad_EndHasSettlementOwnedByPlayer_BuildsRoad() {
 		List<Player> player = createPlayerWithSettlementResources();
+		List<Settlement> settlements = new ArrayList<>();
+		settlements.add(new Settlement(new Coordinate(2, 0, 0), 1, false));
 		Board b = EasyMock.createMock(Board.class);
-		EasyMock.expect(b.getSettlements()).andReturn(new Settlement[] {
-				new Settlement(new Coordinate(2, 0, 0), 1, false) });
-		EasyMock.expect(b.getRoads()).andReturn(new Road[] {});
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		EasyMock.expect(b.getRoads()).andReturn(new ArrayList<>());
 		b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
 		EasyMock.replay(b);
 		Game g = new Game(b, player);
@@ -177,10 +181,11 @@ public class RoadBuildTests {
 	@Test
 	void buildRoad_StartHasRoadNotOwnedByPlayer_ReturnsFalse() {
 		List<Player> player = createPlayerWithSettlementResources();
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(1, 0, 0), new Coordinate(2, 0, 0), 2));
 		Board b = EasyMock.createMock(Board.class);
-		EasyMock.expect(b.getSettlements()).andReturn(new Settlement[] {});
-		EasyMock.expect(b.getRoads()).andReturn(new Road[] {
-				new Road(new Coordinate(1, 0, 0), new Coordinate(0, 0, -1), 2) });
+		EasyMock.expect(b.getSettlements()).andReturn(new ArrayList<>());
+		EasyMock.expect(b.getRoads()).andReturn(roads);
 		EasyMock.replay(b);
 		Game g = new Game(b, player);
 
@@ -194,10 +199,12 @@ public class RoadBuildTests {
 	@Test
 	void buildRoad_EndHasRoadNotOwnedByPlayer_ReturnsFalse() {
 		List<Player> player = createPlayerWithSettlementResources();
+		List<Settlement> settlements = new ArrayList<>();
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(2, 0, 0), new Coordinate(1, 0, 0), 2));
 		Board b = EasyMock.createMock(Board.class);
-		EasyMock.expect(b.getSettlements()).andReturn(new Settlement[] {});
-		EasyMock.expect(b.getRoads()).andReturn(new Road[] {
-				new Road(new Coordinate(2, 0, 0), new Coordinate(2, 1, 0), 2) });
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		EasyMock.expect(b.getRoads()).andReturn(roads);
 		EasyMock.replay(b);
 		Game g = new Game(b, player);
 
@@ -211,10 +218,11 @@ public class RoadBuildTests {
 	@Test
 	void buildRoad_StartHasRoadOwnedByPlayer_BuildsRoad() {
 		List<Player> player = createPlayerWithSettlementResources();
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(1, 0, 0), new Coordinate(0, 0, -1), 1));
 		Board b = EasyMock.createMock(Board.class);
-		EasyMock.expect(b.getSettlements()).andReturn(new Settlement[] {});
-		EasyMock.expect(b.getRoads()).andReturn(new Road[] {
-				new Road(new Coordinate(1, 0, 0), new Coordinate(0, 0, -1), 1) });
+		EasyMock.expect(b.getSettlements()).andReturn(new ArrayList<>());
+		EasyMock.expect(b.getRoads()).andReturn(roads);
 		b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
 		EasyMock.expectLastCall();
 		EasyMock.replay(b);
@@ -232,10 +240,11 @@ public class RoadBuildTests {
 	@Test
 	void buildRoad_EndHasRoadOwnedByPlayer_BuildsRoad() {
 		List<Player> player = createPlayerWithSettlementResources();
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(2, 0, 0), new Coordinate(2, 1, 0), 1));
 		Board b = EasyMock.createMock(Board.class);
-		EasyMock.expect(b.getSettlements()).andReturn(new Settlement[] {});
-		EasyMock.expect(b.getRoads()).andReturn(new Road[] {
-				new Road(new Coordinate(2, 0, 0), new Coordinate(2, 1, 0), 1) });
+		EasyMock.expect(b.getSettlements()).andReturn(new ArrayList<>());
+		EasyMock.expect(b.getRoads()).andReturn(roads);
 		b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
 		EasyMock.expectLastCall();
 		EasyMock.replay(b);
@@ -256,11 +265,12 @@ public class RoadBuildTests {
 	@Test
 	void buildRoad_OneEndSatisfiesConditionOtherFails_BuildsRoad() {
 		List<Player> player = createPlayerWithSettlementResources();
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(1, 0, 0), new Coordinate(0, 0, -1), 1));
+		roads.add(new Road(new Coordinate(2, 0, 0), new Coordinate(2, 1, 0), 2));
 		Board b = EasyMock.createMock(Board.class);
-		EasyMock.expect(b.getSettlements()).andReturn(new Settlement[] {});
-		EasyMock.expect(b.getRoads()).andReturn(new Road[] {
-				new Road(new Coordinate(1, 0, 0), new Coordinate(0, 0, -1), 1),
-				new Road(new Coordinate(2, 0, 0), new Coordinate(2, 1, 0), 2) });
+		EasyMock.expect(b.getSettlements()).andReturn(new ArrayList<>());
+		EasyMock.expect(b.getRoads()).andReturn(roads);
 		b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
 		EasyMock.expectLastCall();
 		EasyMock.replay(b);
