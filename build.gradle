@@ -30,7 +30,7 @@ javafx{
 }
 
 spotbugs {
-	excludeFilter = file("$rootDir/filter.xml")
+	excludeFilter.set(file("$rootDir/config/spotbugs/exclude.xml"))
 }
 
 spotbugsMain {
