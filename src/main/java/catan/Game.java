@@ -135,6 +135,45 @@ public class Game {
 		return false;
 	}
 
+	public boolean buildRoad(int playerId, Coordinate start, Coordinate end) {
+		Player p = this.players.get(playerId - 1);
+		if (p.getResourceCount(ResourceType.WOOD) < 1 || p.getResourceCount(ResourceType.BRICK) < 1) {
+			return false;
+		}
+
+		Settlement[] settlements = this.board.getSettlements();
+		Road[] roads = this.board.getRoads();
+
+		for (Road r : roads) {
+			if (r.getStart().equals(start) && r.getEnd().equals(end)) {
+				return false;
+			} else if (r.getOwner() == playerId
+					&& (r.getStart().equals(start) || r.getEnd().equals(start)
+							|| r.getStart().equals(end) || r.getEnd().equals(end))) {
+				doRoadBuild(playerId, start, end);
+				return true;
+			}
+		}
+
+		for (Settlement s : settlements) {
+			if (s.getOwner() == playerId
+				&& (s.getLocation().equals(start) || s.getLocation().equals(end))) {
+				doRoadBuild(playerId, start, end);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	// Reusable subroutine for buildRoad
+	private void doRoadBuild(int playerId, Coordinate start, Coordinate end) {
+		Player p = this.players.get(playerId - 1);
+		p.modifyResource(ResourceType.WOOD, -1);
+		p.modifyResource(ResourceType.BRICK, -1);
+		this.board.createNewRoad(playerId, start, end);
+	}
+
 	/**************************************************
 	 * Getters and Setters
 	 **************************************************/

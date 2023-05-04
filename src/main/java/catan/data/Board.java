@@ -21,6 +21,10 @@ public class Board {
 		settlements.add(new Settlement(location, owner, false));
 	}
 
+	public void createNewRoad(int owner, Coordinate start, Coordinate end) {
+		roads.add(new Road(start, end, owner));
+	}
+
 	/*********************************
 	 * Getters
 	 *********************************/
