@@ -29,6 +29,10 @@ javafx{
 	modules = [ 'javafx.controls', 'javafx.fxml' , 'javafx.graphics', 'javafx.swing' ];
 }
 
+spotbugs {
+	excludeFilter = file("$rootDir/filter.xml")
+}
+
 spotbugsMain {
     reports {
         html {

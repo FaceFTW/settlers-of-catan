@@ -1,5 +1,7 @@
 package catan;
 
+import catan.data.ResourceType;
+
 public class Utils {
 
 	private static final int MAX_NON_ZERO = 2;
@@ -89,6 +91,71 @@ public class Utils {
 			new Coordinate(-3, 0, 2),
 			new Coordinate(-2, 0, 3),
 			};
+
+	static final ResourceType[] ALL_TILES_RESOURCES = {
+			ResourceType.DESERT,
+			ResourceType.WOOD,
+			ResourceType.WOOD,
+			ResourceType.WOOD,
+			ResourceType.WOOD,
+			ResourceType.SHEEP,
+			ResourceType.SHEEP,
+			ResourceType.SHEEP,
+			ResourceType.SHEEP,
+			ResourceType.WHEAT,
+			ResourceType.WHEAT,
+			ResourceType.WHEAT,
+			ResourceType.WHEAT,
+			ResourceType.BRICK,
+			ResourceType.BRICK,
+			ResourceType.BRICK,
+			ResourceType.ORE,
+			ResourceType.ORE,
+			ResourceType.ORE,
+	};
+
+	static final Coordinate[] TILES_SPIRAL_LOCATION = {
+			new Coordinate(-2, 0, 2),
+			new Coordinate(0, 0, 3),
+			new Coordinate(0, 2, 2),
+			new Coordinate(0, 3, 0),
+			new Coordinate(2, 2, 0),
+			new Coordinate(3, 0, 0),
+			new Coordinate(2, 0, -2),
+			new Coordinate(0, 0, -3),
+			new Coordinate(0, -2, -2),
+			new Coordinate(0, -3, 0),
+			new Coordinate(-2, -2, 0),
+			new Coordinate(-3, 0, 0),
+			new Coordinate(-1, 0, 1),
+			new Coordinate(0, 1, 1),
+			new Coordinate(1, 1, 0),
+			new Coordinate(1, 0, -1),
+			new Coordinate(0, -1, -1),
+			new Coordinate(-1, -1, 0),
+			new Coordinate(0, 0, 0),
+	};
+
+	static final int[] TILES_ROLL_NUMBERS = {
+			5,
+			2,
+			6,
+			3,
+			8,
+			10,
+			9,
+			12,
+			11,
+			4,
+			8,
+			10,
+			9,
+			4,
+			5,
+			6,
+			3,
+			11
+	};
 
 	/**
 	 * Empty constructor to prevent non-static usage
