@@ -29,9 +29,9 @@ public class Game {
 		this.board = new Board();
 	}
 
-	/**************************************************
-	 * DI Constructors
-	 **************************************************/
+	// **************************************************
+	// DI Constructors
+	// **************************************************
 
 	public Game(Random random) {
 		this.random = random;
@@ -51,9 +51,9 @@ public class Game {
 		this.players = p;
 	}
 
-	/**************************************************
-	 * Game Methods
-	 **************************************************/
+	// **************************************************
+	// Game Methods
+	// **************************************************
 
 	/**
 	 * Simulates a dice roll
@@ -77,6 +77,14 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Exchanges resources between two players
+	 *
+	 * @param fromPlayer
+	 * @param toPlayer
+	 * @param offer
+	 */
+
 	public void exchangeResources(int fromPlayer, int toPlayer, TradeOffer offer) {
 		Player from = players.get(fromPlayer - 1);
 		Player to = players.get(toPlayer - 1);
@@ -94,10 +102,20 @@ public class Game {
 		to.modifyResource(ResourceType.ORE, offer.getGivenOre() - offer.getReceivedOre());
 	}
 
+	/**
+	 * Builds a settlement if the player has the resources to do so
+	 * and the location is valid
+	 *
+	 * @param playerId
+	 * @param c
+	 * @return
+	 */
 	public boolean buildSettlement(int playerId, Coordinate c) {
 		Player p = this.players.get(playerId - 1);
-		if (p.getResourceCount(ResourceType.WOOD) < 1 || p.getResourceCount(ResourceType.BRICK) < 1
-				|| p.getResourceCount(ResourceType.SHEEP) < 1 || p.getResourceCount(ResourceType.WHEAT) < 1) {
+		if (p.getResourceCount(ResourceType.WOOD) < 1
+				|| p.getResourceCount(ResourceType.BRICK) < 1
+				|| p.getResourceCount(ResourceType.SHEEP) < 1
+				|| p.getResourceCount(ResourceType.WHEAT) < 1) {
 			return false;
 		}
 
@@ -135,6 +153,15 @@ public class Game {
 		return false;
 	}
 
+	/**
+	 * Builds a road if the player has the resources to do so
+	 * and the location is valid
+	 *
+	 * @param playerId
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	public boolean buildRoad(int playerId, Coordinate start, Coordinate end) {
 		Player p = this.players.get(playerId - 1);
 		if (p.getResourceCount(ResourceType.WOOD) < 1 || p.getResourceCount(ResourceType.BRICK) < 1) {
@@ -174,6 +201,7 @@ public class Game {
 		this.board.createNewRoad(playerId, start, end);
 	}
 
+	//CHECKSTYLE:OFF: checkstyle:magicnumber
 	/**
 	 * Upgrades a settlement to a city if it is owned by the player and the player
 	 * has the resources to do so
@@ -184,7 +212,8 @@ public class Game {
 	 */
 	public boolean upgradeSettlement(int playerId, Coordinate pos) {
 		Player p = this.players.get(playerId - 1);
-		if (p.getResourceCount(ResourceType.ORE) < 3 || p.getResourceCount(ResourceType.WHEAT) < 2) {
+		if (p.getResourceCount(ResourceType.ORE) < 3
+				|| p.getResourceCount(ResourceType.WHEAT) < 2) {
 			return false;
 		}
 
@@ -206,10 +235,11 @@ public class Game {
 
 		return false;
 	}
+	//CHECKSTYLE:ON: checkstyle:magicnumber
 
-	/**************************************************
-	 * Getters and Setters
-	 **************************************************/
+	// **************************************************
+	// Getters and Setters
+	// **************************************************
 
 	/**
 	 * @return Gets the current turn
@@ -228,6 +258,11 @@ public class Game {
 		return players.get(playerId - 1);
 	}
 
+	/**
+	 * Adds a player to the game
+	 *
+	 * @param p The Player Object to Add
+	 */
 	public void addPlayer(Player p) {
 		this.players.add(p);
 	}

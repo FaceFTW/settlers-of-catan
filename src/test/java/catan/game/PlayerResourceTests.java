@@ -12,7 +12,7 @@ import catan.data.Player;
 import catan.data.ResourceType;
 import catan.data.ResourcesGroup;
 import catan.data.TradeOffer;
-
+//CHECKSTYLE:OFF: checkstyle:magicnumber
 public class PlayerResourceTests {
 	@Test
 	void exchangeResources_ExchangeOneofDifferentResources() {

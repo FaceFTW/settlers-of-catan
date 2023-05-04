@@ -16,12 +16,12 @@ public class Board {
 		this.tiles = new ArrayList<>();
 	}
 
-	public void createNewSettlement(final Coordinate location,
+	public final void createNewSettlement(final Coordinate location,
 			final int owner) {
 		settlements.add(new Settlement(location, owner, false));
 	}
 
-	public void createNewRoad(int owner, Coordinate start, Coordinate end) {
+	public final void createNewRoad(int owner, Coordinate start, Coordinate end) {
 		roads.add(new Road(start, end, owner));
 	}
 
@@ -39,18 +39,19 @@ public class Board {
 		}
 	}
 
-	/*********************************
-	 * Getters
-	 *********************************/
-	public Settlement[] getSettlements() {
+	// *********************************
+	// Getters
+	// *********************************
+
+	public final Settlement[] getSettlements() {
 		return settlements.toArray(new Settlement[settlements.size()]);
 	}
 
-	public Road[] getRoads() {
+	public final Road[] getRoads() {
 		return roads.toArray(new Road[roads.size()]);
 	}
 
-	public Tile[] getTiles() {
+	public final Tile[] getTiles() {
 		return tiles.toArray(new Tile[tiles.size()]);
 	}
 

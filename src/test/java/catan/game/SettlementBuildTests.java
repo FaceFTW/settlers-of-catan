@@ -66,7 +66,9 @@ public class SettlementBuildTests {
 		Board b = EasyMock.mock(Board.class);
 		EasyMock.expect(b.getSettlements())
 				.andReturn(new Settlement[] {
-						new Settlement(new Coordinate(1, 0, 0), player.get(0).getPlayerId(), false) });
+						new Settlement(new Coordinate(1, 0, 0),
+								player.get(0).getPlayerId(),
+								false) });
 		EasyMock.replay(b);
 		Game game = new Game(b, player);
 

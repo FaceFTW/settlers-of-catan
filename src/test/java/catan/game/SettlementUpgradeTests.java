@@ -19,6 +19,7 @@ import catan.data.ResourceType;
 import catan.data.Settlement;
 
 public class SettlementUpgradeTests {
+	//CHECKSTYLE:OFF: checkstyle:magicnumber
 	private List<Player> createPlayerWithUpgradeResources() {
 		Player player = new Player(1);
 		player.modifyResource(ResourceType.WHEAT, 2);
@@ -37,8 +38,8 @@ public class SettlementUpgradeTests {
 	}
 
 	@Test
-	void boardUpgradeSettlement_SettlementAtPos_UpgradesSettlement(){
-		Board b=  new Board();
+	void boardUpgradeSettlement_SettlementAtPos_UpgradesSettlement() {
+		Board b = new Board();
 		b.createNewSettlement(new Coordinate(1, 0, 0), 1);
 		b.upgradeSettlement(new Coordinate(1, 0, 0));
 
