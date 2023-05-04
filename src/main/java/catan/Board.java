@@ -57,5 +57,7 @@ public class Board {
 	 *
 	 * @return
 	 */
-	public Tile[] getTiles() {return this.tileList;}
+	public Tile[] getTiles() {
+		return this.tileList;
+	}
 }

@@ -16,7 +16,7 @@ public class BoardTest {
 	public void testConstructor() {
 		// RECORD
 		Random r = EasyMock.createStrictMock(Random.class);
-		for (int i = 19; i > 0; i--) {
+		for (int i = Utils.TILES_SPIRAL_LOCATION.length; i > 0; i--) {
 			EasyMock.expect(r.nextInt(i)).andReturn(0);
 		}
 
@@ -24,13 +24,13 @@ public class BoardTest {
 		EasyMock.replay(r);
 		Board board = new Board(r);
 
-		for (int i = 0; i < 19; i++) {
+		for (int i = 0; i < Utils.TILES_SPIRAL_LOCATION.length; i++) {
 			assertEquals(Utils.ALL_TILES_RESOURCES[i], board.getTiles()[i].getResourceType());
 			assertEquals(Utils.TILES_SPIRAL_LOCATION[i], board.getTiles()[i].getPosition());
 		}
 
 		int desertEffect = 0;
-		for (int i = 0; i < 18; i++) {
+		for (int i = 0; i < Utils.TILES_SPIRAL_LOCATION.length - 1; i++) {
 			if (board.getTiles()[i].getResourceType() == ResourceType.DESERT) {
 				desertEffect = -1;
 				continue;
@@ -44,6 +44,7 @@ public class BoardTest {
 		EasyMock.verify(r);
 	}
 
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	@Test
 	public void testCreateBoard_lookAtSpiralStart_checkCorrectCornerPlacement() {
 		ArrayList<Coordinate> expected = new ArrayList<>();
@@ -63,6 +64,7 @@ public class BoardTest {
 
 		assertTrue(expected.isEmpty());
 	}
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
 	@Test
 	public void testCreateBoard_lookAtSpiralEnd_checkCorrectCornerPlacement() {
@@ -75,7 +77,7 @@ public class BoardTest {
 		expected.add(new Coordinate(0, 0, 1));
 
 		Board board = new Board(new Random());
-		Tile tileInQuestion = board.getTiles()[18];
+		Tile tileInQuestion = board.getTiles()[Utils.TILES_SPIRAL_LOCATION.length - 1];
 
 		for (Coordinate c : tileInQuestion.getCorners()) {
 			assertTrue(expected.remove(c));
