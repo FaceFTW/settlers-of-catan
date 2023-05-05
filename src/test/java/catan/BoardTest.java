@@ -351,6 +351,15 @@ public class BoardTest {
 		EasyMock.verify(p1);
 	}
 	// CHECKSTYLE:ON: checkstyle:magicnumber
+
+	@Test
+	public void testGetThiefPosition_sendToCenter_expectItToBeAtCenter() {
+		Board board = new Board();
+		Coordinate newThiefPos = new Coordinate(0, 0, 0);
+
+		board.setThiefPosition(newThiefPos);
+		assertEquals(newThiefPos, board.getThiefPosition());
+	}
 }
 
 
