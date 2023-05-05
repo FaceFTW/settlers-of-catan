@@ -1,6 +1,10 @@
 package catan;
 
-import catan.data.*;
+import catan.data.Tile;
+import catan.data.Settlement;
+import catan.data.Road;
+import catan.data.ResourceType;
+import catan.data.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +16,7 @@ public class Board {
 	private List<Settlement> settlements;
 	private List<Road> roads;
 
-	Coordinate thiefPosition;
+	private Coordinate thiefPosition;
 
 	private static final int THIEF_ROLL = 7;
 
@@ -140,6 +144,7 @@ public class Board {
 
 	/**
 	 * sets the position of the thief
+	 *
 	 * @param thiefPosition
 	 */
 	public void setThiefPosition(Coordinate thiefPosition) {
@@ -148,6 +153,7 @@ public class Board {
 
 	/**
 	 * returns the current thief position
+	 *
 	 * @return
 	 */
 	public Coordinate getThiefPosition() {
@@ -158,18 +164,17 @@ public class Board {
 	}
 
 	/**
-	 *
 	 * @param players, a list of players in the game
-	 * @param roll, a integer die roll
+	 * @param roll,    a integer die roll
 	 */
 	public void distributeResources(List<Player> players, int roll) {
-		if (roll == 7) {
+		if (roll == THIEF_ROLL) {
 			return;
 		}
 
 		List<Coordinate> toCheck = new ArrayList<>();
 
-		for (Tile t: tileList) {
+		for (Tile t : tileList) {
 			Coordinate tileCenter = t.getPosition();
 			if (tileCenter.equals(this.thiefPosition)) {
 				continue;
@@ -178,17 +183,21 @@ public class Board {
 			if (t.getDieRoll() == roll) {
 
 				Coordinate[] allAdjacent = Utils.getAdjacent(tileCenter);
-				for (int i = 0; i < allAdjacent.length;i ++) {
+				for (int i = 0; i < allAdjacent.length; i++) {
 					allAdjacent[i] = Utils.resolveToValid(allAdjacent[i]);
 
-					for (Settlement s: settlements) {
+					for (Settlement s : settlements) {
 						if (s.getLocation().equals(allAdjacent[i])) {
-							for (Player p: players) {
+							for (Player p : players) {
 								if (p.getPlayerId() == s.getOwner()) {
 									if (s.isCity()) {
-										p.modifyResource(t.getResourceType(), 2);
+										p.modifyResource(
+												t.getResourceType(),
+												2);
 									} else {
-										p.modifyResource(t.getResourceType(), 1);
+										p.modifyResource(
+												t.getResourceType(),
+												1);
 									}
 								}
 							}

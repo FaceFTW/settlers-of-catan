@@ -88,7 +88,7 @@ public class BoardTest {
 		assertTrue(expected.isEmpty());
 	}
 
-
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	@Test
 	public void testDistributeResources_twoRolledWithOnePlayer_givePlayerOneWood() {
 		Random r = EasyMock.createStrictMock(Random.class);
@@ -116,7 +116,9 @@ public class BoardTest {
 		EasyMock.verify(r);
 		EasyMock.verify(p1);
 	}
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	@Test
 	public void testDistributeResources_threeRolledWithOnePlayer_givePlayerTwoWood() {
 		Random r = EasyMock.createStrictMock(Random.class);
@@ -146,7 +148,9 @@ public class BoardTest {
 		EasyMock.verify(r);
 		EasyMock.verify(p1);
 	}
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	@Test
 	public void testDistributeResources_sevenRolledWithTwoPlayers_nothingHappensToPlayers() {
 		Random r = EasyMock.createStrictMock(Random.class);
@@ -179,8 +183,9 @@ public class BoardTest {
 		EasyMock.verify(r);
 		EasyMock.verify(p1);
 	}
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
-	// CHECKSTYLE:OFF: LineLength
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	@Test
 	public void testDistributeResources_elevenRolledWithTwoPlayers_givePlayer1ThreeOreAndPlayer2OneWheat() {
 		Random r = EasyMock.createStrictMock(Random.class);
@@ -230,8 +235,9 @@ public class BoardTest {
 		EasyMock.verify(p1);
 		EasyMock.verify(p2);
 	}
-	// CHECKSTYLE:ON: LineLength
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	@Test
 	public void testDistributeResources_twelveRolledWithTwoPlayers_givePlayer1ThreeOreAndPlayer2OneWheat() {
 		Random r = EasyMock.createStrictMock(Random.class);
@@ -278,7 +284,9 @@ public class BoardTest {
 		EasyMock.verify(p1);
 		EasyMock.verify(p2);
 	}
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	@Test
 	public void testDistributeResources_eightRolledWithTwoPlayers_noPlayersGetResources() {
 		Random r = EasyMock.createStrictMock(Random.class);
@@ -311,7 +319,9 @@ public class BoardTest {
 		EasyMock.verify(p1);
 		EasyMock.verify(p2);
 	}
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	@Test
 	public void testDistributeResources_elevenRolledWithOnePlayerAndThiefOnTile_noPlayersGetResources() {
 		Random r = EasyMock.createStrictMock(Random.class);
@@ -340,6 +350,7 @@ public class BoardTest {
 		EasyMock.verify(r);
 		EasyMock.verify(p1);
 	}
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 }
 
 
