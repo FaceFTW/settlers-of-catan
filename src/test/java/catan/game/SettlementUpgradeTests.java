@@ -63,6 +63,36 @@ public class SettlementUpgradeTests {
 	}
 
 	@Test
+	void upgradeSettlement_NotEnoughOre_ReturnsFalse(){
+		List<Player> players = new ArrayList<>();
+		Player p = new Player(1);
+		p.modifyResource(ResourceType.WHEAT, 2);
+		players.add(p);
+		Board b = EasyMock.mock(Board.class);
+		EasyMock.replay(b);
+		Game game = new Game(b, players);
+
+		assertFalse(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
+
+		EasyMock.verify(b);
+	}
+
+	@Test
+	void upgradeSettlement_NotEnoughWheat_ReturnsFalse(){
+		List<Player> players = new ArrayList<>();
+		Player p = new Player(1);
+		p.modifyResource(ResourceType.ORE, 3);
+		players.add(p);
+		Board b = EasyMock.mock(Board.class);
+		EasyMock.replay(b);
+		Game game = new Game(b, players);
+
+		assertFalse(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
+
+		EasyMock.verify(b);
+	}
+
+	@Test
 	void upgradeSettlement_NoSettlementAtPos_ReturnsFalse() {
 		List<Player> p = createPlayerWithUpgradeResources();
 		Board b = EasyMock.mock(Board.class);
@@ -124,7 +154,22 @@ public class SettlementUpgradeTests {
 		assertEquals(0, p.get(0).getResourceCount(ResourceType.ORE));
 
 		EasyMock.verify(b);
+	}
 
+	@Test
+	void upgradeSettlement_NoneAtPosButOthersExist_ReturnsFalse(){
+		List<Player> p = createPlayerWithUpgradeResources();
+		List<Settlement> settlements = new ArrayList<>();
+		settlements.add(new Settlement(new Coordinate(1, 0, 0), 1, false));
+		Board b = EasyMock.mock(Board.class);
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		EasyMock.replay(b);
+
+		Game game = new Game(b, p);
+
+		assertFalse(game.upgradeSettlement(1, new Coordinate(1, 0, 1)));
+
+		EasyMock.verify(b);
 	}
 
 }
