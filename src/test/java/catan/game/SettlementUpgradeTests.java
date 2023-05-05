@@ -152,6 +152,8 @@ public class SettlementUpgradeTests {
 		assertTrue(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
 		assertEquals(0, p.get(0).getResourceCount(ResourceType.WHEAT));
 		assertEquals(0, p.get(0).getResourceCount(ResourceType.ORE));
+		assertEquals(1, p.get(0).getVictoryPoints());
+		assertEquals(1, p.get(0).getInternalVictoryPoints());
 
 		EasyMock.verify(b);
 	}

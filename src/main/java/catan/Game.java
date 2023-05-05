@@ -41,10 +41,6 @@ public class Game {
 		this.currentTurn = currentTurn;
 	}
 
-	public Game(Board b) {
-		this.board = b;
-	}
-
 	public Game(Board b, List<Player> p) {
 		this.board = b;
 		this.players = p;

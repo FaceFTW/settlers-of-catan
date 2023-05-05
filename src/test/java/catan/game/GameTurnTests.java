@@ -5,11 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Random;
 
 import org.easymock.EasyMock;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import catan.Game;
+import catan.data.Player;
 
+//CHECKSTYLE:OFF: checkstyle:magicnumber
 public final class GameTurnTests {
 
 	@ParameterizedTest
@@ -40,6 +43,25 @@ public final class GameTurnTests {
 		Game game = new Game(numberOfPlayers, currentTurn);
 		game.nextTurn();
 		assertEquals(expectedNextTurn, game.getTurn());
+	}
+
+	@Test
+	void getPlayer_ReturnsCorrectPlayerObject() {
+		Player p1 = new Player(1);
+		Player p2 = new Player(2);
+		Player p3 = new Player(3);
+		Player p4 = new Player(4);
+
+		Game game = new Game();
+		game.addPlayer(p1);
+		game.addPlayer(p2);
+		game.addPlayer(p3);
+		game.addPlayer(p4);
+
+		assertEquals(1, game.getPlayer(1).getPlayerId());
+		assertEquals(2, game.getPlayer(2).getPlayerId());
+		assertEquals(3, game.getPlayer(3).getPlayerId());
+		assertEquals(4, game.getPlayer(4).getPlayerId());
 	}
 
 }
