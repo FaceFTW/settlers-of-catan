@@ -59,6 +59,38 @@ public class RoadBuildTests {
 	}
 
 	@Test
+	void buildRoad_NotEnoughWood_ReturnsFalse() {
+		Player player = new Player(1);
+		player.modifyResource(ResourceType.BRICK, 1);
+		List<Player> players = new ArrayList<>();
+		players.add(player);
+
+		Board b = new Board();
+
+		Game g = new Game(b, players);
+
+		assertFalse(g.buildRoad(1,
+				new Coordinate(1, 0, 0),
+				new Coordinate(2, 0, 0)));
+	}
+
+	@Test
+	void buildRoad_NotEnoughBrick_ReturnsFalse() {
+		Player player = new Player(1);
+		player.modifyResource(ResourceType.WOOD, 1);
+		List<Player> players = new ArrayList<>();
+		players.add(player);
+
+		Board b = new Board();
+
+		Game g = new Game(b, players);
+
+		assertFalse(g.buildRoad(1,
+				new Coordinate(1, 0, 0),
+				new Coordinate(2, 0, 0)));
+	}
+
+	@Test
 	void buildRoad_LengthIsNotOne_ReturnsFalse() {
 		List<Player> player = createPlayerWithSettlementResources();
 		Board b = new Board();
@@ -238,6 +270,50 @@ public class RoadBuildTests {
 	}
 
 	@Test
+	void buildRoad_RoadsConnectedAtEndPoints_BuildsRoad() {
+		List<Player> player = createPlayerWithSettlementResources();
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(2, 1, 0), new Coordinate(2, 0, 0), 1));
+		Board b = EasyMock.createMock(Board.class);
+		EasyMock.expect(b.getSettlements()).andReturn(new ArrayList<>());
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+		b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
+		EasyMock.expectLastCall();
+		EasyMock.replay(b);
+		Game g = new Game(b, player);
+
+		assertTrue(g.buildRoad(1,
+				new Coordinate(1, 0, 0),
+				new Coordinate(2, 0, 0)));
+		assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
+		assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
+
+		EasyMock.verify(b);
+	}
+
+	@Test
+	void buildRoad_RoadsConnectedStartEnd_BuildsRoad() {
+		List<Player> player = createPlayerWithSettlementResources();
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(2, 1, 0), new Coordinate(2, 0, 0), 1));
+		Board b = EasyMock.createMock(Board.class);
+		EasyMock.expect(b.getSettlements()).andReturn(new ArrayList<>());
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+		b.createNewRoad(1, new Coordinate(2, 0, 0), new Coordinate(1, 0, 0));
+		EasyMock.expectLastCall();
+		EasyMock.replay(b);
+		Game g = new Game(b, player);
+
+		assertTrue(g.buildRoad(1,
+				new Coordinate(2, 0, 0),
+				new Coordinate(1, 0, 0)));
+		assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
+		assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
+
+		EasyMock.verify(b);
+	}
+
+	@Test
 	void buildRoad_EndHasRoadOwnedByPlayer_BuildsRoad() {
 		List<Player> player = createPlayerWithSettlementResources();
 		List<Road> roads = new ArrayList<>();
@@ -256,6 +332,24 @@ public class RoadBuildTests {
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
 
+		EasyMock.verify(b);
+	}
+
+	@Test
+	void buildRoad_NoEndsConnected_OtherRoadsOwnedByPlayer_ReturnsFalse() {
+		List<Player> player = createPlayerWithSettlementResources();
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(0, -1, 0), new Coordinate(0, 0, -1), 1));
+		roads.add(new Road(new Coordinate(1, 2, 0), new Coordinate(2, 1, 0), 1));
+		Board b = EasyMock.createMock(Board.class);
+		EasyMock.expect(b.getSettlements()).andReturn(new ArrayList<>());
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+		EasyMock.replay(b);
+		Game g = new Game(b, player);
+
+		assertFalse(g.buildRoad(1,
+				new Coordinate(1, 0, 0),
+				new Coordinate(2, 0, 0)));
 		EasyMock.verify(b);
 	}
 
@@ -281,6 +375,26 @@ public class RoadBuildTests {
 				new Coordinate(2, 0, 0)));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
+
+		EasyMock.verify(b);
+	}
+
+	@Test
+	void buildRoad_NotConnectedToSettlement_OtherSettlementsOwned_ReturnFalse() {
+		List<Player> player = createPlayerWithSettlementResources();
+		List<Settlement> settlements = new ArrayList<>();
+		settlements.add(new Settlement(new Coordinate(0, 0, -1), 1, false));
+
+		Board b = EasyMock.createMock(Board.class);
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		EasyMock.expect(b.getRoads()).andReturn(new ArrayList<>());
+		EasyMock.replay(b);
+
+		Game g = new Game(b, player);
+
+		assertFalse(g.buildRoad(1,
+				new Coordinate(1, 0, 0),
+				new Coordinate(2, 0, 0)));
 
 		EasyMock.verify(b);
 	}
