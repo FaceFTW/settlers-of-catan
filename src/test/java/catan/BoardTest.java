@@ -231,4 +231,53 @@ public class BoardTest {
 		EasyMock.verify(p2);
 	}
 	// CHECKSTYLE:ON: LineLength
+
+	@Test
+	public void testDistributeResources_twelveRolledWithTwoPlayers_givePlayer1ThreeOreAndPlayer2OneWheat() {
+		Random r = EasyMock.createStrictMock(Random.class);
+		for (int i = Utils.TILES_SPIRAL_LOCATION.length; i > 0; i--) {
+			EasyMock.expect(r.nextInt(i)).andReturn(0);
+		}
+
+		Player p1 = EasyMock.createMock(Player.class);
+		Player p2 = EasyMock.createMock(Player.class);
+
+		EasyMock.expect(p1.getPlayerId()).andReturn(1);
+		EasyMock.expect(p1.getPlayerId()).andReturn(1);
+
+		EasyMock.expect(p2.getPlayerId()).andReturn(2);
+		EasyMock.expect(p2.getPlayerId()).andReturn(2);
+
+		p1.modifyResource(ResourceType.SHEEP, 2);
+		p2.modifyResource(ResourceType.SHEEP, 2);
+
+		List<Player> players = new ArrayList<>();
+		players.add(p1);
+		players.add(p2);
+
+		EasyMock.replay(p1);
+		EasyMock.replay(p2);
+		EasyMock.replay(r);
+
+		Board board = new Board(r);
+
+		Coordinate p1CityLoc = new Coordinate(0, -1, -2);
+		Coordinate p2CityLoc = new Coordinate(0, -3, -2);
+		board.createNewSettlement(p1CityLoc, 1);
+		board.createNewSettlement(p2CityLoc, 2);
+		board.upgradeSettlement(p1CityLoc);
+		board.upgradeSettlement(p2CityLoc);
+
+		Coordinate p2SetLoc = new Coordinate(0, -4, 0);
+		board.createNewSettlement(p2SetLoc, 2);
+
+		board.distributeResources(players, 12);
+
+		// VERIFY
+		EasyMock.verify(r);
+		EasyMock.verify(p1);
+		EasyMock.verify(p2);
+	}
 }
+
+
