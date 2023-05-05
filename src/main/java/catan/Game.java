@@ -136,6 +136,7 @@ public class Game {
 					if (settlementPositions.contains(adj)) {
 						return false;
 					}
+
 				}
 
 				this.board.createNewSettlement(c, playerId);
@@ -150,6 +151,7 @@ public class Game {
 		}
 
 		return false;
+
 	}
 
 	/**

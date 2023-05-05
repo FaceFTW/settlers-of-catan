@@ -17,7 +17,7 @@ import catan.data.Player;
 import catan.data.ResourceType;
 import catan.data.Road;
 import catan.data.Settlement;
-
+//CHECKSTYLE:OFF: checkstyle:magicnumber
 public class SettlementBuildTests {
 
 	private List<Player> createPlayerWithSettlementResources() {
@@ -50,6 +50,51 @@ public class SettlementBuildTests {
 	@Test
 	void buildSettlement_NotEnoughResources_ReturnsFalse() {
 		Player player = new Player(1);
+		List<Player> players = new ArrayList<>();
+		players.add(player);
+		Board b = new Board();
+		Game game = new Game(b, players);
+
+		Coordinate c = new Coordinate(1, 0, 0);
+
+		assertFalse(game.buildSettlement(player.getPlayerId(), c));
+	}
+
+	@Test
+	void buildSettlement_NotEnoughResources_EnoughWood_ReturnsFalse(){
+		Player player = new Player(1);
+		player.modifyResource(ResourceType.WOOD, 1);
+		List<Player> players = new ArrayList<>();
+		players.add(player);
+		Board b = new Board();
+		Game game = new Game(b, players);
+
+		Coordinate c = new Coordinate(1, 0, 0);
+
+		assertFalse(game.buildSettlement(player.getPlayerId(), c));
+	}
+
+	@Test
+	void buildSettlement_NotEnoughResources_EnoughWoodBrick_ReturnsFalse(){
+		Player player = new Player(1);
+		player.modifyResource(ResourceType.WOOD, 1);
+		player.modifyResource(ResourceType.BRICK, 1);
+		List<Player> players = new ArrayList<>();
+		players.add(player);
+		Board b = new Board();
+		Game game = new Game(b, players);
+
+		Coordinate c = new Coordinate(1, 0, 0);
+
+		assertFalse(game.buildSettlement(player.getPlayerId(), c));
+	}
+
+	@Test
+	void buildSettlement_NotEnoughResources_EnoughWoodBrickSheep_ReturnsFalse(){
+		Player player = new Player(1);
+		player.modifyResource(ResourceType.WOOD, 1);
+		player.modifyResource(ResourceType.BRICK, 1);
+		player.modifyResource(ResourceType.SHEEP, 1);
 		List<Player> players = new ArrayList<>();
 		players.add(player);
 		Board b = new Board();
@@ -164,6 +209,58 @@ public class SettlementBuildTests {
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.SHEEP));
 		assertEquals(1, player.get(0).getVictoryPoints());
 		assertEquals(1, player.get(0).getInternalVictoryPoints());
+		EasyMock.verify(b);
+	}
+
+	@Test
+	void buildSettlement_ConnectedToARoadOwnedByPlayer_IsNotAdjacentToASettlement_RoadEnd_BuildsSettlement(){
+		List<Player> player = createPlayerWithSettlementResources();
+		Board b = EasyMock.mock(Board.class);
+		List<Settlement> settlements = new ArrayList<>();
+		settlements.add(new Settlement(new Coordinate(2, 0, -1),
+				player.get(0).getPlayerId(), false));
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(2, 0, 0), new Coordinate(1, 0, 0), 1));
+		roads.add(new Road(new Coordinate(2, 0, 0), new Coordinate(2, 0, -1), 1));
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+		b.createNewSettlement(new Coordinate(1, 0, 0), 1);
+		EasyMock.expectLastCall();
+		EasyMock.replay(b);
+
+		Game game = new Game(b, player);
+
+		Coordinate c = new Coordinate(1, 0, 0);
+
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
+		assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
+		assertEquals(0, player.get(0).getResourceCount(ResourceType.WHEAT));
+		assertEquals(0, player.get(0).getResourceCount(ResourceType.SHEEP));
+		assertEquals(1, player.get(0).getVictoryPoints());
+		assertEquals(1, player.get(0).getInternalVictoryPoints());
+		EasyMock.verify(b);
+	}
+
+	@Test
+	void buildSettlement_NotConnectedToARoadOwnedByPlayer_OtherRoadsAreOwned_ReturnsFalse(){
+		List<Player> player = createPlayerWithSettlementResources();
+		Board b = EasyMock.mock(Board.class);
+		List<Settlement> settlements = new ArrayList<>();
+		settlements.add(new Settlement(new Coordinate(2, 0, -1),
+				player.get(0).getPlayerId(), false));
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(2, 0, 0), new Coordinate(2, 0, -1), 1));
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+		EasyMock.expectLastCall();
+		EasyMock.replay(b);
+
+		Game game = new Game(b, player);
+
+		Coordinate c = new Coordinate(1, 0, 0);
+
+		assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c));
 		EasyMock.verify(b);
 	}
 
