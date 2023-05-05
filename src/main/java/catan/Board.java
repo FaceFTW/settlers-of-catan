@@ -163,8 +163,39 @@ public class Board {
 	 * @param roll, a integer die roll
 	 */
 	public void distributeResources(List<Player> players, int roll) {
-		for (Player p: players) {
-			p.modifyResource(ResourceType.WOOD, roll - 1);
+		if (roll == 7) {
+			return;
+		}
+
+		List<Coordinate> toCheck = new ArrayList<>();
+
+		for (Tile t: tileList) {
+			Coordinate tileCenter = t.getPosition();
+			if (tileCenter.equals(this.thiefPosition)) {
+				continue;
+			}
+
+			if (t.getDieRoll() == roll) {
+
+				Coordinate[] allAdjacent = Utils.getAdjacent(tileCenter);
+				for (int i = 0; i < allAdjacent.length;i ++) {
+					allAdjacent[i] = Utils.resolveToValid(allAdjacent[i]);
+
+					for (Settlement s: settlements) {
+						if (s.getLocation().equals(allAdjacent[i])) {
+							for (Player p: players) {
+								if (p.getPlayerId() == s.getOwner()) {
+									if (s.isCity()) {
+										p.modifyResource(t.getResourceType(), 2);
+									} else {
+										p.modifyResource(t.getResourceType(), 1);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
