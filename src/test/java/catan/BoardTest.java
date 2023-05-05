@@ -294,8 +294,8 @@ public class BoardTest {
 			EasyMock.expect(r.nextInt(i)).andReturn(0);
 		}
 
-		Player p1 = EasyMock.createMock(Player.class);
-		Player p2 = EasyMock.createMock(Player.class);
+		Player p1 = EasyMock.createStrictMock(Player.class);
+		Player p2 = EasyMock.createStrictMock(Player.class);
 
 		List<Player> players = new ArrayList<>();
 		players.add(p1);
@@ -329,7 +329,7 @@ public class BoardTest {
 			EasyMock.expect(r.nextInt(i)).andReturn(0);
 		}
 
-		Player p1 = EasyMock.createMock(Player.class);
+		Player p1 = EasyMock.createStrictMock(Player.class);
 
 		List<Player> players = new ArrayList<>();
 		players.add(p1);

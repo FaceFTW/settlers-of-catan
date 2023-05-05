@@ -172,8 +172,6 @@ public class Board {
 			return;
 		}
 
-		List<Coordinate> toCheck = new ArrayList<>();
-
 		for (Tile t : tileList) {
 			Coordinate tileCenter = t.getPosition();
 			if (tileCenter.equals(this.thiefPosition)) {
