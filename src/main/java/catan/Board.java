@@ -1,9 +1,6 @@
 package catan;
 
-import catan.data.ResourceType;
-import catan.data.Road;
-import catan.data.Settlement;
-import catan.data.Tile;
+import catan.data.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +12,9 @@ public class Board {
 	private List<Settlement> settlements;
 	private List<Road> roads;
 
-	private static final int THIEF_ROLL = 4;
+	Coordinate thiefPosition;
+
+	private static final int THIEF_ROLL = 7;
 
 	public Board(Random random) {
 
@@ -47,6 +46,7 @@ public class Board {
 			// Tile die roll
 			int dieRoll;
 			if (resource == ResourceType.DESERT) {
+				thiefPosition = coordinate;
 				dieRoll = THIEF_ROLL;
 				desertEffect = -1;
 			} else {
@@ -136,5 +136,35 @@ public class Board {
 	 */
 	public Tile[] getTiles() {
 		return this.tileList.clone();
+	}
+
+	/**
+	 * sets the position of the thief
+	 * @param thiefPosition
+	 */
+	public void setThiefPosition(Coordinate thiefPosition) {
+		this.thiefPosition = thiefPosition;
+	}
+
+	/**
+	 * returns the current thief position
+	 * @return
+	 */
+	public Coordinate getThiefPosition() {
+		return new Coordinate(
+				this.thiefPosition.getX(),
+				this.thiefPosition.getY(),
+				this.thiefPosition.getZ());
+	}
+
+	/**
+	 *
+	 * @param players, a list of players in the game
+	 * @param roll, a integer die roll
+	 */
+	public void distributeResources(List<Player> players, int roll) {
+		for (Player p: players) {
+			p.modifyResource(ResourceType.WOOD, 1);
+		}
 	}
 }

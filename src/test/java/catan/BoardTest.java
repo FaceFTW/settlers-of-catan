@@ -1,11 +1,13 @@
 package catan;
 
+import catan.data.Player;
 import catan.data.ResourceType;
 import catan.data.Tile;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -86,4 +88,31 @@ public class BoardTest {
 		assertTrue(expected.isEmpty());
 	}
 
+
+	@Test
+	public void testDistributeResources_twoRolledWithOnePlayer_givePlayerResource() {
+		Random r = EasyMock.createStrictMock(Random.class);
+		for (int i = Utils.TILES_SPIRAL_LOCATION.length; i > 0; i--) {
+			EasyMock.expect(r.nextInt(i)).andReturn(0);
+		}
+
+		Player p1 = EasyMock.createStrictMock(Player.class);
+		p1.modifyResource(ResourceType.WOOD, 1);
+
+		List<Player> players = new ArrayList<>();
+		players.add(p1);
+
+		EasyMock.replay(p1);
+		EasyMock.replay(r);
+
+		Board board = new Board(r);
+
+		board.createNewSettlement(new Coordinate(0, 2, 1), 1);
+
+		board.distributeResources(players, 2);
+
+		// VERIFY
+		EasyMock.verify(r);
+		EasyMock.verify(p1);
+	}
 }
