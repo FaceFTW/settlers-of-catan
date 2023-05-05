@@ -1,6 +1,8 @@
 package catan;
 
 import catan.data.ResourceType;
+import catan.data.Road;
+import catan.data.Settlement;
 import catan.data.Tile;
 
 import java.util.ArrayList;
@@ -10,10 +12,15 @@ import java.util.Random;
 
 public class Board {
 	private Tile[] tileList;
+	private List<Settlement> settlements;
+	private List<Road> roads;
 
 	private static final int THIEF_ROLL = 4;
 
 	public Board(Random random) {
+
+		this.settlements = new ArrayList<>();
+		this.roads = new ArrayList<>();
 		this.tileList = new Tile[Utils.TILES_SPIRAL_LOCATION.length];
 
 		List<ResourceType> resources = new ArrayList<>(
@@ -50,6 +57,76 @@ public class Board {
 			Tile t = new Tile(coordinate, resource, corners, dieRoll);
 			tileList[i] = t;
 		}
+	}
+
+	// Simplified Constructor used for testing
+	public Board() {
+		this.settlements = new ArrayList<>();
+		this.roads = new ArrayList<>();
+	}
+
+	/**
+	 * Creates a new settlement at the given location
+	 *
+	 * @param location the location of the settlement
+	 * @param owner    the owner of the settlement
+	 */
+	public void createNewSettlement(final Coordinate location,
+			final int owner) {
+		settlements.add(new Settlement(location, owner, false));
+	}
+
+	/**
+	 * Creates a new road between the two given coordinates
+	 *
+	 * @param owner the owner of the road
+	 * @param start the start coordinate
+	 * @param end   the end coordinate
+	 */
+	public void createNewRoad(int owner, Coordinate start, Coordinate end) {
+		roads.add(new Road(start, end, owner));
+	}
+
+	/**
+	 * Assumes the coordinate already has a settlement, and upgrades it to a city
+	 *
+	 * @param location
+	 */
+	public void upgradeSettlement(Coordinate location) {
+		for (Settlement s : settlements) {
+			if (s.getLocation().equals(location)) {
+				s.upgradeToCity();
+				return;
+			}
+		}
+	}
+
+	// *********************************
+	// Getters
+	// *********************************
+
+	/**
+	 * Returns all the settlements on the board
+	 *
+	 * @return
+	 */
+	public List<Settlement> getSettlements() {
+		List<Settlement> retList = this.settlements == null
+				? new ArrayList<>()
+				: new ArrayList<>(settlements);
+		return retList;
+	}
+
+	/**
+	 * Returns all the roads on the board
+	 *
+	 * @return
+	 */
+	public List<Road> getRoads() {
+		List<Road> retList = this.roads == null
+				? new ArrayList<>()
+				: new ArrayList<>(roads);
+		return new ArrayList<>(retList);
 	}
 
 	/**

@@ -2,6 +2,10 @@ package catan;
 
 import catan.data.ResourceType;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Utils {
 
 	private static final int MAX_NON_ZERO = 2;
@@ -90,7 +94,7 @@ public class Utils {
 
 			new Coordinate(-3, 0, 2),
 			new Coordinate(-2, 0, 3),
-			};
+	};
 
 	static final ResourceType[] ALL_TILES_RESOURCES = {
 			ResourceType.DESERT,
@@ -164,7 +168,7 @@ public class Utils {
 
 	}
 
-	//CHECKSTYLE:OFF: checkstyle:magicnumber
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	public static Coordinate[] getAdjacent(Coordinate input) {
 		int x = input.getX();
 		int y = input.getY();
@@ -180,7 +184,7 @@ public class Utils {
 		return returnArray;
 
 	}
-	//CHECKSTYLE:ON: checkstyle:magicnumber
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
 	public static Coordinate resolveToValid(Coordinate input) {
 		int x = input.getX();
@@ -228,5 +232,25 @@ public class Utils {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Returns the adjacent coordinates of a point on the board.
+	 * Generally, if the coordinate is for the center of a hex, this will return the
+	 * 6 hexes around it.
+	 * If the coordinate is for a vertex, this will return the 3 hexes around it.
+	 *
+	 * @return
+	 */
+	public static Coordinate[] getBoardAdjacents(final Coordinate origin) {
+		Coordinate[] baseAdjacents = Utils.getAdjacent(origin);
+		for (int i = 0; i < baseAdjacents.length; i++) {
+			baseAdjacents[i] = Utils.resolveToValid(baseAdjacents[i]);
+		}
+		List<Coordinate> adjacents = new ArrayList<Coordinate>(Arrays.asList(baseAdjacents));
+		List<Coordinate> tileCoords = new ArrayList<Coordinate>(Arrays.asList(TILES_SPIRAL_LOCATION));
+		adjacents.removeIf(c -> !Utils.isRealCoordinate(c) || tileCoords.contains(c));
+
+		return adjacents.toArray(new Coordinate[adjacents.size()]);
 	}
 }

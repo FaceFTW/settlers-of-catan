@@ -5,6 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,8 +66,8 @@ public final class UtilsTest {
 
 		for (int i = 0; i < 18; i += 3) {
 			expectedOutputs.add(new Coordinate(expectedOutputValues[i],
-				expectedOutputValues[i + 1],
-				expectedOutputValues[i + 2]));
+					expectedOutputValues[i + 1],
+					expectedOutputValues[i + 2]));
 		}
 
 		Coordinate[] actualOutput = Utils.getAdjacent(input);
@@ -138,5 +139,42 @@ public final class UtilsTest {
 	public void testIsRealCoordinate_withUnRealCoordinate_returnsFalse() {
 		Coordinate input = new Coordinate(5, 0, 0);
 		assertFalse(Utils.isRealCoordinate(input));
+	}
+
+	@Test
+	void testGetBoardAdjacents_GivenTileCenter() {
+		Coordinate input = new Coordinate(0, 0, 0);
+		Coordinate[] expectedArray = {
+				new Coordinate(0, 0, 1),
+				new Coordinate(0, 1, 0),
+				new Coordinate(1, 0, 0),
+				new Coordinate(0, 0, -1),
+				new Coordinate(0, -1, 0),
+				new Coordinate(-1, 0, 0)
+		};
+
+		Coordinate[] actualOutput = Utils.getBoardAdjacents(input);
+
+		assertEquals(6, actualOutput.length);
+		for (int i = 0; i < 6; i++) {
+			assertTrue(Arrays.asList(expectedArray).contains(actualOutput[i]));
+		}
+	}
+
+	@Test
+	void testGetBoardAdjacents_GivenTileCorner() {
+		Coordinate input = new Coordinate(1, 0, 0);
+		Coordinate[] expectedArray = {
+				new Coordinate(2, 0, 0),
+				new Coordinate(0, 1, 0),
+				new Coordinate(0, 0, -1),
+		};
+
+		Coordinate[] actualOutput = Utils.getBoardAdjacents(input);
+
+		assertEquals(3, actualOutput.length);
+		for (int i = 0; i < 3; i++) {
+			assertTrue(Arrays.asList(expectedArray).contains(actualOutput[i]));
+		}
 	}
 }
