@@ -311,6 +311,35 @@ public class BoardTest {
 		EasyMock.verify(p1);
 		EasyMock.verify(p2);
 	}
+
+	@Test
+	public void testDistributeResources_elevenRolledWithOnePlayerAndThiefOnTile_noPlayersGetResources() {
+		Random r = EasyMock.createStrictMock(Random.class);
+		for (int i = Utils.TILES_SPIRAL_LOCATION.length; i > 0; i--) {
+			EasyMock.expect(r.nextInt(i)).andReturn(0);
+		}
+
+		Player p1 = EasyMock.createMock(Player.class);
+
+		List<Player> players = new ArrayList<>();
+		players.add(p1);
+
+		EasyMock.replay(p1);
+		EasyMock.replay(r);
+
+		Board board = new Board(r);
+
+		Coordinate p1SetLoc = new Coordinate(0, 1, 0);
+		board.createNewSettlement(p1SetLoc, 1);
+
+		board.setThiefPosition(new Coordinate(0, 0, 0));
+
+		board.distributeResources(players, 8);
+
+		// VERIFY
+		EasyMock.verify(r);
+		EasyMock.verify(p1);
+	}
 }
 
 
