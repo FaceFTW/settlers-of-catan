@@ -164,7 +164,7 @@ public class Board {
 	 */
 	public void distributeResources(List<Player> players, int roll) {
 		for (Player p: players) {
-			p.modifyResource(ResourceType.WOOD, 1);
+			p.modifyResource(ResourceType.WOOD, roll - 1);
 		}
 	}
 }
