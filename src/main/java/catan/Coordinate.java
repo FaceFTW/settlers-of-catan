@@ -60,4 +60,9 @@ public final class Coordinate {
 	public int hashCode() {
 		return String.format("%d,%d,%d", this.x, this.y, this.z).hashCode();
 	}
+
+	@Override
+	public String toString() {
+		return String.format("(%d,%d,%d)", this.x, this.y, this.z);
+	}
 }
