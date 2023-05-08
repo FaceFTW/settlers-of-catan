@@ -1,6 +1,5 @@
 package catan.gui;
 import java.awt.FlowLayout;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -12,6 +11,7 @@ import javax.swing.JLabel;
 import catan.Coordinate;
 import catan.Game;
 import catan.gui.components.CoordinateButton;
+import catan.gui.components.ImagePoC;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 public class CatanWindow {
@@ -34,7 +34,9 @@ public class CatanWindow {
 	private JButton startSyncTestButton = new JButton();
 	private JButton cancelButton = new JButton("Cancel");
 
-	public CatanWindow() throws FileNotFoundException {
+	private ImagePoC imagePoC;
+
+	public CatanWindow() {
 		frame = new JFrame("Catan");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -51,6 +53,9 @@ public class CatanWindow {
 	 * Arranges the components of the main Catan Window, then displays it.
 	 */
 	public void setupLayout() {
+		this.imagePoC = new ImagePoC();
+		frame.add(imagePoC);
+
 		this.boardPanel = new BoardPanel();
 		frame.add(boardPanel);
 		label = new JLabel("press the button below to start the sync test");
@@ -78,6 +83,7 @@ public class CatanWindow {
 		});
 		frame.add(cancelButton);
 
+		frame.pack();
 		frame.setVisible(true);
 
 	}
@@ -121,6 +127,5 @@ public class CatanWindow {
 
 		label.setText("Coordinate 1: " + pos1.toString() + " Coordinate 2: " + pos2.toString());
 	}
-
 
 }
