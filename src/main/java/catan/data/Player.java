@@ -18,7 +18,7 @@ public class Player {
 	private int victoryPoints;
 //	private int knightsPlayed;
 	private int internalVictoryPoints;
-	private final Map<DevelopmentCard, Integer> developmentCards;
+	private Map<DevelopmentCard, Integer> developmentCards;
 
 	public Player(final int id) {
 		this.playerId = id;

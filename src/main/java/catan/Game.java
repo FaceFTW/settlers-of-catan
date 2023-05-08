@@ -25,6 +25,9 @@ public class Game {
 		this.random = new Random();
 		this.numberOfPlayers = DEFAULT_NUM_PLAYERS;
 		this.players = new ArrayList<>();
+		for (int i = 1; i <= numberOfPlayers; i++) {
+			players.add(new Player(i + 1));
+		}
 		this.board = new Board(random);
 	}
 

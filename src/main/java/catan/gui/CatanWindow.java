@@ -1,4 +1,5 @@
 package catan.gui;
+
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +8,13 @@ import java.util.concurrent.CountDownLatch;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import catan.Coordinate;
 import catan.Game;
 import catan.gui.components.CoordinateButton;
 import catan.gui.components.ImagePoC;
+import catan.gui.components.PlayerViewComponent;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 public class CatanWindow {
@@ -35,6 +38,9 @@ public class CatanWindow {
 	private JButton cancelButton = new JButton("Cancel");
 
 	private ImagePoC imagePoC;
+
+	private JPanel playerViewPanel;
+	private List<PlayerViewComponent> playerViews = new ArrayList<PlayerViewComponent>();
 
 	public CatanWindow() {
 		frame = new JFrame("Catan");
@@ -82,6 +88,17 @@ public class CatanWindow {
 			}
 		});
 		frame.add(cancelButton);
+
+		playerViewPanel = new JPanel();
+		for (int i = 1; i <= Game.DEFAULT_NUM_PLAYERS; i++) {
+			PlayerViewComponent playerView = new PlayerViewComponent(game.getPlayer(i), true);
+			playerView.setupLayout();
+			playerViews.add(playerView);
+			playerViewPanel.add(playerView);
+		}
+
+		playerViewPanel.setLayout(new FlowLayout());
+		frame.add(playerViewPanel);
 
 		frame.pack();
 		frame.setVisible(true);

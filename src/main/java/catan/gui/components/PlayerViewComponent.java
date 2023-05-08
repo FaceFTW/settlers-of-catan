@@ -36,20 +36,110 @@ public class PlayerViewComponent extends JPanel {
 	private JButton oreMinusButton;
 
 	public PlayerViewComponent(Player playerRef, boolean isDev) {
+		super();
 		this.playerRef = playerRef;
 		this.isDev = isDev;
 
-		GridLayout gridLayout = new GridLayout(7, 1);
+		GridLayout gridLayout = new GridLayout(7, isDev ? 3 : 1);
 		this.setLayout(gridLayout);
 
+		// this.setupLayout();
+	}
+
+	public void setupLayout() {
+		this.woodLabel = new JLabel(getString("woodCount", playerRef.getResourceCount(ResourceType.WOOD)));
 		this.add(woodLabel);
+		if (isDev) {
+			this.woodPlusButton = new JButton("+");
+			woodPlusButton.addActionListener(e -> {
+				playerRef.modifyResource(ResourceType.WOOD, 1);
+				update();
+			});
+			this.woodMinusButton = new JButton("-");
+			woodMinusButton.addActionListener(e -> {
+				playerRef.modifyResource(ResourceType.WOOD, -1);
+				update();
+			});
+			this.add(woodPlusButton);
+			this.add(woodMinusButton);
+		}
+
+		this.brickLabel = new JLabel(getString("brickCount", playerRef.getResourceCount(ResourceType.BRICK)));
 		this.add(brickLabel);
+		if (isDev) {
+			this.brickPlusButton = new JButton("+");
+			brickPlusButton.addActionListener(e -> {
+				playerRef.modifyResource(ResourceType.BRICK, 1);
+				update();
+			});
+			this.brickMinusButton = new JButton("-");
+			brickMinusButton.addActionListener(e -> {
+				playerRef.modifyResource(ResourceType.BRICK, -1);
+				update();
+			});
+			this.add(brickPlusButton);
+			this.add(brickMinusButton);
+		}
+
+		this.sheepLabel = new JLabel(getString("sheepCount", playerRef.getResourceCount(ResourceType.SHEEP)));
 		this.add(sheepLabel);
+		if (isDev) {
+			this.sheepPlusButton = new JButton("+");
+			sheepPlusButton.addActionListener(e -> {
+				playerRef.modifyResource(ResourceType.SHEEP, 1);
+				update();
+			});
+			this.sheepMinusButton = new JButton("-");
+			sheepMinusButton.addActionListener(e -> {
+				playerRef.modifyResource(ResourceType.SHEEP, -1);
+				update();
+			});
+			this.add(sheepPlusButton);
+			this.add(sheepMinusButton);
+		}
+
+		this.wheatLabel = new JLabel(getString("wheatCount", playerRef.getResourceCount(ResourceType.WHEAT)));
 		this.add(wheatLabel);
+		if (isDev) {
+			this.wheatPlusButton = new JButton("+");
+			wheatPlusButton.addActionListener(e -> {
+				playerRef.modifyResource(ResourceType.WHEAT, 1);
+				update();
+			});
+			this.wheatMinusButton = new JButton("-");
+			wheatMinusButton.addActionListener(e -> {
+				playerRef.modifyResource(ResourceType.WHEAT, -1);
+				update();
+			});
+			this.add(wheatPlusButton);
+			this.add(wheatMinusButton);
+		}
+
+		this.oreLabel = new JLabel(getString("oreCount", playerRef.getResourceCount(ResourceType.ORE)));
 		this.add(oreLabel);
+		if (isDev) {
+			this.orePlusButton = new JButton("+");
+			orePlusButton.addActionListener(e -> {
+				playerRef.modifyResource(ResourceType.ORE, 1);
+				update();
+			});
+			this.oreMinusButton = new JButton("-");
+			oreMinusButton.addActionListener(e -> {
+				playerRef.modifyResource(ResourceType.ORE, -1);
+				update();
+			});
+			this.add(orePlusButton);
+			this.add(oreMinusButton);
+		}
 
 		this.add(new JLabel(""));
-		this.add(victoryPointsLabel);
+		if (isDev) {
+			this.add(new JLabel("")); // Empty label
+			this.add(new JLabel("")); // Empty label
+		}
+
+		// this.victoryPointsLabel = new JLabel(getString("victoryPoints", playerRef.getVictoryPoints()));
+		// this.add(victoryPointsLabel);
 	}
 
 	/**
