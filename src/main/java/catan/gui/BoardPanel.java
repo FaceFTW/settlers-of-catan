@@ -2,6 +2,7 @@ package catan.gui;
 
 import catan.Coordinate;
 import catan.Game;
+import catan.Utils;
 import catan.data.ResourceType;
 import catan.data.Road;
 import catan.data.Settlement;
@@ -9,252 +10,290 @@ import catan.data.Tile;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+//CHECKSTYLE:OFF: checkstyle:magicnumber
 public final class BoardPanel extends JPanel {
-    public static final int DEFAULT_WIDTH = 624;
-    public static final int DEFAULT_HEIGHT = 654;
-    private static final int X_OFFSET = 64;
-    private static final int X_SECONDARY_OFFSET = 32;
-    private static final int Y_OFFSET = 54;
 
-    private Tile[] tiles;
-    private List<Road> roads;
-    private List<Settlement> settlements;
-    private Game game;
+	public static final int DEFAULT_WIDTH = 624;
+	public static final int DEFAULT_HEIGHT = 654;
+	private static final int X_OFFSET = 64;
+	private static final int X_SECONDARY_OFFSET = 32;
+	private static final int Y_OFFSET = 54;
 
-    private Map<ResourceType, BufferedImage> tileImages;
-    private Map<Integer, BufferedImage> puckImages;
-    private Map<Integer, BufferedImage> settlementImages;
-    private Map<Integer, BufferedImage> cityImages;
-    private BufferedImage outlineImage;
-    private BufferedImage thiefImage;
+	private Tile[] tiles;
+	private List<Road> roads;
+	private List<Settlement> settlements;
+	private Game game;
 
-    public BoardPanel(Game game) {
-        this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        this.setMaximumSize(getMaximumSize());
+	private Map<ResourceType, BufferedImage> tileImages;
+	private Map<Integer, BufferedImage> puckImages;
+	private Map<Integer, BufferedImage> settlementImages;
+	private Map<Integer, BufferedImage> cityImages;
+	private BufferedImage outlineImage;
+	private BufferedImage thiefImage;
 
-        this.tileImages = new HashMap<>();
-        this.puckImages = new HashMap<>();
-        this.settlementImages = new HashMap<>();
-        this.cityImages = new HashMap<>();
+	private List<CoordinateButton> buttons;
 
-        loadTileImages();
-        loadPuckImages();
-        loadPieceImages();
+	public BoardPanel(Game game) {
+		this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		this.setMaximumSize(getMaximumSize());
 
-        this.game = game;
-        this.tiles = this.game.getBoard().getTiles();
-        this.roads = this.game.getBoard().getRoads();
-        this.settlements = this.game.getBoard().getSettlements();
+		this.tileImages = new HashMap<>();
+		this.puckImages = new HashMap<>();
+		this.settlementImages = new HashMap<>();
+		this.cityImages = new HashMap<>();
 
+		loadTileImages();
+		loadPuckImages();
+		loadPieceImages();
 
-    }
+		this.game = game;
+		this.tiles = this.game.getBoard().getTiles();
+		this.roads = this.game.getBoard().getRoads();
+		this.settlements = this.game.getBoard().getSettlements();
 
-    // CHECKSTYLE:OFF: checkstyle:magicnumber
-    private void loadPuckImages() {
-        ClassLoader classLoader = getClass().getClassLoader();
+		this.setLayout(new GridLayout(8, 8));
+		this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		this.setMaximumSize(getMaximumSize());
+		this.createCoordinateButtons();
 
-        try {
-            InputStream stream = classLoader.getResourceAsStream("image/puck_2.png");
-            puckImages.put(2, ImageIO.read(stream));
-            stream.close();
+	}
 
-            stream = classLoader.getResourceAsStream("image/puck_3.png");
-            puckImages.put(3, ImageIO.read(stream));
-            stream.close();
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
+	private void loadPuckImages() {
+		ClassLoader classLoader = getClass().getClassLoader();
 
-            stream = classLoader.getResourceAsStream("image/puck_4.png");
-            puckImages.put(4, ImageIO.read(stream));
-            stream.close();
+		try {
+			InputStream stream = classLoader.getResourceAsStream("image/puck_2.png");
+			puckImages.put(2, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/puck_5.png");
-            puckImages.put(5, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/puck_3.png");
+			puckImages.put(3, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/puck_6.png");
-            puckImages.put(6, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/puck_4.png");
+			puckImages.put(4, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/puck_8.png");
-            puckImages.put(8, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/puck_5.png");
+			puckImages.put(5, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/puck_9.png");
-            puckImages.put(9, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/puck_6.png");
+			puckImages.put(6, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/puck_10.png");
-            puckImages.put(10, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/puck_8.png");
+			puckImages.put(8, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/puck_11.png");
-            puckImages.put(11, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/puck_9.png");
+			puckImages.put(9, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/puck_12.png");
-            puckImages.put(12, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/puck_10.png");
+			puckImages.put(10, ImageIO.read(stream));
+			stream.close();
 
-        } catch (IOException e) {
-            System.err.println("failed to load puck asset");
-        }
-    }
-    // CHECKSTYLE:ON: checkstyle:magicnumber
+			stream = classLoader.getResourceAsStream("image/puck_11.png");
+			puckImages.put(11, ImageIO.read(stream));
+			stream.close();
 
-    // CHECKSTYLE:OFF: checkstyle:magicnumber
-    private void loadPieceImages() {
-        ClassLoader classLoader = getClass().getClassLoader();
+			stream = classLoader.getResourceAsStream("image/puck_12.png");
+			puckImages.put(12, ImageIO.read(stream));
+			stream.close();
 
-        try {
-            InputStream stream = classLoader.getResourceAsStream("image/settlement_p1.png");
-            settlementImages.put(1, ImageIO.read(stream));
-            stream.close();
+		} catch (IOException e) {
+			System.err.println("failed to load puck asset");
+		}
+	}
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
-            stream = classLoader.getResourceAsStream("image/settlement_p2.png");
-            settlementImages.put(2, ImageIO.read(stream));
-            stream.close();
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
+	private void loadPieceImages() {
+		ClassLoader classLoader = getClass().getClassLoader();
 
-            stream = classLoader.getResourceAsStream("image/settlement_p3.png");
-            settlementImages.put(3, ImageIO.read(stream));
-            stream.close();
+		try {
+			InputStream stream = classLoader.getResourceAsStream("image/settlement_p1.png");
+			settlementImages.put(1, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/settlement_p4.png");
-            settlementImages.put(4, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/settlement_p2.png");
+			settlementImages.put(2, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/city_p1.png");
-            cityImages.put(1, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/settlement_p3.png");
+			settlementImages.put(3, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/city_p2.png");
-            cityImages.put(2, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/settlement_p4.png");
+			settlementImages.put(4, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/city_p3.png");
-            cityImages.put(3, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/city_p1.png");
+			cityImages.put(1, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/city_p4.png");
-            cityImages.put(4, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/city_p2.png");
+			cityImages.put(2, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/thief.png");
-            thiefImage = ImageIO.read(stream);
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/city_p3.png");
+			cityImages.put(3, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/outline.png");
-            outlineImage = ImageIO.read(stream);
-            stream.close();
-        } catch (IOException e) {
-            System.err.println("failed to load piece asset");
-        }
-    }
-    // CHECKSTYLE:ON: checkstyle:magicnumber
+			stream = classLoader.getResourceAsStream("image/city_p4.png");
+			cityImages.put(4, ImageIO.read(stream));
+			stream.close();
 
-    private void loadTileImages() {
-        ClassLoader classLoader = getClass().getClassLoader();
+			stream = classLoader.getResourceAsStream("image/thief.png");
+			thiefImage = ImageIO.read(stream);
+			stream.close();
 
-        try {
-            InputStream stream = classLoader.getResourceAsStream("image/tile_forest.png");
-            tileImages.put(ResourceType.WOOD, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/outline.png");
+			outlineImage = ImageIO.read(stream);
+			stream.close();
+		} catch (IOException e) {
+			System.err.println("failed to load piece asset");
+		}
+	}
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
-            stream = classLoader.getResourceAsStream("image/tile_farm.png");
-            tileImages.put(ResourceType.WHEAT, ImageIO.read(stream));
-            stream.close();
+	private void loadTileImages() {
+		ClassLoader classLoader = getClass().getClassLoader();
 
-            stream = classLoader.getResourceAsStream("image/tile_field.png");
-            tileImages.put(ResourceType.SHEEP, ImageIO.read(stream));
-            stream.close();
+		try {
+			InputStream stream = classLoader.getResourceAsStream("image/tile_forest.png");
+			tileImages.put(ResourceType.WOOD, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/tile_quarry.png");
-            tileImages.put(ResourceType.BRICK, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/tile_farm.png");
+			tileImages.put(ResourceType.WHEAT, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/tile_mountain.png");
-            tileImages.put(ResourceType.ORE, ImageIO.read(stream));
-            stream.close();
+			stream = classLoader.getResourceAsStream("image/tile_field.png");
+			tileImages.put(ResourceType.SHEEP, ImageIO.read(stream));
+			stream.close();
 
-            stream = classLoader.getResourceAsStream("image/tile_desert.png");
-            tileImages.put(ResourceType.DESERT, ImageIO.read(stream));
-            stream.close();
-        } catch (IOException e) {
-            System.err.println("failed to load tile asset");
-        }
-    }
+			stream = classLoader.getResourceAsStream("image/tile_quarry.png");
+			tileImages.put(ResourceType.BRICK, ImageIO.read(stream));
+			stream.close();
 
-    // CHECKSTYLE:OFF: checkstyle:magicnumber
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+			stream = classLoader.getResourceAsStream("image/tile_mountain.png");
+			tileImages.put(ResourceType.ORE, ImageIO.read(stream));
+			stream.close();
 
-        g.drawImage(outlineImage, 0, 0, null);
+			stream = classLoader.getResourceAsStream("image/tile_desert.png");
+			tileImages.put(ResourceType.DESERT, ImageIO.read(stream));
+			stream.close();
+		} catch (IOException e) {
+			System.err.println("failed to load tile asset");
+		}
+	}
 
-        for (Tile t : this.tiles) {
-            Coordinate c = t.getPosition();
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
 
-            int x = DEFAULT_WIDTH / 2
-                    + X_OFFSET * c.getY()
-                    + X_SECONDARY_OFFSET * (c.getX() + c.getZ());
-            int y = DEFAULT_HEIGHT / 2
-                    - c.getX() * Y_OFFSET
-                    + c.getZ() * Y_OFFSET;
+		g.drawImage(outlineImage, 0, 0, null);
 
-            int tileX = x - 64;
-            int tileY = y - 64;
+		for (Tile t : this.tiles) {
+			Coordinate c = t.getPosition();
 
-            int pieceX = x - 16;
-            int pieceY = y - 16;
+			int x = DEFAULT_WIDTH / 2
+					+ X_OFFSET * c.getY()
+					+ X_SECONDARY_OFFSET * (c.getX() + c.getZ());
+			int y = DEFAULT_HEIGHT / 2
+					- c.getX() * Y_OFFSET
+					+ c.getZ() * Y_OFFSET;
 
+			int tileX = x - 64;
+			int tileY = y - 64;
 
-            g.drawImage(this.tileImages.get(t.getResourceType()), tileX, tileY, null);
+			int pieceX = x - 16;
+			int pieceY = y - 16;
 
-            if (t.getDieRoll() != 7) {
-                g.drawImage(this.puckImages.get(t.getDieRoll()), pieceX, pieceY, null);
-            }
+			g.drawImage(this.tileImages.get(t.getResourceType()), tileX, tileY, null);
 
-            if (c.equals(this.game.getBoard().getThiefPosition())) {
-                g.drawImage(this.thiefImage, pieceX, pieceY, null);
-            }
-        }
+			if (t.getDieRoll() != 7) {
+				g.drawImage(this.puckImages.get(t.getDieRoll()), pieceX, pieceY, null);
+			}
 
-        for (Settlement s: this.settlements) {
-            Coordinate c = s.getLocation();
-            System.out.println(c);
-            int pNumber = s.getOwner();
+			if (c.equals(this.game.getBoard().getThiefPosition())) {
+				g.drawImage(this.thiefImage, pieceX, pieceY, null);
+			}
+		}
 
-            int x = DEFAULT_WIDTH / 2
-                    + X_OFFSET * c.getY()
-                    + X_SECONDARY_OFFSET * (c.getX() + c.getZ()) - 16;
-            int y = DEFAULT_HEIGHT / 2
-                    - c.getX() * Y_OFFSET
-                    + c.getZ() * Y_OFFSET - 16;
+		for (Settlement s : this.settlements) {
+			Coordinate c = s.getLocation();
+			System.out.println(c);
+			int pNumber = s.getOwner();
 
-            if (s.isCity()) {
-                g.drawImage(this.cityImages.get(pNumber), x, y, null);
+			int x = DEFAULT_WIDTH / 2
+					+ X_OFFSET * c.getY()
+					+ X_SECONDARY_OFFSET * (c.getX() + c.getZ()) - 16;
+			int y = DEFAULT_HEIGHT / 2
+					- c.getX() * Y_OFFSET
+					+ c.getZ() * Y_OFFSET - 16;
 
-            } else {
-                g.drawImage(this.settlementImages.get(pNumber), x, y, null);
-            }
-        }
+			if (s.isCity()) {
+				g.drawImage(this.cityImages.get(pNumber), x, y, null);
 
-    }
-    // CHECKSTYLE:ON: checkstyle:magicnumber
+			} else {
+				g.drawImage(this.settlementImages.get(pNumber), x, y, null);
+			}
+		}
 
-    @Override
-    public Dimension getPreferredSize() {
-        if (isPreferredSizeSet()) {
-            return super.getPreferredSize();
-        }
+	}
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
-        return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    }
+	@Override
+	public Dimension getPreferredSize() {
+		if (isPreferredSizeSet()) {
+			return super.getPreferredSize();
+		}
+
+		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public List<CoordinateButton> getButtons() {
+		return buttons;
+	}
+
+	/**
+	 * Subroutine to create all the buttons in the coordinate grid.
+	 */
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
+	private void createCoordinateButtons() {
+		List<Coordinate> buttonCoords = new ArrayList<Coordinate>(Arrays.asList(Utils.REAL_LIST));
+		buttonCoords.removeIf(x -> Arrays.asList(Utils.TILES_SPIRAL_LOCATION).contains(x));
+
+		for (Coordinate pos : buttonCoords) {
+
+			createCoordinateButton(pos);
+		}
+	}
+
+	private void createCoordinateButton(Coordinate pos) {
+		CoordinateButton button = new CoordinateButton(pos, true);
+		buttons.add(button);
+		this.add(button);
+	}
 }

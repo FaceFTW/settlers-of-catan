@@ -57,5 +57,4 @@ public class CoordinateButton extends JButton {
 	public Coordinate getCoordinate() {
 		return coordinate;
 	}
-
 }

@@ -2,7 +2,6 @@ package catan.gui;
 import java.awt.FlowLayout;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -12,7 +11,6 @@ import javax.swing.JLabel;
 
 import catan.Coordinate;
 import catan.Game;
-import catan.Utils;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 public class CatanWindow {
@@ -52,8 +50,8 @@ public class CatanWindow {
 	 * Arranges the components of the main Catan Window, then displays it.
 	 */
 	public void setupLayout() {
-		// Add Layout Code As Necessary
-		createCoordinateButtons();
+		this.boardPanel = new BoardPanel();
+		frame.add(boardPanel);
 		label = new JLabel("press the button below to start the sync test");
 		frame.add(label);
 
@@ -92,29 +90,9 @@ public class CatanWindow {
 		return game;
 	}
 
-	/**
-	 * Subroutine to create all the buttons in the coordinate grid.
-	 */
-	// CHECKSTYLE:OFF: checkstyle:magicnumber
-	private void createCoordinateButtons() {
-		List<Coordinate> buttonCoords = new ArrayList<Coordinate>(Arrays.asList(Utils.REAL_LIST));
-		buttonCoords.removeIf(x -> Arrays.asList(Utils.TILES_SPIRAL_LOCATION).contains(x));
-
-		for (Coordinate pos : buttonCoords) {
-			createCoordinateButton(pos);
-		}
-	}
-
-	private void createCoordinateButton(Coordinate pos) {
-		CoordinateButton button = new CoordinateButton(pos, true);
-		buttons.add(button);
-		frame.add(button);
-	}
-
 	private void updateCoordinateButtonStates() {
-
 		this.latch = new CountDownLatch(2);
-		for (CoordinateButton button : buttons) {
+		for (CoordinateButton button : boardPanel.getButtons()) {
 			button.addActionListener(e -> {
 				System.out.println("Button Pressed: " + button.getCoordinate().toString());
 				if (pos1 == null) {
@@ -141,6 +119,7 @@ public class CatanWindow {
 		}
 
 		label.setText("Coordinate 1: " + pos1.toString() + " Coordinate 2: " + pos2.toString());
-
 	}
+
+
 }
