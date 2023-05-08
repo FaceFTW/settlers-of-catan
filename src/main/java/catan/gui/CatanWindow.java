@@ -2,7 +2,9 @@ package catan.gui;
 
 import static catan.gui.LangUtils.getString;
 
-import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +25,8 @@ public class CatanWindow {
 	private Game game;
 	public static final int DEFAULT_WIDTH = 800;
 	public static final int DEFAULT_HEIGHT = 600;
-	private volatile Coordinate pos1 = null;
-	private volatile Coordinate pos2 = null;
+	private Coordinate pos1 = null;
+	private Coordinate pos2 = null;
 
 	// Synchronization Objects - BE CAREFUL HERE
 	private Thread gameActionThread; // Null by default, set to the thread that is running the game action
@@ -51,13 +53,15 @@ public class CatanWindow {
 	private JPanel playerViewPanel = new JPanel();
 	private List<PlayerViewComponent> playerViews = new ArrayList<PlayerViewComponent>();
 
+	private JPanel sidebarPanel = new JPanel(new GridBagLayout());
+	private GridBagConstraints constraints = new GridBagConstraints();
+
 	public CatanWindow() {
 		frame = new JFrame("Catan");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		FlowLayout layout = new FlowLayout();
 
-		frame.setLayout(layout);
+		frame.setLayout(new BorderLayout());
 
 		game = new Game();
 
@@ -69,45 +73,84 @@ public class CatanWindow {
 	 */
 	public void setupLayout() {
 		setupActionsPanel();
-		frame.add(actionsPanel);
+		constraints.anchor = GridBagConstraints.NORTH;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		sidebarPanel.add(actionsPanel, constraints);
 
 		this.currentTurnLabel = new JLabel(getString("currentTurn", game.getTurn()));
-		frame.add(currentTurnLabel);
+		constraints.gridy = GridBagConstraints.RELATIVE;
+		constraints.gridwidth = 1;
+		constraints.ipady = 20;
+		constraints.anchor = GridBagConstraints.CENTER;
 
-		this.boardPanel = new BoardPanel();
-		frame.add(boardPanel);
-		label = new JLabel("press the button below to start the sync test");
-		frame.add(label);
+		sidebarPanel.add(currentTurnLabel, constraints);
 
-		cancelButton.addActionListener(e -> {
-			if (gameActionThread != null) {
-				gameActionThread.interrupt();
-			}
-		});
-		frame.add(cancelButton);
-
-		playerViewPanel = new JPanel();
+		playerViewPanel.setLayout(new GridLayout(2, 2));
 		for (int i = 1; i <= Game.DEFAULT_NUM_PLAYERS; i++) {
 			PlayerViewComponent playerView = new PlayerViewComponent(game.getPlayer(i), true);
 			playerView.setupLayout();
 			playerViews.add(playerView);
 			playerViewPanel.add(playerView);
 		}
+		sidebarPanel.add(playerViewPanel, constraints);
 
-		playerViewPanel.setLayout(new FlowLayout());
-		frame.add(playerViewPanel);
+		this.boardPanel = new BoardPanel();
+		frame.add(boardPanel, BorderLayout.CENTER);
+		label = new JLabel(getString("selectAction"));
+		frame.add(label, BorderLayout.NORTH);
 
+		cancelButton.addActionListener(e -> {
+			if (gameActionThread != null) {
+				label.setText(getString("cancelledAction"));
+				this.pos1 = null;
+				this.pos2 = null;
+				gameActionThread.interrupt();
+			}
+		});
+		cancelButton.setEnabled(false);
+
+		frame.add(sidebarPanel, BorderLayout.EAST);
 		frame.pack();
 		frame.setVisible(true);
 	}
 
 	private void setupActionsPanel() {
-		actionsPanel.setLayout(new GridLayout(3, 2));
+		actionsPanel.setLayout(new GridLayout(4, 2));
 
+		buildRoadButton.addActionListener(e -> {
+			this.cancelButton.setEnabled(true);
+			gameActionThread = new Thread(() -> {
+				buildRoadAction();
+				update();
+				this.cancelButton.setEnabled(false);
+			});
+			gameActionThread.start();
+
+		});
 		actionsPanel.add(buildRoadButton);
 
+		buildSettlementButton.addActionListener(e -> {
+			this.cancelButton.setEnabled(true);
+			gameActionThread = new Thread(() -> {
+				buildSettlementAction();
+				update();
+				this.cancelButton.setEnabled(false);
+			});
+			gameActionThread.start();
+		});
 		actionsPanel.add(buildSettlementButton);
 
+		upgradeSettlementButton.addActionListener(e -> {
+			this.cancelButton.setEnabled(true);
+			gameActionThread = new Thread(() -> {
+				upgradeSettlementAction();
+				update();
+				this.cancelButton.setEnabled(false);
+			});
+			gameActionThread.start();
+		});
 		actionsPanel.add(upgradeSettlementButton);
 
 		actionsPanel.add(requestTradeButton);
@@ -115,13 +158,12 @@ public class CatanWindow {
 		actionsPanel.add(exchangeResourcesButton);
 
 		this.endTurnButton.addActionListener(e -> {
-			synchronized (game) {
-				System.out.println("Ending turn");
-				game.nextTurn();
-			}
+			game.nextTurn();
 			update();
 		});
 		actionsPanel.add(endTurnButton);
+
+		actionsPanel.add(cancelButton);
 
 	}
 
@@ -154,6 +196,61 @@ public class CatanWindow {
 				}
 				latch.countDown();
 			});
+		}
+	}
+
+	private void buildRoadAction() {
+		boolean success = false;
+		this.label.setText(getString("selectFirstCoord"));
+		while (!success) {
+			updateCoordinateButtonStates(2);
+			try {
+				latch.await();
+			} catch (InterruptedException e) {
+				return;
+			}
+			success = game.buildRoad(game.getTurn(), pos1, pos2);
+			if (!success) {
+				this.label.setText(getString("invalidRoad"));
+				this.pos1 = null;
+				this.pos2 = null;
+			}
+		}
+	}
+
+	private void buildSettlementAction() {
+		boolean success = false;
+		this.label.setText(getString("selectFirstCoord"));
+		while (!success) {
+			updateCoordinateButtonStates(1);
+			try {
+				latch.await();
+			} catch (InterruptedException e) {
+				return;
+			}
+			success = game.buildSettlement(game.getTurn(), pos1);
+			if (!success) {
+				this.label.setText(getString("invalidSettlement"));
+				this.pos1 = null;
+			}
+		}
+	}
+
+	private void upgradeSettlementAction() {
+		boolean success = false;
+		this.label.setText(getString("selectFirstCoord"));
+		while (!success) {
+			updateCoordinateButtonStates(1);
+			try {
+				latch.await();
+			} catch (InterruptedException e) {
+				return;
+			}
+			success = game.upgradeSettlement(game.getTurn(), pos1);
+			if (!success) {
+				this.label.setText(getString("invalidUpgrade"));
+				this.pos1 = null;
+			}
 		}
 	}
 

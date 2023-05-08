@@ -164,6 +164,7 @@ public class Game {
 	 * @return
 	 */
 	public boolean buildRoad(int playerId, Coordinate start, Coordinate end) {
+		System.out.println("Coordinate: " + start.toString() + " " + end.toString());
 		Player p = this.players.get(playerId - 1);
 		if (p.getResourceCount(ResourceType.WOOD) < 1 || p.getResourceCount(ResourceType.BRICK) < 1) {
 			return false;
