@@ -1,4 +1,4 @@
-package catan.gui;
+package catan.gui.components;
 
 import static catan.gui.LangUtils.getString;
 

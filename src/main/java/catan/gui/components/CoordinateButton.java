@@ -1,4 +1,4 @@
-package catan.gui;
+package catan.gui.components;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;

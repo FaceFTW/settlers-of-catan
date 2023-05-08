@@ -1,13 +1,5 @@
 package catan.gui;
 
-import catan.Coordinate;
-import catan.Game;
-import catan.Utils;
-import catan.data.ResourceType;
-import catan.data.Road;
-import catan.data.Settlement;
-import catan.data.Tile;
-
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -19,8 +11,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import catan.Coordinate;
+import catan.Game;
+import catan.Utils;
+import catan.data.ResourceType;
+import catan.data.Road;
+import catan.data.Settlement;
+import catan.data.Tile;
+import catan.gui.components.CoordinateButton;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 public final class BoardPanel extends JPanel {

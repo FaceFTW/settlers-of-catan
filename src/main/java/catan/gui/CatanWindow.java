@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 
 import catan.Coordinate;
 import catan.Game;
+import catan.gui.components.CoordinateButton;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 public class CatanWindow {
