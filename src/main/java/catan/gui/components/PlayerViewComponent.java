@@ -138,8 +138,8 @@ public class PlayerViewComponent extends JPanel {
 			this.add(new JLabel("")); // Empty label
 		}
 
-		// this.victoryPointsLabel = new JLabel(getString("victoryPoints", playerRef.getVictoryPoints()));
-		// this.add(victoryPointsLabel);
+		this.victoryPointsLabel = new JLabel(getString("victoryPoints", playerRef.getVictoryPoints()));
+		this.add(victoryPointsLabel);
 	}
 
 	/**

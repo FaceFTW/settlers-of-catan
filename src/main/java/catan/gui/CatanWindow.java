@@ -1,6 +1,9 @@
 package catan.gui;
 
+import static catan.gui.LangUtils.getString;
+
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -13,7 +16,6 @@ import javax.swing.JPanel;
 import catan.Coordinate;
 import catan.Game;
 import catan.gui.components.CoordinateButton;
-import catan.gui.components.ImagePoC;
 import catan.gui.components.PlayerViewComponent;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
@@ -33,13 +35,20 @@ public class CatanWindow {
 	private BoardPanel boardPanel;
 	private List<CoordinateButton> buttons = new ArrayList<CoordinateButton>();
 	private JLabel label;
+	private JLabel currentTurnLabel;
 
-	private JButton startSyncTestButton = new JButton();
+	// private JButton startSyncTestButton = new JButton();
 	private JButton cancelButton = new JButton("Cancel");
 
-	private ImagePoC imagePoC;
+	private JPanel actionsPanel = new JPanel();
+	private JButton endTurnButton = new JButton(getString("endTurn"));
+	private JButton buildSettlementButton = new JButton(getString("buildSettlement"));
+	private JButton buildRoadButton = new JButton(getString("buildRoad"));
+	private JButton upgradeSettlementButton = new JButton(getString("upgradeSettlement"));
+	private JButton requestTradeButton = new JButton(getString("requestTrade"));
+	private JButton exchangeResourcesButton = new JButton(getString("exchangeResources"));
 
-	private JPanel playerViewPanel;
+	private JPanel playerViewPanel = new JPanel();
 	private List<PlayerViewComponent> playerViews = new ArrayList<PlayerViewComponent>();
 
 	public CatanWindow() {
@@ -59,28 +68,16 @@ public class CatanWindow {
 	 * Arranges the components of the main Catan Window, then displays it.
 	 */
 	public void setupLayout() {
-		this.imagePoC = new ImagePoC();
-		frame.add(imagePoC);
+		setupActionsPanel();
+		frame.add(actionsPanel);
+
+		this.currentTurnLabel = new JLabel(getString("currentTurn", game.getTurn()));
+		frame.add(currentTurnLabel);
 
 		this.boardPanel = new BoardPanel();
 		frame.add(boardPanel);
 		label = new JLabel("press the button below to start the sync test");
 		frame.add(label);
-
-		startSyncTestButton.setText("Start Sync Test");
-		startSyncTestButton.setSize(40, 20);
-		startSyncTestButton.addActionListener(e -> {
-			frame.remove(startSyncTestButton);
-			cancelButton.setEnabled(true);
-			this.gameActionThread = new Thread(() -> {
-				coordinateButtonSyncTests();
-
-				cancelButton.setEnabled(false);
-			});
-			gameActionThread.start();
-		});
-
-		frame.add(startSyncTestButton);
 
 		cancelButton.addActionListener(e -> {
 			if (gameActionThread != null) {
@@ -102,6 +99,29 @@ public class CatanWindow {
 
 		frame.pack();
 		frame.setVisible(true);
+	}
+
+	private void setupActionsPanel() {
+		actionsPanel.setLayout(new GridLayout(3, 2));
+
+		actionsPanel.add(buildRoadButton);
+
+		actionsPanel.add(buildSettlementButton);
+
+		actionsPanel.add(upgradeSettlementButton);
+
+		actionsPanel.add(requestTradeButton);
+
+		actionsPanel.add(exchangeResourcesButton);
+
+		this.endTurnButton.addActionListener(e -> {
+			synchronized (game) {
+				System.out.println("Ending turn");
+				game.nextTurn();
+			}
+			update();
+		});
+		actionsPanel.add(endTurnButton);
 
 	}
 
@@ -114,35 +134,27 @@ public class CatanWindow {
 		return game;
 	}
 
-	private void updateCoordinateButtonStates() {
-		this.latch = new CountDownLatch(2);
+	private void update() {
+		for (PlayerViewComponent playerView : playerViews) {
+			playerView.update();
+		}
+
+		this.currentTurnLabel.setText(getString("currentTurn", game.getTurn()));
+	}
+
+	private void updateCoordinateButtonStates(int count) {
+		this.latch = new CountDownLatch(count);
 		for (CoordinateButton button : boardPanel.getButtons()) {
 			button.addActionListener(e -> {
-				System.out.println("Button Pressed: " + button.getCoordinate().toString());
 				if (pos1 == null) {
 					pos1 = button.getCoordinate();
+					this.label.setText(getString("selectSecondCoord"));
 				} else if (pos2 == null) {
 					pos2 = button.getCoordinate();
 				}
 				latch.countDown();
 			});
 		}
-	}
-
-	private void coordinateButtonSyncTests() {
-
-		updateCoordinateButtonStates();
-		label.setText("Click on two buttons to test latch synchronization.");
-		while (pos1 == null || pos2 == null) {
-			try {
-				latch.await();
-			} catch (InterruptedException e) {
-				label.setText("Test Cancelled");
-				Thread.currentThread().interrupt();
-			}
-		}
-
-		label.setText("Coordinate 1: " + pos1.toString() + " Coordinate 2: " + pos2.toString());
 	}
 
 }

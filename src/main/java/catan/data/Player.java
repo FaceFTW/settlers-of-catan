@@ -122,7 +122,6 @@ public class Player {
 	 */
 	public int getVictoryPoints() {
 		return victoryPoints;
-
 	}
 
 	/**

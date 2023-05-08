@@ -29,6 +29,7 @@ public class Game {
 			players.add(new Player(i + 1));
 		}
 		this.board = new Board(random);
+		this.currentTurn = 1;
 	}
 
 	// **************************************************
