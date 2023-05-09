@@ -10,10 +10,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import catan.Coordinate;
-import catan.Game;
 import catan.data.Road;
 import catan.data.Settlement;
+import catan.logic.Coordinate;
+import catan.logic.Game;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 /**

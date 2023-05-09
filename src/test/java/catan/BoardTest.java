@@ -3,6 +3,10 @@ package catan;
 import catan.data.Player;
 import catan.data.ResourceType;
 import catan.data.Tile;
+import catan.logic.Board;
+import catan.logic.Coordinate;
+import catan.logic.Utils;
+
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 

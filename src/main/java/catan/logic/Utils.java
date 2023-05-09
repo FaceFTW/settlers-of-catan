@@ -1,4 +1,4 @@
-package catan;
+package catan.logic;
 
 import catan.data.ResourceType;
 
@@ -96,7 +96,7 @@ public class Utils {
 			new Coordinate(-2, 0, 3),
 	};
 
-	static final ResourceType[] ALL_TILES_RESOURCES = {
+	public static final ResourceType[] ALL_TILES_RESOURCES = {
 			ResourceType.DESERT,
 			ResourceType.WOOD,
 			ResourceType.WOOD,

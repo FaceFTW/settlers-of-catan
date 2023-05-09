@@ -9,7 +9,7 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.JButton;
 
-import catan.Coordinate;
+import catan.logic.Coordinate;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 public class CoordinateButton extends JButton {

@@ -1,4 +1,4 @@
-package catan;
+package catan.logic;
 
 import java.util.ArrayList;
 import java.util.Arrays;

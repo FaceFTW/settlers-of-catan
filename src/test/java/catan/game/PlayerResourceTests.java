@@ -4,11 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import catan.Game;
 import catan.data.Player;
 import catan.data.ResourceType;
 import catan.data.ResourcesGroup;
 import catan.data.TradeOffer;
+import catan.logic.Game;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 public class PlayerResourceTests {

@@ -1,6 +1,6 @@
 package catan.data;
 
-import catan.Coordinate;
+import catan.logic.Coordinate;
 
 /**
  * A data class representing a settlement on the board.

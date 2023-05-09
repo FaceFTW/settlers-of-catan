@@ -15,11 +15,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import catan.Coordinate;
-import catan.Game;
 import catan.gui.components.CoordinateButton;
 import catan.gui.components.DevPanel;
 import catan.gui.components.PlayerViewComponent;
+import catan.logic.Coordinate;
+import catan.logic.Game;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 public class CatanWindow {

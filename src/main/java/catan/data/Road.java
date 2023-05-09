@@ -1,6 +1,6 @@
 package catan.data;
 
-import catan.Coordinate;
+import catan.logic.Coordinate;
 
 /**
  * @brief A data class representing a road on the board.

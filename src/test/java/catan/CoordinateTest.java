@@ -2,6 +2,8 @@ package catan;
 
 import org.junit.jupiter.api.Test;
 
+import catan.logic.Coordinate;
+
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;

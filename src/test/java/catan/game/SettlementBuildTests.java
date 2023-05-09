@@ -10,13 +10,13 @@ import java.util.List;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
-import catan.Board;
-import catan.Coordinate;
-import catan.Game;
 import catan.data.Player;
 import catan.data.ResourceType;
 import catan.data.Road;
 import catan.data.Settlement;
+import catan.logic.Board;
+import catan.logic.Coordinate;
+import catan.logic.Game;
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 public class SettlementBuildTests {
 

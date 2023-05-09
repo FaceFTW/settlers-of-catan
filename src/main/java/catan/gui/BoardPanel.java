@@ -17,14 +17,14 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import catan.Coordinate;
-import catan.Game;
-import catan.Utils;
 import catan.data.ResourceType;
 import catan.data.Road;
 import catan.data.Settlement;
 import catan.data.Tile;
 import catan.gui.components.CoordinateButton;
+import catan.logic.Coordinate;
+import catan.logic.Game;
+import catan.logic.Utils;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 public final class BoardPanel extends JPanel {
