@@ -18,7 +18,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class BoardPanel extends JPanel {
+public final class BoardPanel extends JPanel {
     public static final int DEFAULT_WIDTH = 624;
     public static final int DEFAULT_HEIGHT = 654;
     private static final int X_OFFSET = 64;
@@ -58,6 +58,7 @@ public class BoardPanel extends JPanel {
 
     }
 
+    // CHECKSTYLE:OFF: checkstyle:magicnumber
     private void loadPuckImages() {
         ClassLoader classLoader = getClass().getClassLoader();
 
@@ -106,7 +107,9 @@ public class BoardPanel extends JPanel {
             System.err.println("failed to load puck asset");
         }
     }
+    // CHECKSTYLE:ON: checkstyle:magicnumber
 
+    // CHECKSTYLE:OFF: checkstyle:magicnumber
     private void loadPieceImages() {
         ClassLoader classLoader = getClass().getClassLoader();
 
@@ -154,6 +157,7 @@ public class BoardPanel extends JPanel {
             System.err.println("failed to load piece asset");
         }
     }
+    // CHECKSTYLE:ON: checkstyle:magicnumber
 
     private void loadTileImages() {
         ClassLoader classLoader = getClass().getClassLoader();
@@ -187,6 +191,7 @@ public class BoardPanel extends JPanel {
         }
     }
 
+    // CHECKSTYLE:OFF: checkstyle:magicnumber
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -223,6 +228,7 @@ public class BoardPanel extends JPanel {
 
         for (Settlement s: this.settlements) {
             Coordinate c = s.getLocation();
+            System.out.println(c);
             int pNumber = s.getOwner();
 
             int x = DEFAULT_WIDTH / 2
@@ -234,12 +240,14 @@ public class BoardPanel extends JPanel {
 
             if (s.isCity()) {
                 g.drawImage(this.cityImages.get(pNumber), x, y, null);
+
             } else {
                 g.drawImage(this.settlementImages.get(pNumber), x, y, null);
             }
         }
 
     }
+    // CHECKSTYLE:ON: checkstyle:magicnumber
 
     @Override
     public Dimension getPreferredSize() {

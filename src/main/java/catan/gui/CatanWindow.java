@@ -1,19 +1,8 @@
 package catan.gui;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
-import catan.Coordinate;
 import catan.Game;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import javax.swing.JFrame;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.cert.CertPath;
 
 public class CatanWindow {
 	private Game game;
@@ -31,6 +20,7 @@ public class CatanWindow {
 		frame.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
 		game = new Game();
+
 		boardPanel = new BoardPanel(game);
 	}
 
