@@ -36,7 +36,6 @@ public class CatanWindow {
 	// Swing Components below here
 	private JFrame frame;
 	private BoardPanel boardPanel;
-	private List<CoordinateButton> buttons = new ArrayList<CoordinateButton>();
 	private JLabel label;
 	private JLabel currentTurnLabel;
 
