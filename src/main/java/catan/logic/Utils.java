@@ -140,7 +140,7 @@ public class Utils {
 			new Coordinate(0, 0, 0),
 	};
 
-	static final int[] TILES_ROLL_NUMBERS = {
+	public static final int[] TILES_ROLL_NUMBERS = {
 			5,
 			2,
 			6,
