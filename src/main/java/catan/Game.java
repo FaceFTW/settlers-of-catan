@@ -170,6 +170,11 @@ public class Game {
 			return false;
 		}
 
+		Coordinate[] adjacents = Utils.getBoardAdjacents(start);
+		if (!Arrays.asList(adjacents).contains(end)) {
+			return false;
+		}
+
 		List<Settlement> settlements = this.board.getSettlements();
 		List<Road> roads = this.board.getRoads();
 

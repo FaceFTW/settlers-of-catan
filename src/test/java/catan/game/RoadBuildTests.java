@@ -59,6 +59,17 @@ public class RoadBuildTests {
 	}
 
 	@Test
+	void buildRoad_StartEndIsSame_ReturnsFalse() {
+		List<Player> player = createPlayerWithSettlementResources();
+		Board b = new Board();
+		Game g = new Game(b, player);
+
+		assertFalse(g.buildRoad(1,
+				new Coordinate(1, 0, 0),
+				new Coordinate(1, 0, 0)));
+	}
+
+	@Test
 	void buildRoad_NotEnoughWood_ReturnsFalse() {
 		Player player = new Player(1);
 		player.modifyResource(ResourceType.BRICK, 1);
