@@ -2,9 +2,8 @@ package catan.data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import catan.Coordinate;
+import catan.logic.Coordinate;
 
 /**
  * A data class representing a tile on the board.
@@ -55,16 +54,5 @@ public class Tile {
 	 */
 	public int getDieRoll() {
 		return dieRoll;
-	}
-
-
-	/**
-	 * TODO Implement this method, check wiki for specifics.
-	 *
-	 * @param settlements N/A
-	 * @return N/A
-	 */
-	public Map<ResourceType, Integer> distributeResources(List<Settlement> settlements) {
-		throw new UnsupportedOperationException("Not implemented yet");
 	}
 }

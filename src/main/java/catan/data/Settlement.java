@@ -1,6 +1,6 @@
 package catan.data;
 
-import catan.Coordinate;
+import catan.logic.Coordinate;
 
 /**
  * A data class representing a settlement on the board.
@@ -53,6 +53,16 @@ public class Settlement {
 	 */
 	public void upgradeToCity() {
 		this.isCity = true;
+	}
+
+	/**
+	 * @return A string representation of the settlement.
+	 */
+	@Override
+	public String toString() {
+		return "Settlement:[" + settlementLocation.toString()
+				+ ", Owner: " + setlementOwner + ", IsCity: "
+				+ isCity + "]";
 	}
 
 }

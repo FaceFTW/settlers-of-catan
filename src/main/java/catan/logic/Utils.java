@@ -1,4 +1,4 @@
-package catan;
+package catan.logic;
 
 import catan.data.ResourceType;
 
@@ -10,7 +10,7 @@ public class Utils {
 
 	private static final int MAX_NON_ZERO = 2;
 	private static final int NON_ZERO_OVER = 3;
-	private static final Coordinate[] REAL_LIST = new Coordinate[]{
+	public static final Coordinate[] REAL_LIST = new Coordinate[]{
 			new Coordinate(2, 0, -3),
 			new Coordinate(3, 0, -2),
 
@@ -96,7 +96,7 @@ public class Utils {
 			new Coordinate(-2, 0, 3),
 	};
 
-	static final ResourceType[] ALL_TILES_RESOURCES = {
+	public static final ResourceType[] ALL_TILES_RESOURCES = {
 			ResourceType.DESERT,
 			ResourceType.WOOD,
 			ResourceType.WOOD,
@@ -118,7 +118,7 @@ public class Utils {
 			ResourceType.ORE,
 	};
 
-	static final Coordinate[] TILES_SPIRAL_LOCATION = {
+	public static final Coordinate[] TILES_SPIRAL_LOCATION = {
 			new Coordinate(-2, 0, 2),
 			new Coordinate(0, 0, 3),
 			new Coordinate(0, 2, 2),
@@ -140,7 +140,7 @@ public class Utils {
 			new Coordinate(0, 0, 0),
 	};
 
-	static final int[] TILES_ROLL_NUMBERS = {
+	public static final int[] TILES_ROLL_NUMBERS = {
 			5,
 			2,
 			6,

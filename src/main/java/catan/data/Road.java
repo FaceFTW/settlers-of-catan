@@ -1,6 +1,6 @@
 package catan.data;
 
-import catan.Coordinate;
+import catan.logic.Coordinate;
 
 /**
  * @brief A data class representing a road on the board.
@@ -48,5 +48,13 @@ public class Road {
 	 */
 	public int getOwner() {
 		return roadOwner;
+	}
+
+	/**
+	 * @return A string representation of the road.
+	 */
+	@Override
+	public String toString() {
+		return "Road [roadStart=" + roadStart + ", roadEnd=" + roadEnd + ", roadOwner=" + roadOwner + "]";
 	}
 }

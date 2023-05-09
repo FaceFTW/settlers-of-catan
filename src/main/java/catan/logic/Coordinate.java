@@ -1,4 +1,4 @@
-package catan;
+package catan.logic;
 
 /**
  * A data class representing a single location on the board
@@ -59,5 +59,10 @@ public final class Coordinate {
 	@Override
 	public int hashCode() {
 		return String.format("%d,%d,%d", this.x, this.y, this.z).hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return String.format("(%d,%d,%d)", this.x, this.y, this.z);
 	}
 }

@@ -1,4 +1,4 @@
-package catan;
+package catan.logic;
 
 import catan.data.Tile;
 import catan.data.Settlement;

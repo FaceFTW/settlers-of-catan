@@ -1,4 +1,4 @@
-package catan;
+package catan.logic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +25,11 @@ public class Game {
 		this.random = new Random();
 		this.numberOfPlayers = DEFAULT_NUM_PLAYERS;
 		this.players = new ArrayList<>();
+		for (int i = 1; i <= numberOfPlayers; i++) {
+			players.add(new Player(i));
+		}
 		this.board = new Board(random);
+		this.currentTurn = 1;
 	}
 
 	// **************************************************
@@ -160,8 +164,14 @@ public class Game {
 	 * @return
 	 */
 	public boolean buildRoad(int playerId, Coordinate start, Coordinate end) {
+		System.out.println("Coordinate: " + start.toString() + " " + end.toString());
 		Player p = this.players.get(playerId - 1);
 		if (p.getResourceCount(ResourceType.WOOD) < 1 || p.getResourceCount(ResourceType.BRICK) < 1) {
+			return false;
+		}
+
+		Coordinate[] adjacents = Utils.getBoardAdjacents(start);
+		if (!Arrays.asList(adjacents).contains(end)) {
 			return false;
 		}
 
@@ -265,11 +275,12 @@ public class Game {
 	}
 
 	/**
-	 * Returns the board object
+	 * Gets the board object
 	 *
 	 * @return
 	 */
-    public Board getBoard() {
+	public Board getBoard() {
 		return this.board;
-    }
+	}
+
 }
