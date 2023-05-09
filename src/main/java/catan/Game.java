@@ -264,4 +264,7 @@ public class Game {
 		this.players.add(p);
 	}
 
+    public Board getBoard() {
+		return this.board;
+    }
 }
