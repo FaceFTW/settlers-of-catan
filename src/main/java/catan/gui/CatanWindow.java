@@ -207,15 +207,17 @@ public class CatanWindow {
 		this.pos2 = null;
 		this.latch = new CountDownLatch(count);
 		for (CoordinateButton button : boardPanel.getButtons()) {
-			button.addActionListener(e -> {
-				if (pos1 == null) {
-					pos1 = button.getCoordinate();
-					this.label.setText(getString("selectSecondCoord"));
-				} else if (pos2 == null) {
-					pos2 = button.getCoordinate();
-				}
-				latch.countDown();
-			});
+			if (button.getActionListeners().length == 0) {
+				button.addActionListener(e -> {
+					if (pos1 == null) {
+						pos1 = button.getCoordinate();
+						this.label.setText(getString("selectSecondCoord"));
+					} else if (pos2 == null) {
+						pos2 = button.getCoordinate();
+					}
+					latch.countDown();
+				});
+			}
 		}
 	}
 

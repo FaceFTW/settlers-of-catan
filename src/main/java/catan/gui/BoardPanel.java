@@ -1,7 +1,10 @@
 package catan.gui;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +35,6 @@ public final class BoardPanel extends JPanel {
 	private static final int X_OFFSET = 64;
 	private static final int X_SECONDARY_OFFSET = 32;
 	private static final int Y_OFFSET = 54;
-
 
 	private Tile[] tiles;
 	private List<Road> roads;
@@ -151,7 +153,9 @@ public final class BoardPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		g.drawImage(outlineImage, 0, 0, null);
+		Graphics2D g2 = (Graphics2D) g;
+
+		g2.drawImage(outlineImage, 0, 0, null);
 
 		for (Tile t : this.tiles) {
 			Coordinate c = t.getPosition();
@@ -169,16 +173,59 @@ public final class BoardPanel extends JPanel {
 			int pieceX = x - 16;
 			int pieceY = y - 16;
 
-			g.drawImage(this.tileImages.get(t.getResourceType()), tileX, tileY, null);
+			g2.drawImage(this.tileImages.get(t.getResourceType()), tileX, tileY, null);
 
 			if (t.getDieRoll() != 7) {
-				g.drawImage(this.puckImages.get(t.getDieRoll()), pieceX, pieceY, null);
+				g2.drawImage(this.puckImages.get(t.getDieRoll()), pieceX, pieceY, null);
 			}
 
 			if (c.equals(this.game.getBoard().getThiefPosition())) {
-				g.drawImage(this.thiefImage, pieceX, pieceY, null);
+				g2.drawImage(this.thiefImage, pieceX, pieceY, null);
 			}
 		}
+
+		g2.setStroke(new BasicStroke(5));
+		for (Road r : this.game.getBoard().getRoads()) {
+			Coordinate start = r.getStart();
+			Coordinate end = r.getEnd();
+			int pNumber = r.getOwner();
+
+			int startX = DEFAULT_WIDTH / 2
+					+ X_OFFSET * start.getY()
+					+ X_SECONDARY_OFFSET * (start.getX() + start.getZ());
+			int startY = DEFAULT_HEIGHT / 2
+					- start.getX() * Y_OFFSET
+					+ start.getZ() * Y_OFFSET;
+
+			int endX = DEFAULT_WIDTH / 2
+					+ X_OFFSET * end.getY()
+					+ X_SECONDARY_OFFSET * (end.getX() + end.getZ());
+			int endY = DEFAULT_HEIGHT / 2
+					- end.getX() * Y_OFFSET
+					+ end.getZ() * Y_OFFSET;
+
+			switch (pNumber) {
+				case 1:
+					g2.setColor(Color.RED);
+					break;
+				case 2:
+					g2.setColor(Color.BLUE);
+					break;
+				case 3:
+					g2.setColor(Color.ORANGE);
+					break;
+				case 4:
+					g2.setColor(Color.WHITE);
+					break;
+				default:
+					g2.setColor(Color.BLACK);
+					break;
+			}
+
+			g2.drawLine(startX, startY, endX, endY);
+		}
+
+		g2.setStroke(new BasicStroke());
 
 		for (Settlement s : this.game.getBoard().getSettlements()) {
 			Coordinate c = s.getLocation();
@@ -193,10 +240,10 @@ public final class BoardPanel extends JPanel {
 					+ c.getZ() * Y_OFFSET - 16;
 
 			if (s.isCity()) {
-				g.drawImage(this.cityImages.get(pNumber), x, y, null);
+				g2.drawImage(this.cityImages.get(pNumber), x, y, null);
 
 			} else {
-				g.drawImage(this.settlementImages.get(pNumber), x, y, null);
+				g2.drawImage(this.settlementImages.get(pNumber), x, y, null);
 			}
 		}
 

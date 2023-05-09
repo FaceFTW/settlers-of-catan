@@ -14,16 +14,14 @@ import catan.data.TradeOffer;
 public class PlayerResourceTests {
 	@Test
 	void exchangeResources_ExchangeOneofDifferentResources() {
-		Player player1 = new Player(1);
-		Player player2 = new Player(2);
+		Game game = new Game();
+		Player player1 = game.getPlayer(1);
+		Player player2 = game.getPlayer(2);
+
 		for (ResourceType type : ResourceType.values()) {
 			player1.modifyResource(type, 5);
 			player2.modifyResource(type, 5);
 		}
-
-		Game game = new Game();
-		game.addPlayer(player1);
-		game.addPlayer(player2);
 
 		game.exchangeResources(1, 2, new TradeOffer(
 				new ResourcesGroup(1, 1, 0, 0, 0),
@@ -43,16 +41,14 @@ public class PlayerResourceTests {
 
 	@Test
 	void exchangeResources_ExchangeOneofDifferentResources_OtherDirection() {
-		Player player1 = new Player(1);
-		Player player2 = new Player(2);
+		Game game = new Game();
+		Player player1 = game.getPlayer(1);
+		Player player2 = game.getPlayer(2);
+
 		for (ResourceType type : ResourceType.values()) {
 			player1.modifyResource(type, 5);
 			player2.modifyResource(type, 5);
 		}
-
-		Game game = new Game();
-		game.addPlayer(player1);
-		game.addPlayer(player2);
 
 		game.exchangeResources(2, 1, new TradeOffer(
 				new ResourcesGroup(1, 1, 0, 0, 0),
@@ -72,16 +68,14 @@ public class PlayerResourceTests {
 
 	@Test
 	void exchangeResources_ExchangeOneTypeOfResource() {
-		Player player1 = new Player(1);
-		Player player2 = new Player(2);
+		Game game = new Game();
+		Player player1 = game.getPlayer(1);
+		Player player2 = game.getPlayer(2);
+
 		for (ResourceType type : ResourceType.values()) {
 			player1.modifyResource(type, 5);
 			player2.modifyResource(type, 5);
 		}
-
-		Game game = new Game();
-		game.addPlayer(player1);
-		game.addPlayer(player2);
 
 		game.exchangeResources(1, 2, new TradeOffer(
 				new ResourcesGroup(2, 0, 0, 0, 0),
@@ -95,16 +89,14 @@ public class PlayerResourceTests {
 
 	@Test
 	void exchangeResources_ExchangeOneTypeOfResource_OtherDirection() {
-		Player player1 = new Player(1);
-		Player player2 = new Player(2);
+		Game game = new Game();
+		Player player1 = game.getPlayer(1);
+		Player player2 = game.getPlayer(2);
+
 		for (ResourceType type : ResourceType.values()) {
 			player1.modifyResource(type, 5);
 			player2.modifyResource(type, 5);
 		}
-
-		Game game = new Game();
-		game.addPlayer(player1);
-		game.addPlayer(player2);
 
 		game.exchangeResources(2, 1, new TradeOffer(
 				new ResourcesGroup(2, 0, 0, 0, 0),
@@ -118,16 +110,14 @@ public class PlayerResourceTests {
 
 	@Test
 	public void exchangeResources_MultipleTypesMultipleAmounts_DistributesAsExpected() {
-		Player player1 = new Player(1);
-		Player player2 = new Player(2);
+		Game game = new Game();
+		Player player1 = game.getPlayer(1);
+		Player player2 = game.getPlayer(2);
+
 		for (ResourceType type : ResourceType.values()) {
 			player1.modifyResource(type, 10);
 			player2.modifyResource(type, 10);
 		}
-
-		Game game = new Game();
-		game.addPlayer(player1);
-		game.addPlayer(player2);
 
 		game.exchangeResources(1, 2, new TradeOffer(
 				new ResourcesGroup(2, 1, 4, 3, 0),
@@ -146,17 +136,15 @@ public class PlayerResourceTests {
 	}
 
 	@Test
-	void exchangeResources_MultipleTypesMultipleAmounts_OtherDirection_DistributesAsExpected(){
-		Player player1 = new Player(1);
-		Player player2 = new Player(2);
+	void exchangeResources_MultipleTypesMultipleAmounts_OtherDirection_DistributesAsExpected() {
+		Game game = new Game();
+		Player player1 = game.getPlayer(1);
+		Player player2 = game.getPlayer(2);
+
 		for (ResourceType type : ResourceType.values()) {
 			player1.modifyResource(type, 10);
 			player2.modifyResource(type, 10);
 		}
-
-		Game game = new Game();
-		game.addPlayer(player1);
-		game.addPlayer(player2);
 
 		game.exchangeResources(2, 1, new TradeOffer(
 				new ResourcesGroup(0, 0, 4, 3, 3),
