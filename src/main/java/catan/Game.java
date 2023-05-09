@@ -264,4 +264,12 @@ public class Game {
 		this.players.add(p);
 	}
 
+	/**
+	 * Returns the board object
+	 *
+	 * @return
+	 */
+    public Board getBoard() {
+		return this.board;
+    }
 }
