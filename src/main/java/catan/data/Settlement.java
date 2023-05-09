@@ -55,4 +55,14 @@ public class Settlement {
 		this.isCity = true;
 	}
 
+	/**
+	 * @return A string representation of the settlement.
+	 */
+	@Override
+	public String toString() {
+		return "Settlement:[" + settlementLocation.toString()
+				+ ", Owner: " + setlementOwner + ", IsCity: "
+				+ isCity + "]";
+	}
+
 }

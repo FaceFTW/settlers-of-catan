@@ -49,4 +49,12 @@ public class Road {
 	public int getOwner() {
 		return roadOwner;
 	}
+
+	/**
+	 * @return A string representation of the road.
+	 */
+	@Override
+	public String toString() {
+		return "Road [roadStart=" + roadStart + ", roadEnd=" + roadEnd + ", roadOwner=" + roadOwner + "]";
+	}
 }

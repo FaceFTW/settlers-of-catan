@@ -270,11 +270,12 @@ public class Game {
 	}
 
 	/**
-	 * Returns the board object
+	 * Gets the board object
 	 *
 	 * @return
 	 */
-    public Board getBoard() {
+	public Board getBoard() {
 		return this.board;
-    }
+	}
+
 }

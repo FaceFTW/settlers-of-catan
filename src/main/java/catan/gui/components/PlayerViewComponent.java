@@ -42,8 +42,6 @@ public class PlayerViewComponent extends JPanel {
 
 		GridLayout gridLayout = new GridLayout(7, isDev ? 3 : 1);
 		this.setLayout(gridLayout);
-
-		// this.setupLayout();
 	}
 
 	public void setupLayout() {

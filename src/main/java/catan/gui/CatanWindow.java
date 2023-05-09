@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import catan.Coordinate;
 import catan.Game;
 import catan.gui.components.CoordinateButton;
+import catan.gui.components.DevPanel;
 import catan.gui.components.PlayerViewComponent;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
@@ -39,9 +40,6 @@ public class CatanWindow {
 	private JLabel label;
 	private JLabel currentTurnLabel;
 
-	// private JButton startSyncTestButton = new JButton();
-	private JButton cancelButton = new JButton("Cancel");
-
 	private JPanel actionsPanel = new JPanel();
 	private JButton endTurnButton = new JButton(getString("endTurn"));
 	private JButton buildSettlementButton = new JButton(getString("buildSettlement"));
@@ -49,12 +47,16 @@ public class CatanWindow {
 	private JButton upgradeSettlementButton = new JButton(getString("upgradeSettlement"));
 	private JButton requestTradeButton = new JButton(getString("requestTrade"));
 	private JButton exchangeResourcesButton = new JButton(getString("exchangeResources"));
+	private JButton rollDieButton = new JButton(getString("rollDie"));
+	private JButton cancelButton = new JButton("Cancel");
 
 	private JPanel playerViewPanel = new JPanel();
 	private List<PlayerViewComponent> playerViews = new ArrayList<PlayerViewComponent>();
 
 	private JPanel sidebarPanel = new JPanel(new GridBagLayout());
 	private GridBagConstraints constraints = new GridBagConstraints();
+
+	private DevPanel devPanel;
 
 	public CatanWindow() {
 		frame = new JFrame("Catan");
@@ -112,6 +114,10 @@ public class CatanWindow {
 		cancelButton.setEnabled(false);
 
 		frame.add(sidebarPanel, BorderLayout.EAST);
+
+		devPanel = new DevPanel(game);
+		frame.add(devPanel, BorderLayout.SOUTH);
+
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -163,6 +169,8 @@ public class CatanWindow {
 		});
 		actionsPanel.add(endTurnButton);
 
+		actionsPanel.add(rollDieButton);
+
 		actionsPanel.add(cancelButton);
 
 	}
@@ -180,6 +188,8 @@ public class CatanWindow {
 		for (PlayerViewComponent playerView : playerViews) {
 			playerView.update();
 		}
+
+		devPanel.update();
 
 		this.currentTurnLabel.setText(getString("currentTurn", game.getTurn()));
 	}
@@ -252,6 +262,10 @@ public class CatanWindow {
 				this.pos1 = null;
 			}
 		}
+	}
+
+	private void createDeveloperPanel() {
+
 	}
 
 }
