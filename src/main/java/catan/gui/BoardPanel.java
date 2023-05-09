@@ -2,7 +2,6 @@ package catan.gui;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,12 +25,14 @@ import catan.gui.components.CoordinateButton;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 public final class BoardPanel extends JPanel {
+	private final ClassLoader classLoader = getClass().getClassLoader();
 
 	public static final int DEFAULT_WIDTH = 624;
 	public static final int DEFAULT_HEIGHT = 654;
 	private static final int X_OFFSET = 64;
 	private static final int X_SECONDARY_OFFSET = 32;
 	private static final int Y_OFFSET = 54;
+
 
 	private Tile[] tiles;
 	private List<Road> roads;
@@ -45,7 +46,7 @@ public final class BoardPanel extends JPanel {
 	private BufferedImage outlineImage;
 	private BufferedImage thiefImage;
 
-	private List<CoordinateButton> buttons;
+	private List<CoordinateButton> buttons = new ArrayList<CoordinateButton>();
 
 	public BoardPanel(Game game) {
 		this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -65,100 +66,44 @@ public final class BoardPanel extends JPanel {
 		this.roads = this.game.getBoard().getRoads();
 		this.settlements = this.game.getBoard().getSettlements();
 
-		this.setLayout(new GridLayout(8, 8));
+		// Allow full control of button placement
+		this.setLayout(null);
 		this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		this.setMaximumSize(getMaximumSize());
 		this.createCoordinateButtons();
 
 	}
 
-	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	private void loadPuckImages() {
-		ClassLoader classLoader = getClass().getClassLoader();
-
+		InputStream stream;
 		try {
-			InputStream stream = classLoader.getResourceAsStream("image/puck_2.png");
-			puckImages.put(2, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/puck_3.png");
-			puckImages.put(3, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/puck_4.png");
-			puckImages.put(4, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/puck_5.png");
-			puckImages.put(5, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/puck_6.png");
-			puckImages.put(6, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/puck_8.png");
-			puckImages.put(8, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/puck_9.png");
-			puckImages.put(9, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/puck_10.png");
-			puckImages.put(10, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/puck_11.png");
-			puckImages.put(11, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/puck_12.png");
-			puckImages.put(12, ImageIO.read(stream));
-			stream.close();
-
+			for (int i = 2; i <= 12; i++) {
+				if (i != 7) {
+					String fileName = "image/puck_" + i + ".png";
+					stream = classLoader.getResourceAsStream(fileName);
+					puckImages.put(i, ImageIO.read(stream));
+					stream.close();
+				}
+			}
 		} catch (IOException e) {
 			System.err.println("failed to load puck asset");
 		}
 	}
-	// CHECKSTYLE:ON: checkstyle:magicnumber
 
-	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	private void loadPieceImages() {
-		ClassLoader classLoader = getClass().getClassLoader();
-
+		InputStream stream;
 		try {
-			InputStream stream = classLoader.getResourceAsStream("image/settlement_p1.png");
-			settlementImages.put(1, ImageIO.read(stream));
-			stream.close();
+			for (int i = 1; i < 4; i++) {
+				String settlementPath = "image/settlement_p" + i + ".png";
+				stream = classLoader.getResourceAsStream(settlementPath);
+				settlementImages.put(i, ImageIO.read(stream));
+				stream.close();
 
-			stream = classLoader.getResourceAsStream("image/settlement_p2.png");
-			settlementImages.put(2, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/settlement_p3.png");
-			settlementImages.put(3, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/settlement_p4.png");
-			settlementImages.put(4, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/city_p1.png");
-			cityImages.put(1, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/city_p2.png");
-			cityImages.put(2, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/city_p3.png");
-			cityImages.put(3, ImageIO.read(stream));
-			stream.close();
-
-			stream = classLoader.getResourceAsStream("image/city_p4.png");
-			cityImages.put(4, ImageIO.read(stream));
-			stream.close();
+				String cityPath = "image/city_p" + i + ".png";
+				stream = classLoader.getResourceAsStream(cityPath);
+				cityImages.put(i, ImageIO.read(stream));
+				stream.close();
+			}
 
 			stream = classLoader.getResourceAsStream("image/thief.png");
 			thiefImage = ImageIO.read(stream);
@@ -171,11 +116,8 @@ public final class BoardPanel extends JPanel {
 			System.err.println("failed to load piece asset");
 		}
 	}
-	// CHECKSTYLE:ON: checkstyle:magicnumber
 
 	private void loadTileImages() {
-		ClassLoader classLoader = getClass().getClassLoader();
-
 		try {
 			InputStream stream = classLoader.getResourceAsStream("image/tile_forest.png");
 			tileImages.put(ResourceType.WOOD, ImageIO.read(stream));
@@ -205,7 +147,6 @@ public final class BoardPanel extends JPanel {
 		}
 	}
 
-	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -239,7 +180,7 @@ public final class BoardPanel extends JPanel {
 			}
 		}
 
-		for (Settlement s : this.settlements) {
+		for (Settlement s : this.game.getBoard().getSettlements()) {
 			Coordinate c = s.getLocation();
 			System.out.println(c);
 			int pNumber = s.getOwner();
@@ -260,7 +201,6 @@ public final class BoardPanel extends JPanel {
 		}
 
 	}
-	// CHECKSTYLE:ON: checkstyle:magicnumber
 
 	@Override
 	public Dimension getPreferredSize() {
@@ -282,20 +222,43 @@ public final class BoardPanel extends JPanel {
 	/**
 	 * Subroutine to create all the buttons in the coordinate grid.
 	 */
-	// CHECKSTYLE:OFF: checkstyle:magicnumber
 	private void createCoordinateButtons() {
 		List<Coordinate> buttonCoords = new ArrayList<Coordinate>(Arrays.asList(Utils.REAL_LIST));
 		buttonCoords.removeIf(x -> Arrays.asList(Utils.TILES_SPIRAL_LOCATION).contains(x));
 
 		for (Coordinate pos : buttonCoords) {
-
 			createCoordinateButton(pos);
 		}
 	}
 
 	private void createCoordinateButton(Coordinate pos) {
-		CoordinateButton button = new CoordinateButton(pos, true);
+		CoordinateButton button = new CoordinateButton(pos);
+		int x = DEFAULT_WIDTH / 2
+				+ X_OFFSET * pos.getY()
+				+ X_SECONDARY_OFFSET * (pos.getX() + pos.getZ()) - 10;
+		int y = DEFAULT_HEIGHT / 2
+				- pos.getX() * Y_OFFSET
+				+ pos.getZ() * Y_OFFSET - 10;
+		button.setBounds(x, y, 20, 20);
 		buttons.add(button);
 		this.add(button);
+	}
+
+	/**
+	 * Subroutine to show all the buttons in the coordinate grid.
+	 */
+	public void showCornerButtons() {
+		for (CoordinateButton button : buttons) {
+			button.setVisible(true);
+		}
+	}
+
+	/**
+	 * Subroutine to hide all the buttons in the coordinate grid.
+	 */
+	public void hideCornerButtons() {
+		for (CoordinateButton button : buttons) {
+			button.setVisible(false);
+		}
 	}
 }

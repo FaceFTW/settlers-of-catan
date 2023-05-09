@@ -98,7 +98,8 @@ public class CatanWindow {
 		}
 		sidebarPanel.add(playerViewPanel, constraints);
 
-		this.boardPanel = new BoardPanel();
+		this.boardPanel = new BoardPanel(game);
+		this.boardPanel.hideCornerButtons();
 		frame.add(boardPanel, BorderLayout.CENTER);
 		label = new JLabel(getString("selectAction"));
 		frame.add(label, BorderLayout.NORTH);
@@ -127,10 +128,12 @@ public class CatanWindow {
 
 		buildRoadButton.addActionListener(e -> {
 			this.cancelButton.setEnabled(true);
+			this.boardPanel.showCornerButtons();
 			gameActionThread = new Thread(() -> {
 				buildRoadAction();
 				update();
 				this.cancelButton.setEnabled(false);
+				this.boardPanel.hideCornerButtons();
 			});
 			gameActionThread.start();
 
@@ -139,10 +142,12 @@ public class CatanWindow {
 
 		buildSettlementButton.addActionListener(e -> {
 			this.cancelButton.setEnabled(true);
+			this.boardPanel.showCornerButtons();
 			gameActionThread = new Thread(() -> {
 				buildSettlementAction();
 				update();
 				this.cancelButton.setEnabled(false);
+				this.boardPanel.hideCornerButtons();
 			});
 			gameActionThread.start();
 		});
@@ -150,10 +155,12 @@ public class CatanWindow {
 
 		upgradeSettlementButton.addActionListener(e -> {
 			this.cancelButton.setEnabled(true);
+			this.boardPanel.showCornerButtons();
 			gameActionThread = new Thread(() -> {
 				upgradeSettlementAction();
 				update();
 				this.cancelButton.setEnabled(false);
+				this.boardPanel.hideCornerButtons();
 			});
 			gameActionThread.start();
 		});
@@ -190,11 +197,14 @@ public class CatanWindow {
 		}
 
 		devPanel.update();
+		boardPanel.repaint();
 
 		this.currentTurnLabel.setText(getString("currentTurn", game.getTurn()));
 	}
 
 	private void updateCoordinateButtonStates(int count) {
+		this.pos1 = null;
+		this.pos2 = null;
 		this.latch = new CountDownLatch(count);
 		for (CoordinateButton button : boardPanel.getButtons()) {
 			button.addActionListener(e -> {
@@ -222,9 +232,9 @@ public class CatanWindow {
 			success = game.buildRoad(game.getTurn(), pos1, pos2);
 			if (!success) {
 				this.label.setText(getString("invalidRoad"));
-				this.pos1 = null;
-				this.pos2 = null;
 			}
+			this.pos1 = null;
+			this.pos2 = null;
 		}
 	}
 
@@ -262,10 +272,6 @@ public class CatanWindow {
 				this.pos1 = null;
 			}
 		}
-	}
-
-	private void createDeveloperPanel() {
-
 	}
 
 }

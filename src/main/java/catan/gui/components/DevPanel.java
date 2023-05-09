@@ -83,5 +83,8 @@ public class DevPanel extends JPanel {
 		for (Road s : gameRef.getBoard().getRoads()) {
 			roadList.append(s.toString() + "\n");
 		}
+
+		//yucky
+		this.getParent().repaint();
 	}
 }
