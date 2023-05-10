@@ -249,7 +249,7 @@ public class Game {
 		int resourceCount = p.getResourceCount(toTrade);
 		int neededAmmount = p.getTradeValues().get(toTrade);
 
-		if (neededAmmount > resourceCount) {
+		if (neededAmmount > resourceCount || toTrade == toRecieve) {
 			return false;
 		}
 

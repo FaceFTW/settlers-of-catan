@@ -42,4 +42,11 @@ public class BankExchangeTests {
         assertEquals(p2.getResourceCount(ResourceType.ORE), 1);
         assertEquals(p2.getResourceCount(ResourceType.WOOD), 1);
     }
+
+    @Test void testBankExchange_triesToTradeBrickForBrick_returnsFalse() {
+        Game game = new Game();
+        Player p3 = game.getPlayer(3);
+        p3.modifyResource(ResourceType.BRICK, 4);
+        assertFalse(game.doBankExchange(3, ResourceType.BRICK, ResourceType.BRICK));
+    }
 }
