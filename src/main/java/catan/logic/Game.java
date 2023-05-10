@@ -245,7 +245,18 @@ public class Game {
 	// CHECKSTYLE:ON: checkstyle:magicnumber
 
 	public boolean doBankExchange(int playerID, ResourceType toTrade, ResourceType toRecieve) {
-		return false;
+		Player p = getPlayer(playerID);
+		int resourceCount = p.getResourceCount(toTrade);
+		int neededAmmount = p.getTradeValues().get(toTrade);
+
+		if (neededAmmount > resourceCount) {
+			return false;
+		}
+
+		p.modifyResource(toTrade, -neededAmmount);
+		p.modifyResource(toRecieve, 1);
+
+		return true;
 	}
 
 	// **************************************************

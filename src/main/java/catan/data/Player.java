@@ -1,6 +1,7 @@
 package catan.data;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -112,6 +113,13 @@ public class Player {
 	}
 
 	/**
+	 * @return the map that defines what a player can trade with
+	 */
+	public Map<ResourceType, Integer> getTradeValues() {
+		return this.tradeValues;
+	}
+
+	/**
 	 * @return The amount of development cards a player posesses
 	 */
 	public int getDevelopmentCardCount(DevelopmentCard card) {
@@ -165,6 +173,4 @@ public class Player {
 	public void setInternalVictoryPoints(int amount) {
 		internalVictoryPoints = amount;
 	}
-
-
 }
