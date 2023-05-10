@@ -162,6 +162,16 @@ public class Game {
 							case BRICK:
 								p.updateTradeValue(ResourceType.BRICK, 2);
 								break;
+							case WOOD:
+								p.updateTradeValue(ResourceType.WOOD, 2);
+								break;
+							case DESERT:
+								p.updateTradeValue(ResourceType.WOOD, 3);
+								p.updateTradeValue(ResourceType.BRICK, 3);
+								p.updateTradeValue(ResourceType.SHEEP, 3);
+								p.updateTradeValue(ResourceType.ORE, 3);
+								p.updateTradeValue(ResourceType.WHEAT, 3);
+
 						}
 					}
 				}

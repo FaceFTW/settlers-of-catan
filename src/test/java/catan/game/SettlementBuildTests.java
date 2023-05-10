@@ -396,5 +396,59 @@ public class SettlementBuildTests {
 		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.BRICK));
 	}
 
+	@Test
+	void buildSettlement_onTwoToOneWoodPort_playerHasImprovedWoodTrade() {
+		List<Player> player = createPlayerWithSettlementResources();
+		Board b = EasyMock.mock(Board.class);
+
+		List<Settlement> settlements = new ArrayList<>();
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(-1, -2, 0), new Coordinate(-1, -3, 0), 1));
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+
+		b.createNewSettlement(new Coordinate(-1, -3, 0), 1);
+		EasyMock.expectLastCall();
+
+		EasyMock.replay(b);
+
+		Game game = new Game(b, player);
+
+		Coordinate c = new Coordinate(-1, -3, 0);
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+
+		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.WOOD));
+	}
+
+	@Test
+	void buildSettlement_onThreeToOneWoodPort_playerHasImprovedTrades() {
+		List<Player> player = createPlayerWithSettlementResources();
+		Board b = EasyMock.mock(Board.class);
+
+		List<Settlement> settlements = new ArrayList<>();
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(3, 1, 0), new Coordinate(3, 2, 0), 1));
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+
+		b.createNewSettlement(new Coordinate(3, 2, 0), 1);
+		EasyMock.expectLastCall();
+
+		EasyMock.replay(b);
+
+		Game game = new Game(b, player);
+
+		Coordinate c = new Coordinate(3, 2, 0);
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WOOD));
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.BRICK));
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.ORE));
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.SHEEP));
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WHEAT));
+	}
+
 
 }

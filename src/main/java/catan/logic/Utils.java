@@ -119,7 +119,7 @@ public class Utils {
 			ResourceType.ORE,
 	};
 
-	public static final int DEFAULT_TRADE_VALUE = 4;
+
 	public static final Coordinate[] TILES_SPIRAL_LOCATION = {
 			new Coordinate(-2, 0, 2),
 			new Coordinate(0, 0, 3),
@@ -165,6 +165,10 @@ public class Utils {
 		PORT_MAP.put(new Coordinate(0, -3, -2), ResourceType.DESERT);
 	}
 	// CHECKSTYLE:ON: checkstyle:magicnumber
+
+	public static final int THREE_TO_ONE_PORT_REQUIREMENT = 3;
+	public static final int TWO_TO_ONE_PORT_REQUIREMENT = 2;
+	public static final int DEFAULT_PORT_REQUIREMENT = 4;
 
 	public static final int[] TILES_ROLL_NUMBERS = {
 			5,

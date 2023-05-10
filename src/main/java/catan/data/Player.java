@@ -38,11 +38,11 @@ public class Player {
 			developmentCards.put(card, 0);
 		}
 		this.tradeValues = new HashMap<>();
-		this.tradeValues.put(ResourceType.BRICK, Utils.DEFAULT_TRADE_VALUE);
-		this.tradeValues.put(ResourceType.WOOD, Utils.DEFAULT_TRADE_VALUE);
-		this.tradeValues.put(ResourceType.WHEAT, Utils.DEFAULT_TRADE_VALUE);
-		this.tradeValues.put(ResourceType.SHEEP, Utils.DEFAULT_TRADE_VALUE);
-		this.tradeValues.put(ResourceType.ORE, Utils.DEFAULT_TRADE_VALUE);
+		this.tradeValues.put(ResourceType.BRICK, Utils.DEFAULT_PORT_REQUIREMENT);
+		this.tradeValues.put(ResourceType.WOOD, Utils.DEFAULT_PORT_REQUIREMENT);
+		this.tradeValues.put(ResourceType.WHEAT, Utils.DEFAULT_PORT_REQUIREMENT);
+		this.tradeValues.put(ResourceType.SHEEP, Utils.DEFAULT_PORT_REQUIREMENT);
+		this.tradeValues.put(ResourceType.ORE, Utils.DEFAULT_PORT_REQUIREMENT);
 	}
 
 	/**
