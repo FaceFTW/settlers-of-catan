@@ -96,20 +96,24 @@ public class CatanWindow {
 		sidebarPanel.add(playerViewPanel, constraints);
 
 		this.boardPanel = new BoardPanel(game);
+		for (CoordinateButton button : boardPanel.getButtons()) {
+			if (button.getActionListeners().length == 0) {
+				button.addActionListener(e -> {
+					if (pos1 == null) {
+						pos1 = button.getCoordinate();
+						this.label.setText(getString("selectSecondCoord"));
+					} else if (pos2 == null) {
+						pos2 = button.getCoordinate();
+					}
+					latch.countDown();
+				});
+			}
+		}
 		this.boardPanel.hideCornerButtons();
 		frame.add(boardPanel, BorderLayout.CENTER);
+
 		label = new JLabel(getString("selectAction"));
 		frame.add(label, BorderLayout.NORTH);
-
-		cancelButton.addActionListener(e -> {
-			if (gameActionThread != null) {
-				label.setText(getString("cancelledAction"));
-				this.pos1 = null;
-				this.pos2 = null;
-				gameActionThread.interrupt();
-			}
-		});
-		cancelButton.setEnabled(false);
 
 		frame.add(sidebarPanel, BorderLayout.EAST);
 
@@ -137,13 +141,29 @@ public class CatanWindow {
 		actionsPanel.add(exchangeResourcesButton);
 
 		this.endTurnButton.addActionListener(e -> {
-			game.nextTurn();
-			update();
+			gameActionThread = new Thread(() -> {
+				endTurnAction();
+			});
+			gameActionThread.start();
 		});
 		actionsPanel.add(endTurnButton);
 
+		rollDieButton.addActionListener(e -> {
+			dieRoll = game.rollDie();
+			latch.countDown(); // Latch used to trigger remaining transition
+		});
+		rollDieButton.setEnabled(false);
 		actionsPanel.add(rollDieButton);
 
+		cancelButton.addActionListener(e -> {
+			if (gameActionThread != null) {
+				label.setText(getString("cancelledAction"));
+				this.pos1 = null;
+				this.pos2 = null;
+				gameActionThread.interrupt();
+			}
+		});
+		cancelButton.setEnabled(false);
 		actionsPanel.add(cancelButton);
 	}
 
@@ -151,34 +171,13 @@ public class CatanWindow {
 		for (PlayerViewComponent playerView : playerViews) {
 			playerView.update();
 		}
-
 		devPanel.update();
 		boardPanel.repaint();
-
 		this.currentTurnLabel.setText(getString("currentTurn", game.getTurn()));
 	}
 
-	private void updateCoordinateButtonStates(int count) {
-		this.pos1 = null;
-		this.pos2 = null;
-		this.latch = new CountDownLatch(count);
-		for (CoordinateButton button : boardPanel.getButtons()) {
-			if (button.getActionListeners().length == 0) {
-				button.addActionListener(e -> {
-					if (pos1 == null) {
-						pos1 = button.getCoordinate();
-						this.label.setText(getString("selectSecondCoord"));
-					} else if (pos2 == null) {
-						pos2 = button.getCoordinate();
-					}
-					latch.countDown();
-				});
-			}
-		}
-	}
-
 	//////////////////////////////////////////////
-	// Utilities For ActionListeners
+	// Utilities - ActionListeners & Game Actions
 	//////////////////////////////////////////////
 	/**
 	 * Sets the ActionListener for a button to run the given game action
@@ -205,6 +204,12 @@ public class CatanWindow {
 		});
 	}
 
+	private void regenActionLatch(int count) {
+		this.pos1 = null;
+		this.pos2 = null;
+		this.latch = new CountDownLatch(count);
+	}
+
 	//////////////////////////////////////////////
 	// Game Actions - Run in separate thread
 	//////////////////////////////////////////////
@@ -212,7 +217,7 @@ public class CatanWindow {
 		boolean success = false;
 		this.label.setText(getString("selectFirstCoord"));
 		while (!success) {
-			updateCoordinateButtonStates(2);
+			regenActionLatch(2);
 			try {
 				latch.await();
 			} catch (InterruptedException e) {
@@ -233,7 +238,7 @@ public class CatanWindow {
 		boolean success = false;
 		this.label.setText(getString("selectFirstCoord"));
 		while (!success) {
-			updateCoordinateButtonStates(1);
+			regenActionLatch(1);
 			try {
 				latch.await();
 			} catch (InterruptedException e) {
@@ -253,7 +258,7 @@ public class CatanWindow {
 		boolean success = false;
 		this.label.setText(getString("selectFirstCoord"));
 		while (!success) {
-			updateCoordinateButtonStates(1);
+			regenActionLatch(1);
 			try {
 				latch.await();
 			} catch (InterruptedException e) {
@@ -269,19 +274,42 @@ public class CatanWindow {
 		this.label.setText(getString("upgradeSuccessful"));
 	}
 
-	private void rollDieAction() {
-		boolean occurred = false;
+	private void endTurnAction() {
+		game.nextTurn();
+
+		// Disable all buttons except roll die
+		this.buildRoadButton.setEnabled(false);
+		this.buildSettlementButton.setEnabled(false);
+		this.upgradeSettlementButton.setEnabled(false);
+		this.requestTradeButton.setEnabled(false);
+		this.exchangeResourcesButton.setEnabled(false);
+		this.endTurnButton.setEnabled(false);
+		this.cancelButton.setEnabled(false);
+		this.rollDieButton.setEnabled(true);
 		this.label.setText(getString("rollDie", game.getTurn()));
+
+		regenActionLatch(1);
+		boolean occurred = false;
 		while (!occurred) {
 			try {
 				latch.await();
+				occurred = true;
 			} catch (InterruptedException e) {
 				return;
 			}
-			occurred = true;
 		}
-		this.label.setText(getString("rolledDie", game.getTurn(), this.dieRoll));
+		this.label.setText(getString("rollResult", game.getTurn(), this.dieRoll));
 		game.distributeResources(dieRoll);
+		update();
+
+		// Enable all buttons except roll die
+		this.buildRoadButton.setEnabled(true);
+		this.buildSettlementButton.setEnabled(true);
+		this.upgradeSettlementButton.setEnabled(true);
+		this.requestTradeButton.setEnabled(true);
+		this.exchangeResourcesButton.setEnabled(true);
+		this.endTurnButton.setEnabled(true);
+		this.rollDieButton.setEnabled(false);
 	}
 
 	//////////////////////////////////////////////
