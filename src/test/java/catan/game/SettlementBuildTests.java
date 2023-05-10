@@ -371,5 +371,30 @@ public class SettlementBuildTests {
 	}
 
 
+	@Test
+	void buildSettlement_onTwoToOneBrickPort_playerHasImprovedBrickTrade() {
+		List<Player> player = createPlayerWithSettlementResources();
+		Board b = EasyMock.mock(Board.class);
+
+		List<Settlement> settlements = new ArrayList<>();
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(-2, -1, 0), new Coordinate(-3, -1, 0), 1));
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+
+		b.createNewSettlement(new Coordinate(-3, -1 ,0), 1);
+		EasyMock.expectLastCall();
+
+		EasyMock.replay(b);
+
+		Game game = new Game(b, player);
+
+		Coordinate c = new Coordinate(-3, -1, 0);
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+
+		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.BRICK));
+	}
+
 
 }

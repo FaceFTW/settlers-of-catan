@@ -157,8 +157,11 @@ public class Game {
 								p.updateTradeValue(ResourceType.ORE, 2);
 								break;
 							case SHEEP:
-                                p.updateTradeValue(ResourceType.ORE, 2);
+                                p.updateTradeValue(ResourceType.SHEEP, 2);
                                 break;
+							case BRICK:
+								p.updateTradeValue(ResourceType.BRICK, 2);
+								break;
 						}
 					}
 				}
