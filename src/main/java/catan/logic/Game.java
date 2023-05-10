@@ -244,6 +244,10 @@ public class Game {
 	}
 	// CHECKSTYLE:ON: checkstyle:magicnumber
 
+	public boolean doBankExchange(int playerID, ResourceType toTrade, ResourceType toRecieve) {
+		return false;
+	}
+
 	// **************************************************
 	// Getters and Setters
 	// **************************************************

@@ -19,6 +19,7 @@ public class Player {
 //	private int knightsPlayed;
 	private int internalVictoryPoints;
 	private Map<DevelopmentCard, Integer> developmentCards;
+	private Map<ResourceType, Integer> tradeValues;
 
 	public Player(final int id) {
 		this.playerId = id;
@@ -34,6 +35,12 @@ public class Player {
 		for (DevelopmentCard card : DevelopmentCard.values()) {
 			developmentCards.put(card, 0);
 		}
+		this.tradeValues = new HashMap<>();
+		this.tradeValues.put(ResourceType.BRICK, 4);
+		this.tradeValues.put(ResourceType.WOOD, 4);
+		this.tradeValues.put(ResourceType.WHEAT, 4);
+		this.tradeValues.put(ResourceType.SHEEP, 4);
+		this.tradeValues.put(ResourceType.ORE, 4);
 	}
 
 	/**
@@ -92,6 +99,16 @@ public class Player {
 			default:
 				break;
 		}
+	}
+
+	/**
+	 * Updates how many of a resource are needed to do a trade.
+	 *
+	 * @param type the resource that can be traded
+	 * @param value how many it takes to trade
+	 */
+	public void updateTradeValue(ResourceType type, int value) {
+		this.tradeValues.put(type, value);
 	}
 
 	/**
