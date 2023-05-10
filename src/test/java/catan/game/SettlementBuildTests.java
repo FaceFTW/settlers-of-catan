@@ -450,5 +450,89 @@ public class SettlementBuildTests {
 		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WHEAT));
 	}
 
+	@Test
+	void buildSettlement_3To1ClaimedBefore2To1_playerHasImprovedTrades() {
+		List<Player> player = createPlayerWithSettlementResources();
 
+		player.get(0).modifyResource(ResourceType.SHEEP, 1);
+		player.get(0).modifyResource(ResourceType.WHEAT, 1);
+		player.get(0).modifyResource(ResourceType.BRICK, 1);
+		player.get(0).modifyResource(ResourceType.WOOD, 1);
+
+		Board b = EasyMock.mock(Board.class);
+
+		List<Settlement> settlements = new ArrayList<>();
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(3, 1, 0), new Coordinate(3, 2, 0), 1));
+		roads.add(new Road(new Coordinate(2, 0, -1), new Coordinate(3, 0, -1), 1));
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+
+		b.createNewSettlement(new Coordinate(3, 2, 0), 1);
+		EasyMock.expectLastCall();
+
+		b.createNewSettlement(new Coordinate(3, 0, -1), 1);
+		EasyMock.expectLastCall();
+
+		EasyMock.replay(b);
+
+		Game game = new Game(b, player);
+
+		Coordinate c1 = new Coordinate(3, 2, 0);
+		Coordinate c2 = new Coordinate(3, 0, -1);
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c1));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c2));
+
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WOOD));
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.BRICK));
+		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.ORE));
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.SHEEP));
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WHEAT));
+	}
+
+	@Test
+	void buildSettlement_2To1ClaimedBefore3To1_playerHasImprovedTrades() {
+		List<Player> player = createPlayerWithSettlementResources();
+
+		player.get(0).modifyResource(ResourceType.SHEEP, 1);
+		player.get(0).modifyResource(ResourceType.WHEAT, 1);
+		player.get(0).modifyResource(ResourceType.BRICK, 1);
+		player.get(0).modifyResource(ResourceType.WOOD, 1);
+
+		Board b = EasyMock.mock(Board.class);
+
+		List<Settlement> settlements = new ArrayList<>();
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(3, 1, 0), new Coordinate(3, 2, 0), 1));
+		roads.add(new Road(new Coordinate(2, 0, -1), new Coordinate(3, 0, -1), 1));
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+
+		b.createNewSettlement(new Coordinate(3, 2, 0), 1);
+		EasyMock.expectLastCall();
+
+		b.createNewSettlement(new Coordinate(3, 0, -1), 1);
+		EasyMock.expectLastCall();
+
+		EasyMock.replay(b);
+
+		Game game = new Game(b, player);
+
+		Coordinate c1 = new Coordinate(3, 2, 0);
+		Coordinate c2 = new Coordinate(3, 0, -1);
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c2));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c1));
+
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WOOD));
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.BRICK));
+		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.ORE));
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.SHEEP));
+		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WHEAT));
+	}
 }

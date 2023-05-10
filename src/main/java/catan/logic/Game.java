@@ -166,12 +166,21 @@ public class Game {
 								p.updateTradeValue(ResourceType.WOOD, 2);
 								break;
 							case DESERT:
-								p.updateTradeValue(ResourceType.WOOD, 3);
-								p.updateTradeValue(ResourceType.BRICK, 3);
-								p.updateTradeValue(ResourceType.SHEEP, 3);
-								p.updateTradeValue(ResourceType.ORE, 3);
-								p.updateTradeValue(ResourceType.WHEAT, 3);
-
+								if (p.getTradeValues().get(ResourceType.WOOD) > 3) {
+									p.updateTradeValue(ResourceType.WOOD, 3);
+								}
+								if (p.getTradeValues().get(ResourceType.BRICK) > 3) {
+									p.updateTradeValue(ResourceType.BRICK, 3);
+								}
+								if (p.getTradeValues().get(ResourceType.SHEEP) > 3) {
+									p.updateTradeValue(ResourceType.SHEEP, 3);
+								}
+								if (p.getTradeValues().get(ResourceType.ORE) > 3) {
+									p.updateTradeValue(ResourceType.ORE, 3);
+								}
+								if (p.getTradeValues().get(ResourceType.WHEAT) > 3) {
+									p.updateTradeValue(ResourceType.WHEAT, 3);
+								}
 						}
 					}
 				}
