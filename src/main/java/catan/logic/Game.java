@@ -48,6 +48,7 @@ public class Game {
 	public Game(Board b, List<Player> p) {
 		this.board = b;
 		this.players = p;
+		this.random = new Random();
 	}
 
 	// **************************************************
@@ -243,6 +244,15 @@ public class Game {
 		return false;
 	}
 	// CHECKSTYLE:ON: checkstyle:magicnumber
+
+	/**
+	 * Distributes resources based on settlements in play and the roll
+	 *
+	 * @param roll the die roll that should indicate settlement payouts
+	 */
+	public void distributeResources(int roll) {
+		board.distributeResources(this.players, roll);
+	}
 
 	// **************************************************
 	// Getters and Setters
