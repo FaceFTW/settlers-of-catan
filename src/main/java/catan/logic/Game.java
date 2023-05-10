@@ -152,6 +152,13 @@ public class Game {
 						switch (Utils.PORT_MAP.get(c)) {
 							case WHEAT:
 								p.updateTradeValue(ResourceType.WHEAT, 2);
+								break;
+							case ORE:
+								p.updateTradeValue(ResourceType.ORE, 2);
+								break;
+							case SHEEP:
+                                p.updateTradeValue(ResourceType.ORE, 2);
+                                break;
 						}
 					}
 				}

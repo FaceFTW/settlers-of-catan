@@ -345,4 +345,31 @@ public class SettlementBuildTests {
 		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.ORE));
 	}
 
+	@Test
+	void buildSettlement_onTwoToOneSheepPort_playerHasImprovedSheepTrade() {
+		List<Player> player = createPlayerWithSettlementResources();
+		Board b = EasyMock.mock(Board.class);
+
+		List<Settlement> settlements = new ArrayList<>();
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(0, 2, 1), new Coordinate(0, 3, 1), 1));
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+
+		b.createNewSettlement(new Coordinate(0, 3, 1), 1);
+		EasyMock.expectLastCall();
+
+		EasyMock.replay(b);
+
+		Game game = new Game(b, player);
+
+		Coordinate c = new Coordinate(0, 3, 1);
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+
+		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.SHEEP));
+	}
+
+
+
 }
