@@ -32,4 +32,14 @@ public class BankExchangeTests {
         assertEquals(p1.getResourceCount(ResourceType.SHEEP), 0);
         assertEquals(p1.getResourceCount(ResourceType.ORE), 1);
     }
+
+    @Test
+    public void testBankExchange_canTradeOreWithExtraForWood_returnsTrue() {
+        Game game = new Game();
+        Player p2 = game.getPlayer(2);
+        p2.modifyResource(ResourceType.ORE, 5);
+        assertTrue(game.doBankExchange(2, ResourceType.ORE, ResourceType.WOOD));
+        assertEquals(p2.getResourceCount(ResourceType.ORE), 1);
+        assertEquals(p2.getResourceCount(ResourceType.WOOD), 1);
+    }
 }
