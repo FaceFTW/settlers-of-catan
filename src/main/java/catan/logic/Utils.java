@@ -4,6 +4,7 @@ import catan.data.ResourceType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Utils {
@@ -118,6 +119,7 @@ public class Utils {
 			ResourceType.ORE,
 	};
 
+	public static final int DEFAULT_TRADE_VALUE = 4;
 	public static final Coordinate[] TILES_SPIRAL_LOCATION = {
 			new Coordinate(-2, 0, 2),
 			new Coordinate(0, 0, 3),
@@ -139,6 +141,30 @@ public class Utils {
 			new Coordinate(-1, -1, 0),
 			new Coordinate(0, 0, 0),
 	};
+
+	// CHECKSTYLE:OFF: checkstyle:magicnumber
+	public static final HashMap<Coordinate, ResourceType> PORT_MAP = new HashMap<>();
+	static {
+		PORT_MAP.put(new Coordinate(0, 0, -4), ResourceType.WHEAT);
+		PORT_MAP.put(new Coordinate(1, 0, -3), ResourceType.WHEAT);
+		PORT_MAP.put(new Coordinate(3, 0, -1), ResourceType.ORE);
+		PORT_MAP.put(new Coordinate(4, 0, 0), ResourceType.ORE);
+		PORT_MAP.put(new Coordinate(3, 2, 0), ResourceType.DESERT);
+		PORT_MAP.put(new Coordinate(2, 3, 0), ResourceType.DESERT);
+		PORT_MAP.put(new Coordinate(0, 4, 0), ResourceType.SHEEP);
+		PORT_MAP.put(new Coordinate(0, 3, 1), ResourceType.SHEEP);
+		PORT_MAP.put(new Coordinate(0, 1, 3), ResourceType.DESERT);
+		PORT_MAP.put(new Coordinate(0, 0, 4), ResourceType.DESERT);
+		PORT_MAP.put(new Coordinate(-3, 0, 2), ResourceType.DESERT);
+		PORT_MAP.put(new Coordinate(-2, 0, 3), ResourceType.DESERT);
+		PORT_MAP.put(new Coordinate(-3, -1, 0), ResourceType.BRICK);
+		PORT_MAP.put(new Coordinate(-4, 0, 0), ResourceType.BRICK);
+		PORT_MAP.put(new Coordinate(0, -4, 0), ResourceType.WOOD);
+		PORT_MAP.put(new Coordinate(-1, -3, 0), ResourceType.WOOD);
+		PORT_MAP.put(new Coordinate(0, -2, -3), ResourceType.DESERT);
+		PORT_MAP.put(new Coordinate(0, -3, -2), ResourceType.DESERT);
+	}
+	// CHECKSTYLE:ON: checkstyle:magicnumber
 
 	public static final int[] TILES_ROLL_NUMBERS = {
 			5,
@@ -240,15 +266,15 @@ public class Utils {
 	 * 6 hexes around it.
 	 * If the coordinate is for a vertex, this will return the 3 hexes around it.
 	 *
-	 * @return
+	 * @return the coordinates that are orthogonally adjacent to the input
 	 */
 	public static Coordinate[] getBoardAdjacents(final Coordinate origin) {
 		Coordinate[] baseAdjacents = Utils.getAdjacent(origin);
 		for (int i = 0; i < baseAdjacents.length; i++) {
 			baseAdjacents[i] = Utils.resolveToValid(baseAdjacents[i]);
 		}
-		List<Coordinate> adjacents = new ArrayList<Coordinate>(Arrays.asList(baseAdjacents));
-		List<Coordinate> tileCoords = new ArrayList<Coordinate>(Arrays.asList(TILES_SPIRAL_LOCATION));
+		List<Coordinate> adjacents = new ArrayList<>(Arrays.asList(baseAdjacents));
+		List<Coordinate> tileCoords = new ArrayList<>(Arrays.asList(TILES_SPIRAL_LOCATION));
 		adjacents.removeIf(c -> !Utils.isRealCoordinate(c) || tileCoords.contains(c));
 
 		return adjacents.toArray(new Coordinate[adjacents.size()]);

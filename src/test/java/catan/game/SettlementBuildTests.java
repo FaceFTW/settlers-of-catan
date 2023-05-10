@@ -295,4 +295,54 @@ public class SettlementBuildTests {
 		EasyMock.verify(b);
 	}
 
+	@Test
+	void buildSettlement_onTwoToOneWheatPort_playerHasImprovedWheatTrade() {
+		List<Player> player = createPlayerWithSettlementResources();
+		Board b = EasyMock.mock(Board.class);
+
+		List<Settlement> settlements = new ArrayList<>();
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(1, 0, -2), new Coordinate(1, 0, -3), 1));
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+
+		b.createNewSettlement(new Coordinate(1, 0, -3), 1);
+		EasyMock.expectLastCall();
+
+		EasyMock.replay(b);
+
+		Game game = new Game(b, player);
+
+		Coordinate c = new Coordinate(1, 0, -3);
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+
+		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.WHEAT));
+	}
+
+	@Test
+	void buildSettlement_onTwoToOneOrePort_playerHasImprovedOreTrade() {
+		List<Player> player = createPlayerWithSettlementResources();
+		Board b = EasyMock.mock(Board.class);
+
+		List<Settlement> settlements = new ArrayList<>();
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+
+		List<Road> roads = new ArrayList<>();
+		roads.add(new Road(new Coordinate(2, 0, -1), new Coordinate(3, 0, -1), 1));
+		EasyMock.expect(b.getRoads()).andReturn(roads);
+
+		b.createNewSettlement(new Coordinate(3, 0, -1), 1);
+		EasyMock.expectLastCall();
+
+		EasyMock.replay(b);
+
+		Game game = new Game(b, player);
+
+		Coordinate c = new Coordinate(3, 0, -1);
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+
+		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.ORE));
+	}
+
 }

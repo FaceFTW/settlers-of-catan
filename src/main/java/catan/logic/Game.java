@@ -146,6 +146,16 @@ public class Game {
 				p.modifyResource(ResourceType.WHEAT, -1);
 				p.setVictoryPoints(p.getVictoryPoints() + 1);
 				p.setInternalVictoryPoints(p.getInternalVictoryPoints() + 1);
+
+				for (Coordinate pc: Utils.PORT_MAP.keySet()) {
+					if (c.equals(pc)) {
+						switch (Utils.PORT_MAP.get(c)) {
+							case WHEAT:
+								p.updateTradeValue(ResourceType.WHEAT, 2);
+						}
+					}
+				}
+
 				return true;
 			}
 		}
@@ -244,17 +254,24 @@ public class Game {
 	}
 	// CHECKSTYLE:ON: checkstyle:magicnumber
 
-	public boolean doBankExchange(int playerID, ResourceType toTrade, ResourceType toRecieve) {
+	/**
+	 * Allows players to trade in resources with the bank.
+	 * @param playerID The player that is trading
+	 * @param toTrade The resource that the player is trading away
+	 * @param toReceive The resource that the player is to receive
+	 * @return boolean indicating whether the trade was successful
+	 */
+	public boolean doBankExchange(int playerID, ResourceType toTrade, ResourceType toReceive) {
 		Player p = getPlayer(playerID);
 		int resourceCount = p.getResourceCount(toTrade);
 		int neededAmmount = p.getTradeValues().get(toTrade);
 
-		if (neededAmmount > resourceCount || toTrade == toRecieve) {
+		if (neededAmmount > resourceCount || toTrade == toReceive) {
 			return false;
 		}
 
 		p.modifyResource(toTrade, -neededAmmount);
-		p.modifyResource(toRecieve, 1);
+		p.modifyResource(toReceive, 1);
 
 		return true;
 	}
