@@ -28,6 +28,7 @@ public class CatanWindow {
 	public static final int DEFAULT_HEIGHT = 600;
 	private Coordinate pos1 = null;
 	private Coordinate pos2 = null;
+	private int dieRoll = 0;
 
 	// Synchronization Objects - BE CAREFUL HERE
 	private Thread gameActionThread; // Null by default, set to the thread that is running the game action
@@ -47,7 +48,7 @@ public class CatanWindow {
 	private JButton requestTradeButton = new JButton(getString("requestTrade"));
 	private JButton exchangeResourcesButton = new JButton(getString("exchangeResources"));
 	private JButton rollDieButton = new JButton(getString("rollDie"));
-	private JButton cancelButton = new JButton("Cancel");
+	private JButton cancelButton = new JButton(getString("cancelButton"));
 
 	private JPanel playerViewPanel = new JPanel();
 	private List<PlayerViewComponent> playerViews = new ArrayList<PlayerViewComponent>();
@@ -61,11 +62,8 @@ public class CatanWindow {
 		frame = new JFrame("Catan");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-
 		frame.setLayout(new BorderLayout());
-
 		game = new Game();
-
 		boardPanel = new BoardPanel(game);
 	}
 
@@ -125,44 +123,13 @@ public class CatanWindow {
 	private void setupActionsPanel() {
 		actionsPanel.setLayout(new GridLayout(4, 2));
 
-		buildRoadButton.addActionListener(e -> {
-			this.cancelButton.setEnabled(true);
-			this.boardPanel.showCornerButtons();
-			gameActionThread = new Thread(() -> {
-				buildRoadAction();
-				update();
-				this.cancelButton.setEnabled(false);
-				this.boardPanel.hideCornerButtons();
-			});
-			gameActionThread.start();
-
-		});
+		setCoordButtonAction(buildRoadButton, this::buildRoadAction);
 		actionsPanel.add(buildRoadButton);
 
-		buildSettlementButton.addActionListener(e -> {
-			this.cancelButton.setEnabled(true);
-			this.boardPanel.showCornerButtons();
-			gameActionThread = new Thread(() -> {
-				buildSettlementAction();
-				update();
-				this.cancelButton.setEnabled(false);
-				this.boardPanel.hideCornerButtons();
-			});
-			gameActionThread.start();
-		});
+		setCoordButtonAction(buildSettlementButton, this::buildSettlementAction);
 		actionsPanel.add(buildSettlementButton);
 
-		upgradeSettlementButton.addActionListener(e -> {
-			this.cancelButton.setEnabled(true);
-			this.boardPanel.showCornerButtons();
-			gameActionThread = new Thread(() -> {
-				upgradeSettlementAction();
-				update();
-				this.cancelButton.setEnabled(false);
-				this.boardPanel.hideCornerButtons();
-			});
-			gameActionThread.start();
-		});
+		setCoordButtonAction(upgradeSettlementButton, this::upgradeSettlementAction);
 		actionsPanel.add(upgradeSettlementButton);
 
 		actionsPanel.add(requestTradeButton);
@@ -178,16 +145,6 @@ public class CatanWindow {
 		actionsPanel.add(rollDieButton);
 
 		actionsPanel.add(cancelButton);
-
-	}
-
-	/**
-	 * Returns the game object, useful for extracting state information
-	 *
-	 * @return
-	 */
-	public Game getGame() {
-		return game;
 	}
 
 	private void update() {
@@ -220,6 +177,37 @@ public class CatanWindow {
 		}
 	}
 
+	//////////////////////////////////////////////
+	// Utilities For ActionListeners
+	//////////////////////////////////////////////
+	/**
+	 * Sets the ActionListener for a button to run the given game action
+	 * that uses the coordinate functionaltiy in a separate thread based on a
+	 * template.
+	 *
+	 * @param button The button to set the action for
+	 * @param action The action to run, use a method reference
+	 */
+	private void setCoordButtonAction(JButton button, Runnable action) {
+		button.addActionListener(e -> {
+			gameActionThread = new Thread(() -> {
+				// Pre Action Steps;
+				this.cancelButton.setEnabled(true);
+				this.boardPanel.showCornerButtons();
+				// Execute Action
+				action.run();
+				// Post Action Steps;
+				update();
+				this.cancelButton.setEnabled(false);
+				this.boardPanel.hideCornerButtons();
+			});
+			gameActionThread.start();
+		});
+	}
+
+	//////////////////////////////////////////////
+	// Game Actions - Run in separate thread
+	//////////////////////////////////////////////
 	private void buildRoadAction() {
 		boolean success = false;
 		this.label.setText(getString("selectFirstCoord"));
@@ -237,6 +225,8 @@ public class CatanWindow {
 			this.pos1 = null;
 			this.pos2 = null;
 		}
+
+		this.label.setText(getString("roadSuccessful"));
 	}
 
 	private void buildSettlementAction() {
@@ -255,6 +245,8 @@ public class CatanWindow {
 				this.pos1 = null;
 			}
 		}
+
+		this.label.setText(getString("settlementSuccessful"));
 	}
 
 	private void upgradeSettlementAction() {
@@ -273,6 +265,35 @@ public class CatanWindow {
 				this.pos1 = null;
 			}
 		}
+
+		this.label.setText(getString("upgradeSuccessful"));
+	}
+
+	private void rollDieAction() {
+		boolean occurred = false;
+		this.label.setText(getString("rollDie", game.getTurn()));
+		while (!occurred) {
+			try {
+				latch.await();
+			} catch (InterruptedException e) {
+				return;
+			}
+			occurred = true;
+		}
+		this.label.setText(getString("rolledDie", game.getTurn(), this.dieRoll));
+		game.distributeResources(dieRoll);
+	}
+
+	//////////////////////////////////////////////
+	// Getters/Setters
+	//////////////////////////////////////////////
+	/**
+	 * Returns the game object, useful for extracting state information
+	 *
+	 * @return
+	 */
+	public Game getGame() {
+		return game;
 	}
 
 }
