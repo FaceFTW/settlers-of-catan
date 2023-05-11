@@ -1,5 +1,7 @@
 package catan.data;
 
+import catan.logic.Utils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public class Player {
 //	private int knightsPlayed;
 	private int internalVictoryPoints;
 	private Map<DevelopmentCard, Integer> developmentCards;
+	private Map<ResourceType, Integer> tradeValues;
 
 	public Player(final int id) {
 		this.playerId = id;
@@ -34,6 +37,12 @@ public class Player {
 		for (DevelopmentCard card : DevelopmentCard.values()) {
 			developmentCards.put(card, 0);
 		}
+		this.tradeValues = new HashMap<>();
+		this.tradeValues.put(ResourceType.BRICK, Utils.DEFAULT_PORT_REQUIREMENT);
+		this.tradeValues.put(ResourceType.WOOD, Utils.DEFAULT_PORT_REQUIREMENT);
+		this.tradeValues.put(ResourceType.WHEAT, Utils.DEFAULT_PORT_REQUIREMENT);
+		this.tradeValues.put(ResourceType.SHEEP, Utils.DEFAULT_PORT_REQUIREMENT);
+		this.tradeValues.put(ResourceType.ORE, Utils.DEFAULT_PORT_REQUIREMENT);
 	}
 
 	/**
@@ -95,6 +104,23 @@ public class Player {
 	}
 
 	/**
+	 * Updates how many of a resource are needed to do a trade.
+	 *
+	 * @param type the resource that can be traded
+	 * @param value how many it takes to trade
+	 */
+	public void updateTradeValue(ResourceType type, int value) {
+		this.tradeValues.put(type, value);
+	}
+
+	/**
+	 * @return the map that defines what a player can trade with
+	 */
+	public Map<ResourceType, Integer> getTradeValues() {
+		return this.tradeValues;
+	}
+
+	/**
 	 * @return The amount of development cards a player posesses
 	 */
 	public int getDevelopmentCardCount(DevelopmentCard card) {
@@ -148,6 +174,4 @@ public class Player {
 	public void setInternalVictoryPoints(int amount) {
 		internalVictoryPoints = amount;
 	}
-
-
 }
