@@ -147,12 +147,59 @@ public class Game {
 				p.modifyResource(ResourceType.WHEAT, -1);
 				p.setVictoryPoints(p.getVictoryPoints() + 1);
 				p.setInternalVictoryPoints(p.getInternalVictoryPoints() + 1);
+
+				for (Coordinate pc: Utils.PORT_MAP.keySet()) {
+					if (c.equals(pc)) {
+						updateTradeValues(p, c);
+					}
+				}
+
 				return true;
 			}
 		}
 
 		return false;
 
+	}
+
+	private void updateTradeValues(Player p, Coordinate c) {
+		switch (Utils.PORT_MAP.get(c)) {
+			case WHEAT:
+				p.updateTradeValue(ResourceType.WHEAT, 2);
+				break;
+			case ORE:
+				p.updateTradeValue(ResourceType.ORE, 2);
+				break;
+			case SHEEP:
+				p.updateTradeValue(ResourceType.SHEEP, 2);
+				break;
+			case BRICK:
+				p.updateTradeValue(ResourceType.BRICK, 2);
+				break;
+			case WOOD:
+				p.updateTradeValue(ResourceType.WOOD, 2);
+				break;
+			case DESERT:
+				int portValue = Utils.THREE_TO_ONE_PORT_REQUIREMENT;
+				if (p.getTradeValues().get(ResourceType.WOOD) > portValue) {
+					p.updateTradeValue(ResourceType.WOOD, portValue);
+				}
+				if (p.getTradeValues().get(ResourceType.BRICK) > portValue) {
+					p.updateTradeValue(ResourceType.BRICK, portValue);
+				}
+				if (p.getTradeValues().get(ResourceType.SHEEP) > portValue) {
+					p.updateTradeValue(ResourceType.SHEEP, portValue);
+				}
+				if (p.getTradeValues().get(ResourceType.ORE) > portValue) {
+					p.updateTradeValue(ResourceType.ORE, portValue);
+				}
+				if (p.getTradeValues().get(ResourceType.WHEAT) > portValue) {
+					p.updateTradeValue(ResourceType.WHEAT, portValue);
+				}
+				break;
+			default:
+				break;
+		}
 	}
 
 	/**
@@ -252,6 +299,28 @@ public class Game {
 	 */
 	public void distributeResources(int roll) {
 		board.distributeResources(this.players, roll);
+  }
+    
+   /**
+	 * Allows players to trade in resources with the bank.
+	 * @param playerID The player that is trading
+	 * @param toTrade The resource that the player is trading away
+	 * @param toReceive The resource that the player is to receive
+	 * @return boolean indicating whether the trade was successful
+	 */
+	public boolean doBankExchange(int playerID, ResourceType toTrade, ResourceType toReceive) {
+		Player p = getPlayer(playerID);
+		int resourceCount = p.getResourceCount(toTrade);
+		int neededAmmount = p.getTradeValues().get(toTrade);
+
+		if (neededAmmount > resourceCount || toTrade == toReceive) {
+			return false;
+		}
+
+		p.modifyResource(toTrade, -neededAmmount);
+		p.modifyResource(toReceive, 1);
+
+		return true;
 	}
 
 	// **************************************************
