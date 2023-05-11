@@ -149,39 +149,7 @@ public class Game {
 
 				for (Coordinate pc: Utils.PORT_MAP.keySet()) {
 					if (c.equals(pc)) {
-						switch (Utils.PORT_MAP.get(c)) {
-							case WHEAT:
-								p.updateTradeValue(ResourceType.WHEAT, 2);
-								break;
-							case ORE:
-								p.updateTradeValue(ResourceType.ORE, 2);
-								break;
-							case SHEEP:
-                                p.updateTradeValue(ResourceType.SHEEP, 2);
-                                break;
-							case BRICK:
-								p.updateTradeValue(ResourceType.BRICK, 2);
-								break;
-							case WOOD:
-								p.updateTradeValue(ResourceType.WOOD, 2);
-								break;
-							case DESERT:
-								if (p.getTradeValues().get(ResourceType.WOOD) > 3) {
-									p.updateTradeValue(ResourceType.WOOD, 3);
-								}
-								if (p.getTradeValues().get(ResourceType.BRICK) > 3) {
-									p.updateTradeValue(ResourceType.BRICK, 3);
-								}
-								if (p.getTradeValues().get(ResourceType.SHEEP) > 3) {
-									p.updateTradeValue(ResourceType.SHEEP, 3);
-								}
-								if (p.getTradeValues().get(ResourceType.ORE) > 3) {
-									p.updateTradeValue(ResourceType.ORE, 3);
-								}
-								if (p.getTradeValues().get(ResourceType.WHEAT) > 3) {
-									p.updateTradeValue(ResourceType.WHEAT, 3);
-								}
-						}
+						updateTradeValues(p, c);
 					}
 				}
 
@@ -191,6 +159,46 @@ public class Game {
 
 		return false;
 
+	}
+
+	private void updateTradeValues(Player p, Coordinate c) {
+		switch (Utils.PORT_MAP.get(c)) {
+			case WHEAT:
+				p.updateTradeValue(ResourceType.WHEAT, 2);
+				break;
+			case ORE:
+				p.updateTradeValue(ResourceType.ORE, 2);
+				break;
+			case SHEEP:
+				p.updateTradeValue(ResourceType.SHEEP, 2);
+				break;
+			case BRICK:
+				p.updateTradeValue(ResourceType.BRICK, 2);
+				break;
+			case WOOD:
+				p.updateTradeValue(ResourceType.WOOD, 2);
+				break;
+			case DESERT:
+				int portValue = Utils.THREE_TO_ONE_PORT_REQUIREMENT;
+				if (p.getTradeValues().get(ResourceType.WOOD) > portValue) {
+					p.updateTradeValue(ResourceType.WOOD, portValue);
+				}
+				if (p.getTradeValues().get(ResourceType.BRICK) > portValue) {
+					p.updateTradeValue(ResourceType.BRICK, portValue);
+				}
+				if (p.getTradeValues().get(ResourceType.SHEEP) > portValue) {
+					p.updateTradeValue(ResourceType.SHEEP, portValue);
+				}
+				if (p.getTradeValues().get(ResourceType.ORE) > portValue) {
+					p.updateTradeValue(ResourceType.ORE, portValue);
+				}
+				if (p.getTradeValues().get(ResourceType.WHEAT) > portValue) {
+					p.updateTradeValue(ResourceType.WHEAT, portValue);
+				}
+				break;
+			default:
+				break;
+		}
 	}
 
 	/**
