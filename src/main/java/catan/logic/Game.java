@@ -48,6 +48,7 @@ public class Game {
 	public Game(Board b, List<Player> p) {
 		this.board = b;
 		this.players = p;
+		this.random = new Random();
 	}
 
 	// **************************************************
@@ -292,6 +293,15 @@ public class Game {
 	// CHECKSTYLE:ON: checkstyle:magicnumber
 
 	/**
+	 * Distributes resources based on settlements in play and the roll
+	 *
+	 * @param roll the die roll that should indicate settlement payouts
+	 */
+	public void distributeResources(int roll) {
+		board.distributeResources(this.players, roll);
+  }
+    
+   /**
 	 * Allows players to trade in resources with the bank.
 	 * @param playerID The player that is trading
 	 * @param toTrade The resource that the player is trading away
