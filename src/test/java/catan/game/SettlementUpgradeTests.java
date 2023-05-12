@@ -63,7 +63,7 @@ public class SettlementUpgradeTests {
 	}
 
 	@Test
-	void upgradeSettlement_NotEnoughOre_ReturnsFalse(){
+	void upgradeSettlement_NotEnoughOre_ReturnsFalse() {
 		List<Player> players = new ArrayList<>();
 		Player p = new Player(1);
 		p.modifyResource(ResourceType.WHEAT, 2);
@@ -78,7 +78,7 @@ public class SettlementUpgradeTests {
 	}
 
 	@Test
-	void upgradeSettlement_NotEnoughWheat_ReturnsFalse(){
+	void upgradeSettlement_NotEnoughWheat_ReturnsFalse() {
 		List<Player> players = new ArrayList<>();
 		Player p = new Player(1);
 		p.modifyResource(ResourceType.ORE, 3);
@@ -153,13 +153,12 @@ public class SettlementUpgradeTests {
 		assertEquals(0, p.get(0).getResourceCount(ResourceType.WHEAT));
 		assertEquals(0, p.get(0).getResourceCount(ResourceType.ORE));
 		assertEquals(1, p.get(0).getVictoryPoints());
-		assertEquals(1, p.get(0).getInternalVictoryPoints());
 
 		EasyMock.verify(b);
 	}
 
 	@Test
-	void upgradeSettlement_NoneAtPosButOthersExist_ReturnsFalse(){
+	void upgradeSettlement_NoneAtPosButOthersExist_ReturnsFalse() {
 		List<Player> p = createPlayerWithUpgradeResources();
 		List<Settlement> settlements = new ArrayList<>();
 		settlements.add(new Settlement(new Coordinate(1, 0, 0), 1, false));

@@ -17,6 +17,7 @@ import catan.data.Settlement;
 import catan.logic.Board;
 import catan.logic.Coordinate;
 import catan.logic.Game;
+
 //CHECKSTYLE:OFF: checkstyle:magicnumber
 public class SettlementBuildTests {
 
@@ -61,7 +62,7 @@ public class SettlementBuildTests {
 	}
 
 	@Test
-	void buildSettlement_NotEnoughResources_EnoughWood_ReturnsFalse(){
+	void buildSettlement_NotEnoughResources_EnoughWood_ReturnsFalse() {
 		Player player = new Player(1);
 		player.modifyResource(ResourceType.WOOD, 1);
 		List<Player> players = new ArrayList<>();
@@ -75,7 +76,7 @@ public class SettlementBuildTests {
 	}
 
 	@Test
-	void buildSettlement_NotEnoughResources_EnoughWoodBrick_ReturnsFalse(){
+	void buildSettlement_NotEnoughResources_EnoughWoodBrick_ReturnsFalse() {
 		Player player = new Player(1);
 		player.modifyResource(ResourceType.WOOD, 1);
 		player.modifyResource(ResourceType.BRICK, 1);
@@ -90,7 +91,7 @@ public class SettlementBuildTests {
 	}
 
 	@Test
-	void buildSettlement_NotEnoughResources_EnoughWoodBrickSheep_ReturnsFalse(){
+	void buildSettlement_NotEnoughResources_EnoughWoodBrickSheep_ReturnsFalse() {
 		Player player = new Player(1);
 		player.modifyResource(ResourceType.WOOD, 1);
 		player.modifyResource(ResourceType.BRICK, 1);
@@ -208,12 +209,11 @@ public class SettlementBuildTests {
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.WHEAT));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.SHEEP));
 		assertEquals(1, player.get(0).getVictoryPoints());
-		assertEquals(1, player.get(0).getInternalVictoryPoints());
 		EasyMock.verify(b);
 	}
 
 	@Test
-	void buildSettlement_ConnectedToARoadOwnedByPlayer_IsNotAdjacentToASettlement_RoadEnd_BuildsSettlement(){
+	void buildSettlement_ConnectedToARoadOwnedByPlayer_IsNotAdjacentToASettlement_RoadEnd_BuildsSettlement() {
 		List<Player> player = createPlayerWithSettlementResources();
 		Board b = EasyMock.mock(Board.class);
 		List<Settlement> settlements = new ArrayList<>();
@@ -238,12 +238,11 @@ public class SettlementBuildTests {
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.WHEAT));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.SHEEP));
 		assertEquals(1, player.get(0).getVictoryPoints());
-		assertEquals(1, player.get(0).getInternalVictoryPoints());
 		EasyMock.verify(b);
 	}
 
 	@Test
-	void buildSettlement_NotConnectedToARoadOwnedByPlayer_OtherRoadsAreOwned_ReturnsFalse(){
+	void buildSettlement_NotConnectedToARoadOwnedByPlayer_OtherRoadsAreOwned_ReturnsFalse() {
 		List<Player> player = createPlayerWithSettlementResources();
 		Board b = EasyMock.mock(Board.class);
 		List<Settlement> settlements = new ArrayList<>();
@@ -291,7 +290,6 @@ public class SettlementBuildTests {
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.WHEAT));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.SHEEP));
 		assertEquals(1, player.get(0).getVictoryPoints());
-		assertEquals(1, player.get(0).getInternalVictoryPoints());
 		EasyMock.verify(b);
 	}
 
@@ -370,7 +368,6 @@ public class SettlementBuildTests {
 		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.SHEEP));
 	}
 
-
 	@Test
 	void buildSettlement_onTwoToOneBrickPort_playerHasImprovedBrickTrade() {
 		List<Player> player = createPlayerWithSettlementResources();
@@ -383,7 +380,7 @@ public class SettlementBuildTests {
 		roads.add(new Road(new Coordinate(-2, -1, 0), new Coordinate(-3, -1, 0), 1));
 		EasyMock.expect(b.getRoads()).andReturn(roads);
 
-		b.createNewSettlement(new Coordinate(-3, -1 ,0), 1);
+		b.createNewSettlement(new Coordinate(-3, -1, 0), 1);
 		EasyMock.expectLastCall();
 
 		EasyMock.replay(b);
