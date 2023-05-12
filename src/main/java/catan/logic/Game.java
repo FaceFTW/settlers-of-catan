@@ -146,9 +146,8 @@ public class Game {
 				p.modifyResource(ResourceType.SHEEP, -1);
 				p.modifyResource(ResourceType.WHEAT, -1);
 				p.setVictoryPoints(p.getVictoryPoints() + 1);
-				p.setInternalVictoryPoints(p.getInternalVictoryPoints() + 1);
 
-				for (Coordinate pc: Utils.PORT_MAP.keySet()) {
+				for (Coordinate pc : Utils.PORT_MAP.keySet()) {
 					if (c.equals(pc)) {
 						updateTradeValues(p, c);
 					}
@@ -280,7 +279,6 @@ public class Game {
 					p.modifyResource(ResourceType.WHEAT, -2);
 					board.upgradeSettlement(pos);
 					p.setVictoryPoints(p.getVictoryPoints() + 1);
-					p.setInternalVictoryPoints(p.getInternalVictoryPoints() + 1);
 					return true;
 				} else {
 					return false;
@@ -299,12 +297,13 @@ public class Game {
 	 */
 	public void distributeResources(int roll) {
 		board.distributeResources(this.players, roll);
-  }
-    
-   /**
+	}
+
+	/**
 	 * Allows players to trade in resources with the bank.
-	 * @param playerID The player that is trading
-	 * @param toTrade The resource that the player is trading away
+	 *
+	 * @param playerID  The player that is trading
+	 * @param toTrade   The resource that the player is trading away
 	 * @param toReceive The resource that the player is to receive
 	 * @return boolean indicating whether the trade was successful
 	 */

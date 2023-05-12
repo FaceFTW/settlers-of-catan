@@ -18,9 +18,6 @@ public class Player {
 	private int wheat;
 	private int ore;
 	private int victoryPoints;
-//	private int knightsPlayed;
-	private int internalVictoryPoints;
-	private Map<DevelopmentCard, Integer> developmentCards;
 	private Map<ResourceType, Integer> tradeValues;
 
 	public Player(final int id) {
@@ -31,12 +28,6 @@ public class Player {
 		this.wheat = 0;
 		this.ore = 0;
 		this.victoryPoints = 0;
-//		this.knightsPlayed = 0;
-		this.internalVictoryPoints = 0;
-		this.developmentCards = new HashMap<>();
-		for (DevelopmentCard card : DevelopmentCard.values()) {
-			developmentCards.put(card, 0);
-		}
 		this.tradeValues = new HashMap<>();
 		this.tradeValues.put(ResourceType.BRICK, Utils.DEFAULT_PORT_REQUIREMENT);
 		this.tradeValues.put(ResourceType.WOOD, Utils.DEFAULT_PORT_REQUIREMENT);
@@ -121,29 +112,6 @@ public class Player {
 	}
 
 	/**
-	 * @return The amount of development cards a player posesses
-	 */
-	public int getDevelopmentCardCount(DevelopmentCard card) {
-		return developmentCards.getOrDefault(card, 0);
-	}
-
-	/**
-	 * Adds a development card to the player's inventory. Use negative amounts to remove
-	 * development cards
-	 *
-	 * @param card The type of development card to add
-	 * @param amount The amount of development cards to add
-	 */
-
-	public void modifyDevelopmentCard(DevelopmentCard card, int amount) {
-		if (developmentCards.containsKey(card)) {
-			developmentCards.put(card, developmentCards.get(card) + amount);
-		} else {
-			developmentCards.put(card, amount);
-		}
-	}
-
-	/**
 	 * @return The amount of victory points the player has
 	 */
 	public int getVictoryPoints() {
@@ -157,21 +125,5 @@ public class Player {
 	 */
 	public void setVictoryPoints(int amount) {
 		victoryPoints = amount;
-	}
-
-	/**
-	 * @return The internal victory point count, which includes development card points
-	 */
-	public int getInternalVictoryPoints() {
-		return internalVictoryPoints;
-	}
-
-	/**
-	 * Sets the internal victory point count
-	 *
-	 * @param amount The new internal victory point count the player has
-	 */
-	public void setInternalVictoryPoints(int amount) {
-		internalVictoryPoints = amount;
 	}
 }
