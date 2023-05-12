@@ -110,7 +110,7 @@ public class Game {
 	 * @param c
 	 * @return
 	 */
-	public boolean buildSettlement(int playerId, Coordinate c) {
+	public boolean buildSettlement(int playerId, Coordinate c, boolean initBuild) {
 		Player p = this.players.get(playerId - 1);
 		if (p.getResourceCount(ResourceType.WOOD) < 1
 				|| p.getResourceCount(ResourceType.BRICK) < 1
@@ -121,7 +121,6 @@ public class Game {
 
 		List<Settlement> settlements = this.board.getSettlements();
 		List<Coordinate> settlementPositions = new ArrayList<>();
-
 		for (Settlement s : settlements) {
 			if (s.getLocation().equals(c)) {
 				return false;
@@ -129,16 +128,37 @@ public class Game {
 			settlementPositions.add(s.getLocation());
 		}
 
-		List<Road> roads = this.board.getRoads();
-		for (Road r : roads) {
-			if (r.getOwner() == playerId && (r.getStart().equals(c) || r.getEnd().equals(c))) {
-				List<Coordinate> adjacent = Arrays.asList(Utils.getBoardAdjacents(c));
-				for (Coordinate adj : adjacent) {
-					if (settlementPositions.contains(adj)) {
-						return false;
-					}
-
+		if (initBuild) {
+			return checkSettlementBuildBaseConds(playerId, c, p, settlementPositions);
+		} else {
+			List<Road> roads = this.board.getRoads();
+			for (Road r : roads) {
+				if (r.getOwner() == playerId && (r.getStart().equals(c) || r.getEnd().equals(c))) {
+					return checkSettlementBuildBaseConds(playerId, c, p, settlementPositions);
 				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Subroutine checking minimum conditions for settlement building regardless
+	 * of if it is during game init or not
+	 *
+	 * @param playerId
+	 * @param c
+	 * @param p
+	 * @param settlementPositions
+	 * @return
+	 */
+	private boolean checkSettlementBuildBaseConds(int playerId, Coordinate c, Player p,
+			List<Coordinate> settlementPositions) {
+		List<Coordinate> adjacent = Arrays.asList(Utils.getBoardAdjacents(c));
+		for (Coordinate adj : adjacent) {
+			if (settlementPositions.contains(adj)) {
+				return false;
+			}
+		}
 
 				this.board.createNewSettlement(c, playerId);
 				p.modifyResource(ResourceType.WOOD, -1);
@@ -147,18 +167,12 @@ public class Game {
 				p.modifyResource(ResourceType.WHEAT, -1);
 				p.setVictoryPoints(p.getVictoryPoints() + 1);
 
-				for (Coordinate pc : Utils.PORT_MAP.keySet()) {
-					if (c.equals(pc)) {
-						updateTradeValues(p, c);
-					}
-				}
-
-				return true;
+		for (Coordinate pc : Utils.PORT_MAP.keySet()) {
+			if (c.equals(pc)) {
+				updateTradeValues(p, c);
 			}
 		}
-
-		return false;
-
+		return true;
 	}
 
 	private void updateTradeValues(Player p, Coordinate c) {
@@ -320,6 +334,21 @@ public class Game {
 		p.modifyResource(toReceive, 1);
 
 		return true;
+	}
+
+	/**
+	 * Resets the game to the initial state
+	 */
+	public void reset() {
+		for (Player p : players) {
+			p.modifyResource(ResourceType.WOOD, 0);
+			p.modifyResource(ResourceType.BRICK, 0);
+			p.modifyResource(ResourceType.WHEAT, 0);
+			p.modifyResource(ResourceType.SHEEP, 0);
+			p.modifyResource(ResourceType.ORE, 0);
+		}
+
+		this.board = new Board(this.random);
 	}
 
 	// **************************************************
