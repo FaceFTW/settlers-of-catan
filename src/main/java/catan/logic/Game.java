@@ -160,12 +160,12 @@ public class Game {
 			}
 		}
 
-				this.board.createNewSettlement(c, playerId);
-				p.modifyResource(ResourceType.WOOD, -1);
-				p.modifyResource(ResourceType.BRICK, -1);
-				p.modifyResource(ResourceType.SHEEP, -1);
-				p.modifyResource(ResourceType.WHEAT, -1);
-				p.setVictoryPoints(p.getVictoryPoints() + 1);
+		this.board.createNewSettlement(c, playerId);
+		p.modifyResource(ResourceType.WOOD, -1);
+		p.modifyResource(ResourceType.BRICK, -1);
+		p.modifyResource(ResourceType.SHEEP, -1);
+		p.modifyResource(ResourceType.WHEAT, -1);
+		p.setVictoryPoints(p.getVictoryPoints() + 1);
 
 		for (Coordinate pc : Utils.PORT_MAP.keySet()) {
 			if (c.equals(pc)) {
@@ -360,6 +360,15 @@ public class Game {
 	 */
 	public int getTurn() {
 		return this.currentTurn;
+	}
+
+	/**
+	 * Used by game setup given the order players need to operate
+	 *
+	 * @param turn
+	 */
+	public void setTurn(int turn) {
+		this.currentTurn = turn;
 	}
 
 	/**

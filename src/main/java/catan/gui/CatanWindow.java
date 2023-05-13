@@ -124,8 +124,8 @@ public class CatanWindow {
 
 		frame.add(sidebarPanel, BorderLayout.EAST);
 
-		devPanel = new DevPanel(game);
-		frame.add(devPanel, BorderLayout.SOUTH);
+		// devPanel = new DevPanel(game);
+		// frame.add(devPanel, BorderLayout.SOUTH);
 
 		frame.pack();
 		frame.setVisible(true);
@@ -135,24 +135,31 @@ public class CatanWindow {
 		gameActionsPanel.setLayout(new GridLayout(4, 2));
 
 		setCoordButtonAction(buildRoadButton, this::buildRoadAction);
+		buildRoadButton.setEnabled(false);
 		gameActionsPanel.add(buildRoadButton);
 
 		setCoordButtonAction(buildSettlementButton, this::buildSettlementAction);
+		buildSettlementButton.setEnabled(false);
 		gameActionsPanel.add(buildSettlementButton);
 
 		setCoordButtonAction(upgradeSettlementButton, this::upgradeSettlementAction);
+		upgradeSettlementButton.setEnabled(false);
 		gameActionsPanel.add(upgradeSettlementButton);
 
+		requestTradeButton.setEnabled(false);
+		;
 		gameActionsPanel.add(requestTradeButton);
 
+		exchangeResourcesButton.setEnabled(false);
 		gameActionsPanel.add(exchangeResourcesButton);
 
-		this.endTurnButton.addActionListener(e -> {
+		endTurnButton.addActionListener(e -> {
 			gameActionThread = new Thread(() -> {
 				endTurnAction();
 			});
 			gameActionThread.start();
 		});
+		endTurnButton.setEnabled(false);
 		gameActionsPanel.add(endTurnButton);
 
 		rollDieButton.addActionListener(e -> {
@@ -194,7 +201,7 @@ public class CatanWindow {
 		for (PlayerViewComponent playerView : playerViews) {
 			playerView.update();
 		}
-		devPanel.update();
+		// devPanel.update();
 		boardPanel.repaint();
 		this.currentTurnLabel.setText(getString("currentTurn", game.getTurn()));
 	}
@@ -346,33 +353,70 @@ public class CatanWindow {
 		this.game.reset();
 		this.update();
 		startGameButton.setText(getString("restartGame"));
-		Thread startThread = new Thread(() -> {
-			for (int i = 1; i <= Game.DEFAULT_NUM_PLAYERS; i++) {
-				Player p = game.getPlayer(i);
-				p.modifyResource(ResourceType.BRICK, 4);
-				p.modifyResource(ResourceType.WOOD, 4);
-				p.modifyResource(ResourceType.SHEEP, 2);
-				p.modifyResource(ResourceType.WHEAT, 2);
+		this.boardPanel.showCornerButtons();
 
-				this.boardPanel.showCornerButtons();
-				gameActionThread = new Thread(() -> {
-					buildSettlementAction();
-					update();
-					buildRoadAction();
-					update();
-					game.nextTurn();
-				});
-				try {
-					gameActionThread.start();
-					gameActionThread.join();
-				} catch (InterruptedException ex) {
-					ex.printStackTrace();
-				}
+		// first pass
+		Thread startThread = new Thread(() -> {
+			try {
+				gameInit_FirstPass();
+				gameInit_SecondPass();
+			} catch (InterruptedException e) {
+				JOptionPane.showMessageDialog(frame, getString("fatalError"));
+				e.printStackTrace();
 			}
+
 			this.boardPanel.hideCornerButtons();
 			this.inSetup = false;
+			game.setTurn(Game.DEFAULT_NUM_PLAYERS); // jumps back to first in endTurnAction
+
+			// trigger roll die
+			this.gameActionThread = new Thread(() -> {
+				endTurnAction();
+			});
+			this.gameActionThread.start();
+
 		});
 		startThread.start();
+	}
+
+	private void gameInit_FirstPass() throws InterruptedException {
+		for (int i = 1; i <= Game.DEFAULT_NUM_PLAYERS; i++) {
+			Player p = game.getPlayer(i);
+			p.modifyResource(ResourceType.BRICK, 4);
+			p.modifyResource(ResourceType.WOOD, 4);
+			p.modifyResource(ResourceType.SHEEP, 2);
+			p.modifyResource(ResourceType.WHEAT, 2);
+
+			gameActionThread = new Thread(() -> {
+				buildSettlementAction();
+				update();
+				buildRoadAction();
+				update();
+				game.nextTurn();
+			});
+
+			gameActionThread.start();
+			gameActionThread.join();
+		}
+	}
+
+	private void gameInit_SecondPass() throws InterruptedException {
+		for (int i = Game.DEFAULT_NUM_PLAYERS; i >= 1; i--) {
+			game.setTurn(i);
+			gameActionThread = new Thread(() -> {
+				buildSettlementAction();
+				// TODO Give resources
+				update();
+				buildRoadAction();
+				update();
+				if (game.getTurn() != 1) {
+					game.nextTurn();
+				}
+			});
+
+			gameActionThread.start();
+			gameActionThread.join();
+		}
 	}
 
 	//////////////////////////////////////////////

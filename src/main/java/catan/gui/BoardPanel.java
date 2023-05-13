@@ -89,7 +89,7 @@ public final class BoardPanel extends JPanel {
 	private void loadPieceImages() {
 		InputStream stream;
 		try {
-			for (int i = 1; i < 4; i++) {
+			for (int i = 1; i <= 4; i++) {
 				String settlementPath = "image/settlement_p" + i + ".png";
 				stream = classLoader.getResourceAsStream(settlementPath);
 				settlementImages.put(i, ImageIO.read(stream));
