@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import catan.data.Player;
 import catan.data.ResourceType;
 import catan.gui.components.CoordinateButton;
-import catan.gui.components.DevPanel;
 import catan.gui.components.PlayerViewComponent;
 import catan.logic.Coordinate;
 import catan.logic.Game;
@@ -62,8 +61,6 @@ public class CatanWindow {
 
 	private JPanel sidebarPanel = new JPanel(new GridBagLayout());
 	private GridBagConstraints constraints = new GridBagConstraints();
-
-	private DevPanel devPanel;
 
 	public CatanWindow() {
 		frame = new JFrame("Catan");
@@ -123,9 +120,6 @@ public class CatanWindow {
 		frame.add(label, BorderLayout.NORTH);
 
 		frame.add(sidebarPanel, BorderLayout.EAST);
-
-		// devPanel = new DevPanel(game);
-		// frame.add(devPanel, BorderLayout.SOUTH);
 
 		frame.pack();
 		frame.setVisible(true);
@@ -201,7 +195,6 @@ public class CatanWindow {
 		for (PlayerViewComponent playerView : playerViews) {
 			playerView.update();
 		}
-		// devPanel.update();
 		boardPanel.repaint();
 		this.currentTurnLabel.setText(getString("currentTurn", game.getTurn()));
 	}
