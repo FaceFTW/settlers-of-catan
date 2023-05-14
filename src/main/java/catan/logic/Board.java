@@ -221,35 +221,30 @@ public class Board {
      */
     public void updateLongestRoad() {
         int longest;
-        int l;
         this.playerLongestRoads = new HashMap<>();
 
         for (Road r : roads) {
             ArrayList<Road> originalList = new ArrayList<>();
             originalList.add(r);
 
-
-            l = getLengthPossible(r.getOwner(), r, r.getEnd(), new ArrayList<>(originalList));
-
+            int lengthFromEnd = getLengthPossible(r.getOwner(), r, r.getEnd(), new ArrayList<>(originalList));
+            int lengthFromStart = getLengthPossible(r.getOwner(), r, r.getStart(), new ArrayList<>(originalList));
+            int greaterLength = Math.max(lengthFromStart, lengthFromEnd);
             int pc = r.getOwner();
             longest = this.playerLongestRoads.getOrDefault(pc, 0);
 
-            if (l >= MINIMUM_LONGEST_ROAD_LENGTH && l > longest) {
-                this.playerLongestRoads.put(pc, l);
-            }
-            l = getLengthPossible(r.getOwner(), r, r.getStart(), new ArrayList<>(originalList));
-            if (l >= MINIMUM_LONGEST_ROAD_LENGTH && l > longest) {
-                this.playerLongestRoads.put(pc, l);
-            }
+            this.playerLongestRoads.put(pc, Math.max(greaterLength, longest));
         }
 
-        longest = 0;
-        int pid = -1;
+        longest = this.playerLongestRoads.getOrDefault(this.longestRoadOwnerID, 0);
+        int pid = this.longestRoadOwnerID;
 
-        for (int k : this.playerLongestRoads.keySet()) {
-            if (this.playerLongestRoads.get(k) > longest) {
-                longest = this.playerLongestRoads.get(k);
-                pid = k;
+        for (Map.Entry<Integer, Integer> k : this.playerLongestRoads.entrySet()) {
+            if (k.getValue() > longest) {
+                longest = k.getValue();
+                if (longest >= MINIMUM_LONGEST_ROAD_LENGTH) {
+                    pid = k.getKey();
+                }
             }
         }
 
@@ -306,8 +301,10 @@ public class Board {
     }
 
     private boolean roadsEqual(Road r1, Road r2) {
-        return (r1.getStart() == r2.getStart() && r1.getEnd() == r2.getEnd())
-                || (r1.getStart() == r2.getEnd() && r1.getEnd() == r2.getStart());
+        return r1.getStart() == r2.getStart() && r1.getEnd() == r2.getEnd();
+        // I think it's worth noting that although the swapped values above should be considered equal,
+        // but because we only iterate over existing roads in the implementation there is no case where the other
+        // road could exist.
     }
 
     /**
