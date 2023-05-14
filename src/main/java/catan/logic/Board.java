@@ -283,7 +283,6 @@ public class Board {
 
 			for (Settlement s: settlements) {
 				if (s.getLocation().equals(c) && s.getOwner() != playerID) {
-					System.out.println("here");
 					used = true;
 				}
 			}
