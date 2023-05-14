@@ -210,6 +210,12 @@ public class Board {
 		}
 	}
 
+	public void updateLongestRoad() {
+		if (roads.size() >= 5) {
+			this.longestRoadOwnerID = 1;
+		}
+	}
+
 	/**
 	 * Returns the id of the current longest road
 	 * @return
@@ -218,7 +224,5 @@ public class Board {
 		return longestRoadOwnerID;
     }
 
-	public void updateLongestRoad() {
-		return;
-	}
+
 }
