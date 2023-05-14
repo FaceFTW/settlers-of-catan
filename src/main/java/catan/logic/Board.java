@@ -218,12 +218,12 @@ public class Board {
 		for (Road r: roads) {
 			ArrayList<Road> originalList = new ArrayList<>();
 			originalList.add(r);
-			l = getLengthPossible(r, r.getEnd(), new ArrayList<>(originalList));
+			l = getLengthPossible(r.getOwner(), r, r.getEnd(), new ArrayList<>(originalList));
 			if (l >= 5 && l > longest) {
 				longest = l;
 				longestID = r.getOwner();
 			}
-			l = l = getLengthPossible(r, r.getStart(), new ArrayList<>(originalList));
+			l = l = getLengthPossible(r.getOwner(), r, r.getStart(), new ArrayList<>(originalList));
 			if (l >= 5 && l > longest) {
 				longest = l;
 				longestID = r.getOwner();
@@ -233,9 +233,13 @@ public class Board {
 		longestRoadOwnerID = longestID;
 	}
 
-	private int getLengthPossible(Road r, Coordinate c, List<Road> usedRoads) {
+	private int getLengthPossible(int playerID, Road r, Coordinate c, List<Road> usedRoads) {
 		int thisRoadsLongest = 1;
 		for (Road nr: roads) {
+			if (nr.getOwner() != playerID) {
+				continue;
+			}
+
 			// Check for equality
 			if (roadsEqual(r, nr)) {
 				continue;
@@ -265,7 +269,7 @@ public class Board {
 			// get new longest and return
 			ArrayList<Road> newList = new ArrayList<>(usedRoads);
 			newList.add(nr);
-			int possibleLongest = 1 + getLengthPossible(nr, newEnd, newList);
+			int possibleLongest = 1 + getLengthPossible(playerID, nr, newEnd, newList);
 			if (possibleLongest > thisRoadsLongest) {
 				thisRoadsLongest = possibleLongest;
 			}
