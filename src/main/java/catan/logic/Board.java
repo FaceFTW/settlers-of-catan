@@ -211,9 +211,71 @@ public class Board {
 	}
 
 	public void updateLongestRoad() {
-		if (roads.size() >= 5) {
-			this.longestRoadOwnerID = 1;
+		int longest = 0;
+		int longestID = -1;
+		int l;
+
+		for (Road r: roads) {
+			ArrayList<Road> originalList = new ArrayList<>();
+			originalList.add(r);
+			l = getLengthPossible(r, r.getEnd(), new ArrayList<>(originalList));
+			if (l >= 5 && l > longest) {
+				longest = l;
+				longestID = r.getOwner();
+			}
+			l = l = getLengthPossible(r, r.getStart(), new ArrayList<>(originalList));
+			if (l >= 5 && l > longest) {
+				longest = l;
+				longestID = r.getOwner();
+			}
 		}
+		System.out.println("Longest Chain Found: " + longest);
+		longestRoadOwnerID = longestID;
+	}
+
+	private int getLengthPossible(Road r, Coordinate c, List<Road> usedRoads) {
+		int thisRoadsLongest = 1;
+		for (Road nr: roads) {
+			// Check for equality
+			if (roadsEqual(r, nr)) {
+				continue;
+			}
+
+			// Check if it's been used already
+			boolean used = false;
+			for (Road or: usedRoads) {
+				if (roadsEqual(or, nr)) {
+					used = true;
+				}
+			}
+			if (used) {
+				continue;
+			}
+
+			// Get the new direction pointer
+			Coordinate newEnd;
+			if (nr.getStart().equals(c)) {
+				newEnd = nr.getEnd();
+			} else if (nr.getEnd().equals(c)) {
+				newEnd = nr.getStart();
+			} else {
+				continue;
+			}
+
+			// get new longest and return
+			ArrayList<Road> newList = new ArrayList<>(usedRoads);
+			newList.add(nr);
+			int possibleLongest = 1 + getLengthPossible(nr, newEnd, newList);
+			if (possibleLongest > thisRoadsLongest) {
+				thisRoadsLongest = possibleLongest;
+			}
+		}
+		return thisRoadsLongest;
+	}
+
+	private boolean roadsEqual(Road r1, Road r2) {
+		return (r1.getStart() == r2.getStart() && r1.getEnd() == r2.getEnd())
+				|| (r1.getStart() == r2.getEnd() && r1.getEnd() == r2.getStart());
 	}
 
 	/**
