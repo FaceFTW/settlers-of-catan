@@ -20,11 +20,14 @@ public class Board {
 
 	private static final int THIEF_ROLL = 7;
 
+	private int longestRoadOwnerID;
+
 	public Board(Random random) {
 
 		this.settlements = new ArrayList<>();
 		this.roads = new ArrayList<>();
 		this.tileList = new Tile[Utils.TILES_SPIRAL_LOCATION.length];
+		this.longestRoadOwnerID = -1;
 
 		List<ResourceType> resources = new ArrayList<>(
 				Arrays.asList(Utils.ALL_TILES_RESOURCES));
@@ -67,6 +70,7 @@ public class Board {
 	public Board() {
 		this.settlements = new ArrayList<>();
 		this.roads = new ArrayList<>();
+		this.longestRoadOwnerID = -1;
 	}
 
 	/**
@@ -204,5 +208,17 @@ public class Board {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Returns the id of the current longest road
+	 * @return
+	 */
+    public int getLongestRoadOwnerID() {
+		return longestRoadOwnerID;
+    }
+
+	public void updateLongestRoad() {
+		return;
 	}
 }
