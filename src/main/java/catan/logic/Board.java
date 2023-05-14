@@ -21,6 +21,7 @@ public class Board {
 	private static final int THIEF_ROLL = 7;
 
 	private int longestRoadOwnerID;
+	private int longestRoadLength;
 
 	public Board(Random random) {
 
@@ -28,6 +29,7 @@ public class Board {
 		this.roads = new ArrayList<>();
 		this.tileList = new Tile[Utils.TILES_SPIRAL_LOCATION.length];
 		this.longestRoadOwnerID = -1;
+		this.longestRoadLength = 0;
 
 		List<ResourceType> resources = new ArrayList<>(
 				Arrays.asList(Utils.ALL_TILES_RESOURCES));
@@ -71,6 +73,7 @@ public class Board {
 		this.settlements = new ArrayList<>();
 		this.roads = new ArrayList<>();
 		this.longestRoadOwnerID = -1;
+		this.longestRoadLength = 0;
 	}
 
 	/**
@@ -211,17 +214,23 @@ public class Board {
 	}
 
 	public void updateLongestRoad() {
-		int longest = 0;
-		int longestID = -1;
+		int longest = longestRoadLength;
+		int longestID = longestRoadOwnerID;
 		int l;
 
 		for (Road r: roads) {
 			ArrayList<Road> originalList = new ArrayList<>();
 			originalList.add(r);
 			l = getLengthPossible(r.getOwner(), r, r.getEnd(), new ArrayList<>(originalList));
+
+			System.out.println("Current Longest: " + longestRoadLength);
+			System.out.println("Current Holder: " + longestRoadOwnerID);
+			System.out.println("Measured Length: " + l);
+
 			if (l >= 5 && l > longest) {
 				longest = l;
 				longestID = r.getOwner();
+				System.out.println("here1");
 			}
 			l = l = getLengthPossible(r.getOwner(), r, r.getStart(), new ArrayList<>(originalList));
 			if (l >= 5 && l > longest) {
@@ -229,8 +238,9 @@ public class Board {
 				longestID = r.getOwner();
 			}
 		}
-		System.out.println("Longest Chain Found: " + longest);
+		System.out.println("Longest Chain Found: " + longest + "  Owned by player: " + longestID);
 		longestRoadOwnerID = longestID;
+		longestRoadLength = longest;
 	}
 
 	private int getLengthPossible(int playerID, Road r, Coordinate c, List<Road> usedRoads) {
