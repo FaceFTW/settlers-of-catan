@@ -13,10 +13,12 @@ import java.util.concurrent.CountDownLatch;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import catan.data.Player;
+import catan.data.ResourceType;
 import catan.gui.components.CoordinateButton;
-import catan.gui.components.DevPanel;
 import catan.gui.components.PlayerViewComponent;
 import catan.logic.Coordinate;
 import catan.logic.Game;
@@ -29,6 +31,8 @@ public class CatanWindow {
 	private Coordinate pos1 = null;
 	private Coordinate pos2 = null;
 	private int dieRoll = 0;
+	private boolean gameStarted = false;
+	private boolean inSetup = false;
 
 	// Synchronization Objects - BE CAREFUL HERE
 	private Thread gameActionThread; // Null by default, set to the thread that is running the game action
@@ -40,7 +44,9 @@ public class CatanWindow {
 	private JLabel label;
 	private JLabel currentTurnLabel;
 
-	private JPanel actionsPanel = new JPanel();
+	private JPanel actionsPanel = new JPanel(new BorderLayout());
+	private JButton startGameButton = new JButton(getString("startGame"));
+	private JPanel gameActionsPanel = new JPanel();
 	private JButton endTurnButton = new JButton(getString("endTurn"));
 	private JButton buildSettlementButton = new JButton(getString("buildSettlement"));
 	private JButton buildRoadButton = new JButton(getString("buildRoad"));
@@ -55,8 +61,6 @@ public class CatanWindow {
 
 	private JPanel sidebarPanel = new JPanel(new GridBagLayout());
 	private GridBagConstraints constraints = new GridBagConstraints();
-
-	private DevPanel devPanel;
 
 	public CatanWindow() {
 		frame = new JFrame("Catan");
@@ -117,43 +121,47 @@ public class CatanWindow {
 
 		frame.add(sidebarPanel, BorderLayout.EAST);
 
-		devPanel = new DevPanel(game);
-		frame.add(devPanel, BorderLayout.SOUTH);
-
 		frame.pack();
 		frame.setVisible(true);
 	}
 
-	private void setupActionsPanel() {
-		actionsPanel.setLayout(new GridLayout(4, 2));
+	private void setupGameActionsPanel() {
+		gameActionsPanel.setLayout(new GridLayout(4, 2));
 
 		setCoordButtonAction(buildRoadButton, this::buildRoadAction);
-		actionsPanel.add(buildRoadButton);
+		buildRoadButton.setEnabled(false);
+		gameActionsPanel.add(buildRoadButton);
 
 		setCoordButtonAction(buildSettlementButton, this::buildSettlementAction);
-		actionsPanel.add(buildSettlementButton);
+		buildSettlementButton.setEnabled(false);
+		gameActionsPanel.add(buildSettlementButton);
 
 		setCoordButtonAction(upgradeSettlementButton, this::upgradeSettlementAction);
-		actionsPanel.add(upgradeSettlementButton);
+		upgradeSettlementButton.setEnabled(false);
+		gameActionsPanel.add(upgradeSettlementButton);
 
-		actionsPanel.add(requestTradeButton);
+		requestTradeButton.setEnabled(false);
+		;
+		gameActionsPanel.add(requestTradeButton);
 
-		actionsPanel.add(exchangeResourcesButton);
+		exchangeResourcesButton.setEnabled(false);
+		gameActionsPanel.add(exchangeResourcesButton);
 
-		this.endTurnButton.addActionListener(e -> {
+		endTurnButton.addActionListener(e -> {
 			gameActionThread = new Thread(() -> {
 				endTurnAction();
 			});
 			gameActionThread.start();
 		});
-		actionsPanel.add(endTurnButton);
+		endTurnButton.setEnabled(false);
+		gameActionsPanel.add(endTurnButton);
 
 		rollDieButton.addActionListener(e -> {
 			dieRoll = game.rollDie();
 			latch.countDown(); // Latch used to trigger remaining transition
 		});
 		rollDieButton.setEnabled(false);
-		actionsPanel.add(rollDieButton);
+		gameActionsPanel.add(rollDieButton);
 
 		cancelButton.addActionListener(e -> {
 			if (gameActionThread != null) {
@@ -164,14 +172,29 @@ public class CatanWindow {
 			}
 		});
 		cancelButton.setEnabled(false);
-		actionsPanel.add(cancelButton);
+		gameActionsPanel.add(cancelButton);
+	}
+
+	private void setupActionsPanel() {
+		startGameButton.addActionListener(e -> {
+			if (gameStarted) {
+				int option = JOptionPane.showConfirmDialog(frame, getString("gameAlreadyStarted"));
+				if (option != JOptionPane.YES_OPTION) {
+					return;
+				}
+			}
+			gameSetupAction();
+		});
+		actionsPanel.add(startGameButton, BorderLayout.NORTH);
+
+		setupGameActionsPanel();
+		actionsPanel.add(gameActionsPanel, BorderLayout.SOUTH);
 	}
 
 	private void update() {
 		for (PlayerViewComponent playerView : playerViews) {
 			playerView.update();
 		}
-		devPanel.update();
 		boardPanel.repaint();
 		this.currentTurnLabel.setText(getString("currentTurn", game.getTurn()));
 	}
@@ -244,7 +267,7 @@ public class CatanWindow {
 			} catch (InterruptedException e) {
 				return;
 			}
-			success = game.buildSettlement(game.getTurn(), pos1);
+			success = game.buildSettlement(game.getTurn(), pos1, inSetup);
 			if (!success) {
 				this.label.setText(getString("invalidSettlement"));
 				this.pos1 = null;
@@ -310,6 +333,83 @@ public class CatanWindow {
 		this.exchangeResourcesButton.setEnabled(true);
 		this.endTurnButton.setEnabled(true);
 		this.rollDieButton.setEnabled(false);
+	}
+
+	/**
+	 * Specialized action for game setup, runs in a separate thread
+	 * only local to this method
+	 */
+	private void gameSetupAction() {
+
+		this.gameStarted = true;
+		this.inSetup = true;
+		this.game.reset();
+		this.update();
+		startGameButton.setText(getString("restartGame"));
+		this.boardPanel.showCornerButtons();
+
+		// first pass
+		Thread startThread = new Thread(() -> {
+			try {
+				gameInit_FirstPass();
+				gameInit_SecondPass();
+			} catch (InterruptedException e) {
+				JOptionPane.showMessageDialog(frame, getString("fatalError"));
+				e.printStackTrace();
+			}
+
+			this.boardPanel.hideCornerButtons();
+			this.inSetup = false;
+			game.setTurn(Game.DEFAULT_NUM_PLAYERS); // jumps back to first in endTurnAction
+
+			// trigger roll die
+			this.gameActionThread = new Thread(() -> {
+				endTurnAction();
+			});
+			this.gameActionThread.start();
+
+		});
+		startThread.start();
+	}
+
+	private void gameInit_FirstPass() throws InterruptedException {
+		for (int i = 1; i <= Game.DEFAULT_NUM_PLAYERS; i++) {
+			Player p = game.getPlayer(i);
+			p.modifyResource(ResourceType.BRICK, 4);
+			p.modifyResource(ResourceType.WOOD, 4);
+			p.modifyResource(ResourceType.SHEEP, 2);
+			p.modifyResource(ResourceType.WHEAT, 2);
+
+			gameActionThread = new Thread(() -> {
+				buildSettlementAction();
+				update();
+				buildRoadAction();
+				update();
+				game.nextTurn();
+			});
+
+			gameActionThread.start();
+			gameActionThread.join();
+		}
+	}
+
+	private void gameInit_SecondPass() throws InterruptedException {
+		for (int i = Game.DEFAULT_NUM_PLAYERS; i >= 1; i--) {
+			game.setTurn(i);
+			gameActionThread = new Thread(() -> {
+				buildSettlementAction();
+				// TODO Give resources
+				update();
+				buildRoadAction();
+				update();
+				if (game.getTurn() != 1) {
+					game.nextTurn();
+				}
+			});
+
+			gameActionThread.start();
+			gameActionThread.join();
+		}
 	}
 
 	//////////////////////////////////////////////

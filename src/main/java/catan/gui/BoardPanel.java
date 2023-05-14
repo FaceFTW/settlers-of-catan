@@ -36,9 +36,6 @@ public final class BoardPanel extends JPanel {
 	private static final int X_SECONDARY_OFFSET = 32;
 	private static final int Y_OFFSET = 54;
 
-	private Tile[] tiles;
-	private List<Road> roads;
-	private List<Settlement> settlements;
 	private Game game;
 
 	private Map<ResourceType, BufferedImage> tileImages;
@@ -64,9 +61,6 @@ public final class BoardPanel extends JPanel {
 		loadPieceImages();
 
 		this.game = game;
-		this.tiles = this.game.getBoard().getTiles();
-		this.roads = this.game.getBoard().getRoads();
-		this.settlements = this.game.getBoard().getSettlements();
 
 		// Allow full control of button placement
 		this.setLayout(null);
@@ -95,7 +89,7 @@ public final class BoardPanel extends JPanel {
 	private void loadPieceImages() {
 		InputStream stream;
 		try {
-			for (int i = 1; i < 4; i++) {
+			for (int i = 1; i <= 4; i++) {
 				String settlementPath = "image/settlement_p" + i + ".png";
 				stream = classLoader.getResourceAsStream(settlementPath);
 				settlementImages.put(i, ImageIO.read(stream));
@@ -157,7 +151,7 @@ public final class BoardPanel extends JPanel {
 
 		g2.drawImage(outlineImage, 0, 0, null);
 
-		for (Tile t : this.tiles) {
+		for (Tile t : this.game.getBoard().getTiles()) {
 			Coordinate c = t.getPosition();
 
 			int x = DEFAULT_WIDTH / 2

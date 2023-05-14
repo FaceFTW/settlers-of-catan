@@ -58,7 +58,7 @@ public class SettlementBuildTests {
 
 		Coordinate c = new Coordinate(1, 0, 0);
 
-		assertFalse(game.buildSettlement(player.getPlayerId(), c));
+		assertFalse(game.buildSettlement(player.getPlayerId(), c, false));
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class SettlementBuildTests {
 
 		Coordinate c = new Coordinate(1, 0, 0);
 
-		assertFalse(game.buildSettlement(player.getPlayerId(), c));
+		assertFalse(game.buildSettlement(player.getPlayerId(), c, false));
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class SettlementBuildTests {
 
 		Coordinate c = new Coordinate(1, 0, 0);
 
-		assertFalse(game.buildSettlement(player.getPlayerId(), c));
+		assertFalse(game.buildSettlement(player.getPlayerId(), c, false));
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class SettlementBuildTests {
 
 		Coordinate c = new Coordinate(1, 0, 0);
 
-		assertFalse(game.buildSettlement(player.getPlayerId(), c));
+		assertFalse(game.buildSettlement(player.getPlayerId(), c, false));
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class SettlementBuildTests {
 
 		Coordinate c = new Coordinate(1, 0, 0);
 
-		assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 		EasyMock.verify(b);
 	}
 
@@ -138,7 +138,7 @@ public class SettlementBuildTests {
 
 		Coordinate c = new Coordinate(1, 0, 0);
 
-		assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 		EasyMock.verify(b);
 	}
 
@@ -159,7 +159,7 @@ public class SettlementBuildTests {
 
 		Coordinate c = new Coordinate(1, 0, 0);
 
-		assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 		EasyMock.verify(b);
 	}
 
@@ -179,7 +179,7 @@ public class SettlementBuildTests {
 
 		Coordinate c = new Coordinate(1, 0, 0);
 
-		assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 		EasyMock.verify(b);
 	}
 
@@ -203,7 +203,7 @@ public class SettlementBuildTests {
 
 		Coordinate c = new Coordinate(1, 0, 0);
 
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.WHEAT));
@@ -232,7 +232,7 @@ public class SettlementBuildTests {
 
 		Coordinate c = new Coordinate(1, 0, 0);
 
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.WHEAT));
@@ -259,7 +259,7 @@ public class SettlementBuildTests {
 
 		Coordinate c = new Coordinate(1, 0, 0);
 
-		assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 		EasyMock.verify(b);
 	}
 
@@ -284,7 +284,7 @@ public class SettlementBuildTests {
 
 		Coordinate c = new Coordinate(1, 0, 0);
 
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.WHEAT));
@@ -313,7 +313,7 @@ public class SettlementBuildTests {
 		Game game = new Game(b, player);
 
 		Coordinate c = new Coordinate(1, 0, -3);
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 
 		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.WHEAT));
 	}
@@ -338,7 +338,7 @@ public class SettlementBuildTests {
 		Game game = new Game(b, player);
 
 		Coordinate c = new Coordinate(3, 0, -1);
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 
 		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.ORE));
 	}
@@ -363,7 +363,7 @@ public class SettlementBuildTests {
 		Game game = new Game(b, player);
 
 		Coordinate c = new Coordinate(0, 3, 1);
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 
 		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.SHEEP));
 	}
@@ -388,7 +388,7 @@ public class SettlementBuildTests {
 		Game game = new Game(b, player);
 
 		Coordinate c = new Coordinate(-3, -1, 0);
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 
 		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.BRICK));
 	}
@@ -413,7 +413,7 @@ public class SettlementBuildTests {
 		Game game = new Game(b, player);
 
 		Coordinate c = new Coordinate(-1, -3, 0);
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 
 		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.WOOD));
 	}
@@ -438,7 +438,7 @@ public class SettlementBuildTests {
 		Game game = new Game(b, player);
 
 		Coordinate c = new Coordinate(3, 2, 0);
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 
 		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WOOD));
 		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.BRICK));
@@ -480,8 +480,8 @@ public class SettlementBuildTests {
 
 		Coordinate c1 = new Coordinate(3, 2, 0);
 		Coordinate c2 = new Coordinate(3, 0, -1);
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c1));
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c2));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c1, false));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c2, false));
 
 		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WOOD));
 		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.BRICK));
@@ -523,13 +523,50 @@ public class SettlementBuildTests {
 
 		Coordinate c1 = new Coordinate(3, 2, 0);
 		Coordinate c2 = new Coordinate(3, 0, -1);
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c2));
-		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c1));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c2, false));
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c1, false));
 
 		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WOOD));
 		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.BRICK));
 		assertEquals(2, player.get(0).getTradeValues().get(ResourceType.ORE));
 		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.SHEEP));
 		assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WHEAT));
+	}
+
+	@Test
+	void buildSettlement_InitialBuilding_AdjacentSettlement_StillFails() {
+		List<Player> player = createPlayerWithSettlementResources();
+
+		// Ensures no road checks are performed
+		Board b = EasyMock.strictMock(Board.class);
+
+		List<Settlement> settlements = new ArrayList<>();
+		settlements.add(new Settlement(new Coordinate(2, 0, 0), 1, false));
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		EasyMock.replay(b);
+
+		Game game = new Game(b, player);
+
+		Coordinate c = new Coordinate(1, 0, 0);
+		assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, true));
+	}
+
+	@Test
+	void buildSettlement_InitialBuilding_ConditionsSatisfied_BuildsSettlement() {
+		List<Player> player = createPlayerWithSettlementResources();
+
+		// Ensures no road checks are performed
+		Board b = EasyMock.strictMock(Board.class);
+
+		List<Settlement> settlements = new ArrayList<>();
+		EasyMock.expect(b.getSettlements()).andReturn(settlements);
+		b.createNewSettlement(new Coordinate(1, 0, 0), 1);
+		EasyMock.expectLastCall();
+		EasyMock.replay(b);
+
+		Game game = new Game(b, player);
+
+		Coordinate c = new Coordinate(1, 0, 0);
+		assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, true));
 	}
 }
