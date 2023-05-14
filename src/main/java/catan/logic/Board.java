@@ -8,7 +8,9 @@ import catan.data.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Board {
@@ -23,6 +25,8 @@ public class Board {
 	private int longestRoadOwnerID;
 	private int longestRoadLength;
 
+	private Map<Integer, Integer> playerLongestRoads;
+
 	public Board(Random random) {
 
 		this.settlements = new ArrayList<>();
@@ -30,6 +34,12 @@ public class Board {
 		this.tileList = new Tile[Utils.TILES_SPIRAL_LOCATION.length];
 		this.longestRoadOwnerID = -1;
 		this.longestRoadLength = 0;
+		this.playerLongestRoads = new HashMap<>();
+
+		this.playerLongestRoads = new HashMap<>();
+		for (int i = 1;i <= 4;i ++) {
+			this.playerLongestRoads.put(i, 0);
+		}
 
 		List<ResourceType> resources = new ArrayList<>(
 				Arrays.asList(Utils.ALL_TILES_RESOURCES));
@@ -74,6 +84,7 @@ public class Board {
 		this.roads = new ArrayList<>();
 		this.longestRoadOwnerID = -1;
 		this.longestRoadLength = 0;
+		this.playerLongestRoads = new HashMap<>();
 	}
 
 	/**
@@ -214,33 +225,40 @@ public class Board {
 	}
 
 	public void updateLongestRoad() {
-		int longest = longestRoadLength;
-		int longestID = longestRoadOwnerID;
+		int longest;
 		int l;
+		this.playerLongestRoads = new HashMap<>();
 
 		for (Road r: roads) {
 			ArrayList<Road> originalList = new ArrayList<>();
 			originalList.add(r);
+
+
 			l = getLengthPossible(r.getOwner(), r, r.getEnd(), new ArrayList<>(originalList));
 
-			System.out.println("Current Longest: " + longestRoadLength);
-			System.out.println("Current Holder: " + longestRoadOwnerID);
-			System.out.println("Measured Length: " + l);
+			int pc = r.getOwner();
+			longest = this.playerLongestRoads.getOrDefault(pc, 0);
 
 			if (l >= 5 && l > longest) {
-				longest = l;
-				longestID = r.getOwner();
-				System.out.println("here1");
+				this.playerLongestRoads.put(pc, l);
 			}
-			l = l = getLengthPossible(r.getOwner(), r, r.getStart(), new ArrayList<>(originalList));
+			l = getLengthPossible(r.getOwner(), r, r.getStart(), new ArrayList<>(originalList));
 			if (l >= 5 && l > longest) {
-				longest = l;
-				longestID = r.getOwner();
+				this.playerLongestRoads.put(pc, l);
 			}
 		}
-		System.out.println("Longest Chain Found: " + longest + "  Owned by player: " + longestID);
-		longestRoadOwnerID = longestID;
-		longestRoadLength = longest;
+
+		longest = 0;
+		int pid = -1;
+
+		for (int k: this.playerLongestRoads.keySet()) {
+			if (this.playerLongestRoads.get(k) > longest) {
+				longest = this.playerLongestRoads.get(k);
+				pid = k;
+			}
+		}
+
+		this.longestRoadOwnerID = pid;
 	}
 
 	private int getLengthPossible(int playerID, Road r, Coordinate c, List<Road> usedRoads) {
@@ -262,6 +280,14 @@ public class Board {
 					used = true;
 				}
 			}
+
+			for (Settlement s: settlements) {
+				if (s.getLocation().equals(c) && s.getOwner() != playerID) {
+					System.out.println("here");
+					used = true;
+				}
+			}
+
 			if (used) {
 				continue;
 			}
