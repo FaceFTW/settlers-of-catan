@@ -1,20 +1,32 @@
 package catan.gui.components;
 
+import static catan.gui.LangUtils.getString;
+
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+
 import catan.data.ResourceType;
 import catan.data.ResourcesGroup;
 import catan.data.TradeOffer;
 import catan.logic.Game;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-
-import static catan.gui.LangUtils.getString;
-
 /**
  * @noinspection ALL
  */
-//CHECKSTYLE:OFF: checkstyle:magicnumber
+// CHECKSTYLE:OFF: checkstyle:magicnumber
 public class TradingDialog extends JDialog {
 	private JPanel resourceAmountPanel;
 	private JSpinner woodGiveSpinner;
@@ -32,13 +44,12 @@ public class TradingDialog extends JDialog {
 	private JButton buttonOK;
 	private JPanel contentPane;
 
-	//Trade Target
+	// Trade Target
 	private JPanel tradeTargetPanel;
 	private JRadioButton player1RadioTarget;
 	private JRadioButton player2RadioButton;
 	private JRadioButton player3RadioButton;
 	private JRadioButton player4RadioButton;
-	private ButtonGroup tradeTargetGroup;
 	private int tradeTarget = 0;
 
 	private Game gameRef;
@@ -78,7 +89,6 @@ public class TradingDialog extends JDialog {
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.NORTHEAST;
 		tradeTargetPanel.add(label1, gbc);
-
 
 		player1RadioTarget = new JRadioButton(getString("player.1"));
 		player1RadioTarget.setActionCommand("1");
@@ -160,7 +170,6 @@ public class TradingDialog extends JDialog {
 		gbc.gridx = 5;
 		resourceAmountPanel.add(oreLabel, gbc);
 
-
 		final JLabel label7 = new JLabel(getString("they.give"));
 		gbc.gridx = 0;
 		gbc.gridy = 2;
@@ -206,76 +215,76 @@ public class TradingDialog extends JDialog {
 			}
 
 			int woodGive = (int) woodGiveSpinner.getValue();
-			if (gameRef.getPlayer(gameRef.getTurn()).getResourceCount(ResourceType.WOOD)
-			    < woodGive || woodGive < 0) {
+			if (gameRef.getPlayer(gameRef.getTurn()).getResourceCount(ResourceType.WOOD) < woodGive
+					|| woodGive < 0) {
 				JOptionPane.showMessageDialog(this, getString("not.enough.wood.player"));
 				return;
 			}
 			int brickGive = (int) brickGiveSpinner.getValue();
-			if (gameRef.getPlayer(gameRef.getTurn()).getResourceCount(ResourceType.BRICK)
-			    < brickGive || brickGive < 0) {
+			if (gameRef.getPlayer(gameRef.getTurn()).getResourceCount(ResourceType.BRICK) < brickGive
+					|| brickGive < 0) {
 				JOptionPane.showMessageDialog(this, getString("not.enough.brick.player"));
 				return;
 			}
 			int sheepGive = (int) sheepGiveSpinner.getValue();
-			if (gameRef.getPlayer(gameRef.getTurn()).getResourceCount(ResourceType.SHEEP)
-			    < sheepGive || sheepGive < 0) {
+			if (gameRef.getPlayer(gameRef.getTurn()).getResourceCount(ResourceType.SHEEP) < sheepGive
+					|| sheepGive < 0) {
 				JOptionPane.showMessageDialog(this, getString("not.enough.sheep.player"));
 				return;
 			}
 			int wheatGive = (int) wheatGiveSpinner.getValue();
-			if (gameRef.getPlayer(gameRef.getTurn()).getResourceCount(ResourceType.WHEAT)
-			    < wheatGive || wheatGive < 0) {
+			if (gameRef.getPlayer(gameRef.getTurn()).getResourceCount(ResourceType.WHEAT) < wheatGive
+					|| wheatGive < 0) {
 				JOptionPane.showMessageDialog(this, getString("not.enough.wheat.player"));
 				return;
 			}
 			int oreGive = (int) oreGiveSpinner.getValue();
 			if (gameRef.getPlayer(gameRef.getTurn()).getResourceCount(ResourceType.ORE) < oreGive
-			    || oreGive < 0) {
+					|| oreGive < 0) {
 				JOptionPane.showMessageDialog(this, getString("not.enough.ore.player"));
 				return;
 			}
 			ResourcesGroup giveGroup = new ResourcesGroup(woodGive,
-			                                              brickGive,
-			                                              sheepGive,
-			                                              wheatGive,
-			                                              oreGive);
+					brickGive,
+					sheepGive,
+					wheatGive,
+					oreGive);
 
 			int woodReceive = (int) woodReceiveSpinner.getValue();
 			if (gameRef.getPlayer(tradeTarget).getResourceCount(ResourceType.WOOD) < woodReceive
-			    || woodReceive < 0) {
+					|| woodReceive < 0) {
 				JOptionPane.showMessageDialog(this, getString("not.enough.wood.target"));
 				return;
 			}
 			int brickReceive = (int) brickReceiveSpinner.getValue();
-			if (gameRef.getPlayer(tradeTarget).getResourceCount(ResourceType.BRICK)
-			    < brickReceive || brickReceive < 0) {
+			if (gameRef.getPlayer(tradeTarget).getResourceCount(ResourceType.BRICK) < brickReceive
+					|| brickReceive < 0) {
 				JOptionPane.showMessageDialog(this, getString("not.enough.brick.target"));
 				return;
 			}
 			int sheepReceive = (int) sheepReceiveSpinner.getValue();
-			if (gameRef.getPlayer(tradeTarget).getResourceCount(ResourceType.SHEEP)
-			    < sheepReceive || sheepReceive < 0) {
+			if (gameRef.getPlayer(tradeTarget).getResourceCount(ResourceType.SHEEP) < sheepReceive
+					|| sheepReceive < 0) {
 				JOptionPane.showMessageDialog(this, getString("not.enough.sheep.target"));
 				return;
 			}
 			int wheatReceive = (int) wheatReceiveSpinner.getValue();
-			if (gameRef.getPlayer(tradeTarget).getResourceCount(ResourceType.WHEAT)
-			    < wheatReceive || wheatReceive < 0) {
+			if (gameRef.getPlayer(tradeTarget).getResourceCount(ResourceType.WHEAT) < wheatReceive
+					|| wheatReceive < 0) {
 				JOptionPane.showMessageDialog(this, getString("not.enough.wheat.target"));
 				return;
 			}
 			int oreReceive = (int) oreReceiveSpinner.getValue();
 			if (gameRef.getPlayer(tradeTarget).getResourceCount(ResourceType.ORE) < oreReceive
-			    || oreReceive < 0) {
+					|| oreReceive < 0) {
 				JOptionPane.showMessageDialog(this, getString("not.enough.ore.target"));
 				return;
 			}
 			ResourcesGroup receiveGroup = new ResourcesGroup(woodReceive,
-			                                                 brickReceive,
-			                                                 sheepReceive,
-			                                                 wheatReceive,
-			                                                 oreReceive);
+					brickReceive,
+					sheepReceive,
+					wheatReceive,
+					oreReceive);
 
 			TradeOffer offer = new TradeOffer(giveGroup, receiveGroup);
 
@@ -286,6 +295,5 @@ public class TradingDialog extends JDialog {
 		});
 		actionButtonPanel.add(buttonOK, gbc);
 	}
-
 
 }

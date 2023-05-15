@@ -2,7 +2,11 @@ package catan.gui;
 
 import static catan.gui.LangUtils.getString;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -142,7 +146,7 @@ public class CatanWindow {
 		requestTradeButton.setEnabled(false);
 		requestTradeButton.addActionListener(e -> {
 			Frame dialogFrame = JOptionPane.getFrameForComponent(frame);
-			TradingDialog tradeDialog = new TradingDialog(dialogFrame, game, this::update);
+			new TradingDialog(dialogFrame, game, this::update);
 		});
 		gameActionsPanel.add(requestTradeButton);
 
