@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 import catan.data.Player;
 import catan.data.ResourceType;
+import catan.gui.components.BankDialog;
 import catan.gui.components.CoordinateButton;
 import catan.gui.components.PlayerViewComponent;
 import catan.gui.components.TradingDialog;
@@ -151,6 +152,10 @@ public class CatanWindow {
 		gameActionsPanel.add(requestTradeButton);
 
 		exchangeResourcesButton.setEnabled(false);
+		exchangeResourcesButton.addActionListener(e -> {
+			Frame dialogFrame = JOptionPane.getFrameForComponent(frame);
+			new BankDialog(dialogFrame, game, this::update);
+		});
 		gameActionsPanel.add(exchangeResourcesButton);
 
 		endTurnButton.addActionListener(e -> {
