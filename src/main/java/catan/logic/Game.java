@@ -399,4 +399,16 @@ public class Game {
 		return this.board;
 	}
 
+	/**
+	 * Distributes resources to a player, to be called right after a settlement is placed.
+	 * Should be used as part of the initial settlement placement portion of the game.
+	 * @param id the id of the player who placed the tile
+	 * @param coordinate the coordinate where the tile was placed
+	 */
+	public void distributeInitialPlacement(int id, Coordinate coordinate) {
+		Player p = this.players.get(id - 1);
+		p.modifyResource(ResourceType.ORE, 1);
+		p.modifyResource(ResourceType.BRICK, 1);
+		p.modifyResource(ResourceType.SHEEP, 1);
+	}
 }

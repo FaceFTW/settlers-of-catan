@@ -467,6 +467,8 @@ public class CatanWindow {
 			gameActionThread = new Thread(() -> {
 				buildSettlementAction();
 				// TODO Give resources
+				// pos1 is the position
+				// game.getTurn() will give me the player
 				update();
 				buildRoadAction();
 				update();
