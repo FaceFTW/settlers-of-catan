@@ -2,8 +2,13 @@ package catan.gui.components;
 
 import static catan.gui.LangUtils.getString;
 
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,10 +23,15 @@ public class PlayerViewComponent extends JPanel {
 	private Player playerRef; // Expect this ref to be passed by ctor
 
 	private JLabel woodLabel;
+	private ImageIcon woodIcon;
 	private JLabel brickLabel;
+	private ImageIcon brickIcon;
 	private JLabel sheepLabel;
+	private ImageIcon sheepIcon;
 	private JLabel wheatLabel;
+	private ImageIcon wheatIcon;
 	private JLabel oreLabel;
+	private ImageIcon oreIcon;
 	private JLabel victoryPointsLabel;
 
 	private JButton woodPlusButton;
@@ -40,11 +50,53 @@ public class PlayerViewComponent extends JPanel {
 		this.playerRef = playerRef;
 		this.isDev = isDev;
 
-		GridLayout gridLayout = new GridLayout(7, isDev ? 3 : 1);
+		// Loading Images here to reduce coupling, feels messy otherwise
+		ClassLoader cl = getClass().getClassLoader();
+		try {
+			BufferedImage woodImg = ImageIO.read(cl.getResourceAsStream("image/card_wood.png"));
+			BufferedImage resizedWoodImg = new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB);
+			Graphics g = resizedWoodImg.createGraphics();
+			g.drawImage(woodImg, 0, 0, 20, 40, null);
+			g.dispose();
+			woodIcon = new ImageIcon(resizedWoodImg);
+
+			BufferedImage brickImg = ImageIO.read(cl.getResourceAsStream("image/card_brick.png"));
+			BufferedImage resizedBrickImg = new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB);
+			g = resizedBrickImg.createGraphics();
+			g.drawImage(brickImg, 0, 0, 20, 40, null);
+			g.dispose();
+			brickIcon = new ImageIcon(resizedBrickImg);
+
+			BufferedImage sheepImg = ImageIO.read(cl.getResourceAsStream("image/card_sheep.png"));
+			BufferedImage resizedSheepImg = new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB);
+			g = resizedSheepImg.createGraphics();
+			g.drawImage(sheepImg, 0, 0, 20, 40, null);
+			g.dispose();
+			sheepIcon = new ImageIcon(resizedSheepImg);
+
+			BufferedImage wheatImg = ImageIO.read(cl.getResourceAsStream("image/card_wheat.png"));
+			BufferedImage resizedWheatImg = new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB);
+			g = resizedWheatImg.createGraphics();
+			g.drawImage(wheatImg, 0, 0, 20, 40, null);
+			g.dispose();
+			wheatIcon = new ImageIcon(resizedWheatImg);
+
+			BufferedImage oreImg = ImageIO.read(cl.getResourceAsStream("image/card_ore.png"));
+			BufferedImage resizedOreImg = new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB);
+			g = resizedOreImg.createGraphics();
+			g.drawImage(oreImg, 0, 0, 20, 40, null);
+			g.dispose();
+			oreIcon = new ImageIcon(resizedOreImg);
+		} catch (IOException e) {
+			System.out.println("Error loading resource icons");
+		}
+
+		GridLayout gridLayout = new GridLayout(7, isDev ? 4 : 2);
 		this.setLayout(gridLayout);
 	}
 
 	public void setupLayout() {
+		this.add(new JLabel(woodIcon));
 		this.woodLabel = new JLabel(getString("woodCount", playerRef.getResourceCount(ResourceType.WOOD)));
 		this.add(woodLabel);
 		if (isDev) {
@@ -62,6 +114,7 @@ public class PlayerViewComponent extends JPanel {
 			this.add(woodMinusButton);
 		}
 
+		this.add(new JLabel(brickIcon));
 		this.brickLabel = new JLabel(getString("brickCount", playerRef.getResourceCount(ResourceType.BRICK)));
 		this.add(brickLabel);
 		if (isDev) {
@@ -79,6 +132,7 @@ public class PlayerViewComponent extends JPanel {
 			this.add(brickMinusButton);
 		}
 
+		this.add(new JLabel(sheepIcon));
 		this.sheepLabel = new JLabel(getString("sheepCount", playerRef.getResourceCount(ResourceType.SHEEP)));
 		this.add(sheepLabel);
 		if (isDev) {
@@ -96,6 +150,7 @@ public class PlayerViewComponent extends JPanel {
 			this.add(sheepMinusButton);
 		}
 
+		this.add(new JLabel(wheatIcon));
 		this.wheatLabel = new JLabel(getString("wheatCount", playerRef.getResourceCount(ResourceType.WHEAT)));
 		this.add(wheatLabel);
 		if (isDev) {
@@ -113,6 +168,7 @@ public class PlayerViewComponent extends JPanel {
 			this.add(wheatMinusButton);
 		}
 
+		this.add(new JLabel(oreIcon));
 		this.oreLabel = new JLabel(getString("oreCount", playerRef.getResourceCount(ResourceType.ORE)));
 		this.add(oreLabel);
 		if (isDev) {

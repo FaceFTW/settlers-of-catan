@@ -96,7 +96,7 @@ public class CatanWindow {
 
 		playerViewPanel.setLayout(new GridLayout(2, 2));
 		for (int i = 1; i <= Game.DEFAULT_NUM_PLAYERS; i++) {
-			PlayerViewComponent playerView = new PlayerViewComponent(game.getPlayer(i), true);
+			PlayerViewComponent playerView = new PlayerViewComponent(game.getPlayer(i), false);
 			playerView.setupLayout();
 			playerViews.add(playerView);
 			playerViewPanel.add(playerView);
