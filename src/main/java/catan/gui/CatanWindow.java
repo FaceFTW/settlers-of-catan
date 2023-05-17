@@ -3,6 +3,7 @@ package catan.gui;
 import static catan.gui.LangUtils.getString;
 
 import java.awt.BorderLayout;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -18,8 +19,10 @@ import javax.swing.JPanel;
 
 import catan.data.Player;
 import catan.data.ResourceType;
+import catan.gui.components.BankDialog;
 import catan.gui.components.CoordinateButton;
 import catan.gui.components.PlayerViewComponent;
+import catan.gui.components.TradingDialog;
 import catan.logic.Coordinate;
 import catan.logic.Game;
 
@@ -35,7 +38,8 @@ public class CatanWindow {
 	private boolean inSetup = false;
 
 	// Synchronization Objects - BE CAREFUL HERE
-	private Thread gameActionThread; // Null by default, set to the thread that is running the game action
+	private Thread gameActionThread;
+	// Null by default, set to the thread that is running the game action
 	private CountDownLatch latch;
 
 	// Swing Components below here
@@ -92,7 +96,7 @@ public class CatanWindow {
 
 		playerViewPanel.setLayout(new GridLayout(2, 2));
 		for (int i = 1; i <= Game.DEFAULT_NUM_PLAYERS; i++) {
-			PlayerViewComponent playerView = new PlayerViewComponent(game.getPlayer(i), true);
+			PlayerViewComponent playerView = new PlayerViewComponent(game.getPlayer(i), false);
 			playerView.setupLayout();
 			playerViews.add(playerView);
 			playerViewPanel.add(playerView);
@@ -141,10 +145,17 @@ public class CatanWindow {
 		gameActionsPanel.add(upgradeSettlementButton);
 
 		requestTradeButton.setEnabled(false);
-		;
+		requestTradeButton.addActionListener(e -> {
+			Frame dialogFrame = JOptionPane.getFrameForComponent(frame);
+			new TradingDialog(dialogFrame, game, this::update);
+		});
 		gameActionsPanel.add(requestTradeButton);
 
 		exchangeResourcesButton.setEnabled(false);
+		exchangeResourcesButton.addActionListener(e -> {
+			Frame dialogFrame = JOptionPane.getFrameForComponent(frame);
+			new BankDialog(dialogFrame, game, this::update);
+		});
 		gameActionsPanel.add(exchangeResourcesButton);
 
 		endTurnButton.addActionListener(e -> {
@@ -202,6 +213,7 @@ public class CatanWindow {
 	//////////////////////////////////////////////
 	// Utilities - ActionListeners & Game Actions
 	//////////////////////////////////////////////
+
 	/**
 	 * Sets the ActionListener for a button to run the given game action
 	 * that uses the coordinate functionaltiy in a separate thread based on a
@@ -415,6 +427,7 @@ public class CatanWindow {
 	//////////////////////////////////////////////
 	// Getters/Setters
 	//////////////////////////////////////////////
+
 	/**
 	 * Returns the game object, useful for extracting state information
 	 *
