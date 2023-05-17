@@ -78,4 +78,24 @@ public class initialPlacementDistributionTests {
 
         EasyMock.verify(b);
     }
+
+    @Test
+    public void testInitialPlacementDistribution_threeOfTheSameTileType () {
+        List<Player> player = new ArrayList<>();
+        Player p = new Player(1);
+        player.add(p);
+
+        Board b = EasyMock.createMock(Board.class);
+        EasyMock.expect(b.getTiles()).andReturn(createPredictableTileSet());
+
+        EasyMock.replay(b);
+
+        Game g = new Game(b, player);
+
+        g.distributeInitialPlacement(1, new Coordinate(0, -1, 0));
+
+        assertEquals(3, p.getResourceCount(ResourceType.ORE));
+
+        EasyMock.verify(b);
+    }
 }
