@@ -9,6 +9,7 @@ import catan.data.Player;
 import catan.data.ResourceType;
 import catan.data.Road;
 import catan.data.Settlement;
+import catan.data.Tile;
 import catan.data.TradeOffer;
 
 public class Game {
@@ -407,8 +408,18 @@ public class Game {
 	 */
 	public void distributeInitialPlacement(int id, Coordinate coordinate) {
 		Player p = this.players.get(id - 1);
-		p.modifyResource(ResourceType.ORE, 1);
-		p.modifyResource(ResourceType.BRICK, 1);
-		p.modifyResource(ResourceType.SHEEP, 1);
+
+		Coordinate[] adjacents = Utils.getAdjacent(coordinate);
+		for (int i = 0;i < adjacents.length; i ++) {
+			adjacents[i] = Utils.resolveToValid(adjacents[i]);
+		}
+
+		for (Tile t: board.getTiles()) {
+			for (Coordinate c: adjacents) {
+				if (c.equals(t.getPosition())) {
+					p.modifyResource(t.getResourceType(), 1);
+				}
+			}
+		}
 	}
 }
