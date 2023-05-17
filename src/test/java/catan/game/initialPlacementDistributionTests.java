@@ -156,4 +156,29 @@ public class initialPlacementDistributionTests {
 
         EasyMock.verify(b);
     }
+
+    @Test
+    public void testInitialPlacementDistribution_oneResourceTileAndDesertTile () {
+        List<Player> player = new ArrayList<>();
+        Player p = new Player(1);
+        player.add(p);
+
+        Board b = EasyMock.createMock(Board.class);
+        EasyMock.expect(b.getTiles()).andReturn(createPredictableTileSet());
+
+        EasyMock.replay(b);
+
+        Game g = new Game(b, player);
+
+        g.distributeInitialPlacement(1, new Coordinate(-1, 0, 3));
+
+        assertEquals(0, p.getResourceCount(ResourceType.WHEAT));
+        assertEquals(1, p.getResourceCount(ResourceType.WOOD));
+        assertEquals(0, p.getResourceCount(ResourceType.SHEEP));
+        assertEquals(0, p.getResourceCount(ResourceType.ORE));
+        assertEquals(0, p.getResourceCount(ResourceType.BRICK));
+
+        EasyMock.verify(b);
+    }
+
 }

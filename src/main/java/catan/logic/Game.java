@@ -411,9 +411,7 @@ public class Game {
 
 		Coordinate[] adjacents = Utils.getAdjacent(coordinate);
 		for (int i = 0;i < adjacents.length; i ++) {
-			System.out.println(adjacents[i]);
 			adjacents[i] = Utils.resolveToValid(adjacents[i]);
-			System.out.println(adjacents[i]);
 		}
 
 		for (Tile t: board.getTiles()) {
