@@ -16,13 +16,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+//CHECKSTYLE:OFF: checkstyle:magicnumber
 public class initialPlacementDistributionTests {
 
     private Tile[] createPredictableTileSet() {
         Tile[] tileArray = new Tile[Utils.TILES_SPIRAL_LOCATION.length];
-        for (int i = 0;i < Utils.TILES_SPIRAL_LOCATION.length;i ++) {
+        for (int i = 0; i < Utils.TILES_SPIRAL_LOCATION.length; i++) {
             Coordinate[] corners = Utils.getAdjacent(Utils.TILES_SPIRAL_LOCATION[i]);
-            for (int j = 0; j < corners.length;j ++) {
+            for (int j = 0; j < corners.length; j++) {
                 corners[j] = Utils.resolveToValid(corners[j]);
             }
 
@@ -32,12 +33,13 @@ public class initialPlacementDistributionTests {
                     Utils.ALL_TILES_RESOURCES[i],
                     new ArrayList<>(Arrays.asList(corners)),
                     0
-                    );
+            );
         }
         return tileArray;
     }
+
     @Test
-    public void testInitialPlacementDistribution_withThreeDifferentTiles () {
+    public void testInitialPlacementDistribution_withThreeDifferentTiles() {
         List<Player> player = new ArrayList<>();
         Player p = new Player(1);
         player.add(p);
@@ -61,7 +63,7 @@ public class initialPlacementDistributionTests {
     }
 
     @Test
-    public void testInitialPlacementDistribution_twoSameOneDifferentTiles () {
+    public void testInitialPlacementDistribution_twoSameOneDifferentTiles() {
         List<Player> player = new ArrayList<>();
         Player p = new Player(1);
         player.add(p);
@@ -86,7 +88,7 @@ public class initialPlacementDistributionTests {
     }
 
     @Test
-    public void testInitialPlacementDistribution_threeOfTheSameTileType () {
+    public void testInitialPlacementDistribution_threeOfTheSameTileType() {
         List<Player> player = new ArrayList<>();
         Player p = new Player(1);
         player.add(p);
@@ -110,7 +112,7 @@ public class initialPlacementDistributionTests {
     }
 
     @Test
-    public void testInitialPlacementDistribution_twoResourceTilesAndOneDesert () {
+    public void testInitialPlacementDistribution_twoResourceTilesAndOneDesert() {
         List<Player> player = new ArrayList<>();
         Player p = new Player(1);
         player.add(p);
@@ -134,7 +136,7 @@ public class initialPlacementDistributionTests {
     }
 
     @Test
-    public void testInitialPlacementDistribution_twoDifferentResourceTiles () {
+    public void testInitialPlacementDistribution_twoDifferentResourceTiles() {
         List<Player> player = new ArrayList<>();
         Player p = new Player(1);
         player.add(p);
@@ -158,7 +160,7 @@ public class initialPlacementDistributionTests {
     }
 
     @Test
-    public void testInitialPlacementDistribution_oneResourceTileAndDesertTile () {
+    public void testInitialPlacementDistribution_oneResourceTileAndDesertTile() {
         List<Player> player = new ArrayList<>();
         Player p = new Player(1);
         player.add(p);
@@ -182,7 +184,7 @@ public class initialPlacementDistributionTests {
     }
 
     @Test
-    public void testInitialPlacementDistribution_oneResourceTile () {
+    public void testInitialPlacementDistribution_oneResourceTile() {
         List<Player> player = new ArrayList<>();
         Player p = new Player(1);
         player.add(p);
@@ -206,7 +208,7 @@ public class initialPlacementDistributionTests {
     }
 
     @Test
-    public void testInitialPlacementDistribution_onlyDesertTile () {
+    public void testInitialPlacementDistribution_onlyDesertTile() {
         List<Player> player = new ArrayList<>();
         Player p = new Player(1);
         player.add(p);
