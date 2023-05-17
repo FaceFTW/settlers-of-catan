@@ -411,10 +411,14 @@ public class Game {
 
 		Coordinate[] adjacents = Utils.getAdjacent(coordinate);
 		for (int i = 0;i < adjacents.length; i ++) {
+			System.out.println(adjacents[i]);
 			adjacents[i] = Utils.resolveToValid(adjacents[i]);
+			System.out.println(adjacents[i]);
 		}
 
 		for (Tile t: board.getTiles()) {
+			System.err.println(t.getPosition());
+			System.err.println(t.getResourceType());
 			for (Coordinate c: adjacents) {
 				if (c.equals(t.getPosition())) {
 					p.modifyResource(t.getResourceType(), 1);
