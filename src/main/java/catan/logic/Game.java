@@ -415,8 +415,6 @@ public class Game {
 		}
 
 		for (Tile t: board.getTiles()) {
-			System.err.println(t.getPosition());
-			System.err.println(t.getResourceType());
 			for (Coordinate c: adjacents) {
 				if (c.equals(t.getPosition())) {
 					p.modifyResource(t.getResourceType(), 1);
