@@ -36,6 +36,7 @@ public class CatanWindow {
 	private int dieRoll = 0;
 	private boolean gameStarted = false;
 	private boolean inSetup = false;
+	private int currentLongestRoad = -1;
 
 	// Synchronization Objects - BE CAREFUL HERE
 	private Thread gameActionThread;
@@ -47,6 +48,7 @@ public class CatanWindow {
 	private BoardPanel boardPanel;
 	private JLabel label;
 	private JLabel currentTurnLabel;
+	private JLabel longestRoadLabel;
 
 	private JPanel actionsPanel = new JPanel(new BorderLayout());
 	private JButton startGameButton = new JButton(getString("startGame"));
@@ -86,17 +88,32 @@ public class CatanWindow {
 		constraints.gridy = 0;
 		sidebarPanel.add(actionsPanel, constraints);
 
+		JPanel turnStatusPanel = new JPanel(new GridLayout(1, 2));
 		this.currentTurnLabel = new JLabel(getString("currentTurn", game.getTurn()));
+		currentTurnLabel.setHorizontalAlignment(JLabel.CENTER);
+		turnStatusPanel.add(currentTurnLabel);
+		this.longestRoadLabel = new JLabel(
+				getString("longestRoad",
+						currentLongestRoad == -1
+								? getString("none")
+								: getString("player" + currentLongestRoad)));
+		longestRoadLabel.setHorizontalAlignment(JLabel.CENTER);
+		turnStatusPanel.add(longestRoadLabel);
 		constraints.gridy = GridBagConstraints.RELATIVE;
 		constraints.gridwidth = 1;
-		constraints.ipady = 20;
+		constraints.ipady = 5;
 		constraints.anchor = GridBagConstraints.CENTER;
+		sidebarPanel.add(turnStatusPanel, constraints);
 
-		sidebarPanel.add(currentTurnLabel, constraints);
+
+		label = new JLabel(getString("selectAction"));
+		label.setHorizontalAlignment(JLabel.CENTER);
+
+		sidebarPanel.add(label, constraints);
 
 		playerViewPanel.setLayout(new GridLayout(2, 2));
 		for (int i = 1; i <= Game.DEFAULT_NUM_PLAYERS; i++) {
-			PlayerViewComponent playerView = new PlayerViewComponent(game.getPlayer(i), false);
+			PlayerViewComponent playerView = new PlayerViewComponent(game.getPlayer(i), true);
 			playerView.setupLayout();
 			playerViews.add(playerView);
 			playerViewPanel.add(playerView);
@@ -119,9 +136,6 @@ public class CatanWindow {
 		}
 		this.boardPanel.hideCornerButtons();
 		frame.add(boardPanel, BorderLayout.CENTER);
-
-		label = new JLabel(getString("selectAction"));
-		frame.add(label, BorderLayout.NORTH);
 
 		frame.add(sidebarPanel, BorderLayout.EAST);
 
@@ -203,6 +217,23 @@ public class CatanWindow {
 	}
 
 	private void update() {
+		game.getBoard().updateLongestRoad();
+		int newLongestRoad = game.getBoard().getLongestRoadOwnerID();
+		if (newLongestRoad != currentLongestRoad) {
+			if (currentLongestRoad != -1) {
+				int prevPlayerVicPoints = game.getPlayer(newLongestRoad).getVictoryPoints();
+				game.getPlayer(currentLongestRoad).setVictoryPoints(prevPlayerVicPoints - 2);
+			}
+			int newPlayerVicPoints = game.getPlayer(newLongestRoad).getVictoryPoints();
+			game.getPlayer(newLongestRoad).setVictoryPoints(newPlayerVicPoints + 2);
+			this.currentLongestRoad = newLongestRoad;
+			this.longestRoadLabel.setText(
+					getString("longestRoad",
+							currentLongestRoad == -1
+									? getString("none")
+									: getString("player" + currentLongestRoad)));
+		}
+
 		for (PlayerViewComponent playerView : playerViews) {
 			playerView.update();
 		}
