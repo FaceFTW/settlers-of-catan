@@ -105,7 +105,6 @@ public class CatanWindow {
 		constraints.anchor = GridBagConstraints.CENTER;
 		sidebarPanel.add(turnStatusPanel, constraints);
 
-
 		label = new JLabel(getString("selectAction"));
 		label.setHorizontalAlignment(JLabel.CENTER);
 
@@ -239,6 +238,20 @@ public class CatanWindow {
 		}
 		boardPanel.repaint();
 		this.currentTurnLabel.setText(getString("currentTurn", game.getTurn()));
+
+		if (game.getPlayer(game.getTurn()).getVictoryPoints() >= 10) {
+			JOptionPane.showMessageDialog(frame, getString("playerWins", game.getTurn()));
+			gameStarted = false;
+			this.buildRoadButton.setEnabled(false);
+			this.buildSettlementButton.setEnabled(false);
+			this.upgradeSettlementButton.setEnabled(false);
+			this.requestTradeButton.setEnabled(false);
+			this.exchangeResourcesButton.setEnabled(false);
+			this.endTurnButton.setEnabled(false);
+			this.rollDieButton.setEnabled(false);
+			this.cancelButton.setEnabled(false);
+			this.startGameButton.setText(getString("startGame"));
+		}
 	}
 
 	//////////////////////////////////////////////
@@ -257,12 +270,24 @@ public class CatanWindow {
 		button.addActionListener(e -> {
 			gameActionThread = new Thread(() -> {
 				// Pre Action Steps;
+				this.buildRoadButton.setEnabled(false);
+				this.buildSettlementButton.setEnabled(false);
+				this.upgradeSettlementButton.setEnabled(false);
+				this.requestTradeButton.setEnabled(false);
+				this.exchangeResourcesButton.setEnabled(false);
+				this.endTurnButton.setEnabled(false);
 				this.cancelButton.setEnabled(true);
 				this.boardPanel.showCornerButtons();
 				// Execute Action
 				action.run();
 				// Post Action Steps;
 				update();
+				this.buildRoadButton.setEnabled(gameStarted);
+				this.buildSettlementButton.setEnabled(gameStarted);
+				this.upgradeSettlementButton.setEnabled(gameStarted);
+				this.requestTradeButton.setEnabled(gameStarted);
+				this.exchangeResourcesButton.setEnabled(gameStarted);
+				this.endTurnButton.setEnabled(gameStarted);
 				this.cancelButton.setEnabled(false);
 				this.boardPanel.hideCornerButtons();
 			});
