@@ -8,10 +8,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import catan.data.Player;
 import catan.data.ResourceType;
@@ -91,14 +93,19 @@ public class PlayerViewComponent extends JPanel {
 			System.out.println("Error loading resource icons");
 		}
 
-		GridLayout gridLayout = new GridLayout(7, isDev ? 4 : 2);
+		GridLayout gridLayout = new GridLayout(6, 1);
 		this.setLayout(gridLayout);
 	}
 
 	public void setupLayout() {
-		this.add(new JLabel(woodIcon));
+		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+				getString("player" + playerRef.getPlayerId()),
+				TitledBorder.CENTER, TitledBorder.TOP));
+
+		JPanel woodPanel = new JPanel(new GridLayout(1, 4, 5, 0));
+		woodPanel.add(new JLabel(woodIcon));
 		this.woodLabel = new JLabel(getString("woodCount", playerRef.getResourceCount(ResourceType.WOOD)));
-		this.add(woodLabel);
+		woodPanel.add(woodLabel);
 		if (isDev) {
 			this.woodPlusButton = new JButton("+");
 			woodPlusButton.addActionListener(e -> {
@@ -110,13 +117,15 @@ public class PlayerViewComponent extends JPanel {
 				playerRef.modifyResource(ResourceType.WOOD, -1);
 				update();
 			});
-			this.add(woodPlusButton);
-			this.add(woodMinusButton);
+			woodPanel.add(woodPlusButton);
+			woodPanel.add(woodMinusButton);
 		}
+		this.add(woodPanel);
 
-		this.add(new JLabel(brickIcon));
+		JPanel brickPanel = new JPanel(new GridLayout(1, 4, 5, 0));
+		brickPanel.add(new JLabel(brickIcon));
 		this.brickLabel = new JLabel(getString("brickCount", playerRef.getResourceCount(ResourceType.BRICK)));
-		this.add(brickLabel);
+		brickPanel.add(brickLabel);
 		if (isDev) {
 			this.brickPlusButton = new JButton("+");
 			brickPlusButton.addActionListener(e -> {
@@ -128,13 +137,15 @@ public class PlayerViewComponent extends JPanel {
 				playerRef.modifyResource(ResourceType.BRICK, -1);
 				update();
 			});
-			this.add(brickPlusButton);
-			this.add(brickMinusButton);
+			brickPanel.add(brickPlusButton);
+			brickPanel.add(brickMinusButton);
 		}
+		this.add(brickPanel);
 
-		this.add(new JLabel(sheepIcon));
+		JPanel sheepPanel = new JPanel(new GridLayout(1, 4, 5, 0));
+		sheepPanel.add(new JLabel(sheepIcon));
 		this.sheepLabel = new JLabel(getString("sheepCount", playerRef.getResourceCount(ResourceType.SHEEP)));
-		this.add(sheepLabel);
+		sheepPanel.add(sheepLabel);
 		if (isDev) {
 			this.sheepPlusButton = new JButton("+");
 			sheepPlusButton.addActionListener(e -> {
@@ -146,13 +157,15 @@ public class PlayerViewComponent extends JPanel {
 				playerRef.modifyResource(ResourceType.SHEEP, -1);
 				update();
 			});
-			this.add(sheepPlusButton);
-			this.add(sheepMinusButton);
+			sheepPanel.add(sheepPlusButton);
+			sheepPanel.add(sheepMinusButton);
 		}
+		this.add(sheepPanel);
 
-		this.add(new JLabel(wheatIcon));
+		JPanel wheatPanel = new JPanel(new GridLayout(1, 4, 5, 0));
+		wheatPanel.add(new JLabel(wheatIcon));
 		this.wheatLabel = new JLabel(getString("wheatCount", playerRef.getResourceCount(ResourceType.WHEAT)));
-		this.add(wheatLabel);
+		wheatPanel.add(wheatLabel);
 		if (isDev) {
 			this.wheatPlusButton = new JButton("+");
 			wheatPlusButton.addActionListener(e -> {
@@ -164,13 +177,15 @@ public class PlayerViewComponent extends JPanel {
 				playerRef.modifyResource(ResourceType.WHEAT, -1);
 				update();
 			});
-			this.add(wheatPlusButton);
-			this.add(wheatMinusButton);
+			wheatPanel.add(wheatPlusButton);
+			wheatPanel.add(wheatMinusButton);
 		}
+		this.add(wheatPanel);
 
-		this.add(new JLabel(oreIcon));
+		JPanel orePanel = new JPanel(new GridLayout(1, 4, 5, 0));
+		orePanel.add(new JLabel(oreIcon));
 		this.oreLabel = new JLabel(getString("oreCount", playerRef.getResourceCount(ResourceType.ORE)));
-		this.add(oreLabel);
+		orePanel.add(oreLabel);
 		if (isDev) {
 			this.orePlusButton = new JButton("+");
 			orePlusButton.addActionListener(e -> {
@@ -182,17 +197,13 @@ public class PlayerViewComponent extends JPanel {
 				playerRef.modifyResource(ResourceType.ORE, -1);
 				update();
 			});
-			this.add(orePlusButton);
-			this.add(oreMinusButton);
+			orePanel.add(orePlusButton);
+			orePanel.add(oreMinusButton);
 		}
-
-		this.add(new JLabel(""));
-		if (isDev) {
-			this.add(new JLabel("")); // Empty label
-			this.add(new JLabel("")); // Empty label
-		}
+		this.add(orePanel);
 
 		this.victoryPointsLabel = new JLabel(getString("victoryPoints", playerRef.getVictoryPoints()));
+		victoryPointsLabel.setHorizontalAlignment(JLabel.CENTER);
 		this.add(victoryPointsLabel);
 	}
 
