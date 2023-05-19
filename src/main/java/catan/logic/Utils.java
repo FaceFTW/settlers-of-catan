@@ -252,6 +252,14 @@ public class Utils {
 			}
 		}
 
+		if (x * z > 0) {
+			int factor = Integer.signum(z);
+			for (; z != 0; z -= factor) {
+				x -= factor;
+				y += factor;
+			}
+		}
+
 		return new Coordinate(x, y, z);
 	}
 

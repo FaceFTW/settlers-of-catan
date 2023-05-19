@@ -114,7 +114,8 @@ public final class UtilsTest {
 			"5,-5,-5,0,0,-10",
 			"5,-5,5,0,0,0",
 			"5,5,-5,10,0,0",
-			"5,5,5,0,10,0"
+			"5,5,5,0,10,0",
+			"3,1,1,2,2,0"
 	})
 	public void testResolveToValid_allBoundries_returnsValidTuple(String values) {
 		String[] valuesAsStrings = values.split(",");
