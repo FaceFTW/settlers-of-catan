@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //CHECKSTYLE:OFF: checkstyle:magicnumber
-public class initialPlacementDistributionTests {
+public class InitialPlacementDistributionTests {
 
     private Tile[] createPredictableTileSet() {
         Tile[] tileArray = new Tile[Utils.TILES_SPIRAL_LOCATION.length];
