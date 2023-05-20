@@ -22,6 +22,7 @@ public class DistributeResourcesTests {
 		int dieRoll = g.rollDie();
 
 		b.distributeResources(p, dieRoll);
+		b.distributeResources(p, dieRoll);
 		EasyMock.expectLastCall();
 
 		EasyMock.replay(b);
