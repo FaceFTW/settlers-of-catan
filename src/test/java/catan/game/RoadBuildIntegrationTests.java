@@ -3,6 +3,7 @@ package catan.game;
 import catan.data.Player;
 import catan.data.ResourceType;
 import catan.data.Road;
+import catan.data.Settlement;
 import catan.logic.Board;
 import catan.logic.Coordinate;
 import catan.logic.Game;
@@ -36,5 +37,18 @@ public class RoadBuildIntegrationTests {
         assertFalse(g.buildRoad(1,
                 new Coordinate(1, 0, 0),
                 new Coordinate(2, 0, 0)));
+    }
+
+    @Test
+    void buildRoad_StartHasSettlementNotOwnedByPlayer_ReturnsFalse() {
+        List<Player> player = createPlayerWithSettlementResources();
+        Board b = new Board();
+        b.createNewSettlement(new Coordinate(1, 0, 0), 2);
+        Game g = new Game(b, player);
+
+        assertFalse(g.buildRoad(1,
+                new Coordinate(1, 0, 0),
+                new Coordinate(2, 0, 0)));
+
     }
 }
