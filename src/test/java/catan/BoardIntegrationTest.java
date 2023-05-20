@@ -1,7 +1,9 @@
 package catan;
 
 import catan.data.ResourceType;
+import catan.data.Tile;
 import catan.logic.Board;
+import catan.logic.Coordinate;
 import catan.logic.Utils;
 import org.junit.jupiter.api.Test;
 
@@ -38,4 +40,26 @@ public class BoardIntegrationTest {
                     board.getTiles()[i].getDieRoll());
         }
     }
+
+    // CHECKSTYLE:OFF: checkstyle:magicnumber
+    @Test
+    public void testCreateBoard_lookAtSpiralStart_checkCorrectCornerPlacement() {
+        ArrayList<Coordinate> expected = new ArrayList<>();
+        expected.add(new Coordinate(-2, 0, 1));
+        expected.add(new Coordinate(-1, 0, 2));
+        expected.add(new Coordinate(-1, 0, 3));
+        expected.add(new Coordinate(-2, 0, 3));
+        expected.add(new Coordinate(-3, 0, 2));
+        expected.add(new Coordinate(-3, 0, 1));
+
+        Board board = new Board(new Random());
+        Tile tileInQuestion = board.getTiles()[0];
+
+        for (Coordinate c : tileInQuestion.getCorners()) {
+            assertTrue(expected.remove(c));
+        }
+
+        assertTrue(expected.isEmpty());
+    }
+    // CHECKSTYLE:ON: checkstyle:magicnumber
 }
