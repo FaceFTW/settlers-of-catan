@@ -51,4 +51,17 @@ public class RoadBuildIntegrationTests {
                 new Coordinate(2, 0, 0)));
 
     }
+
+    @Test
+    void buildRoad_EndHasSettlementNotOwnedByPlayer_ReturnsFalse() {
+        List<Player> player = createPlayerWithSettlementResources();
+        Board b = new Board();
+        b.createNewSettlement(new Coordinate(2, 0, 0), 2);
+
+        Game g = new Game(b, player);
+
+        assertFalse(g.buildRoad(1,
+                new Coordinate(1, 0, 0),
+                new Coordinate(2, 0, 0)));
+    }
 }
