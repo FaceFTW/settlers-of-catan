@@ -62,4 +62,25 @@ public class BoardIntegrationTest {
         assertTrue(expected.isEmpty());
     }
     // CHECKSTYLE:ON: checkstyle:magicnumber
+
+    @Test
+    public void testCreateBoard_lookAtSpiralEnd_checkCorrectCornerPlacement() {
+        ArrayList<Coordinate> expected = new ArrayList<>();
+        expected.add(new Coordinate(-1, 0, 0));
+        expected.add(new Coordinate(1, 0, 0));
+        expected.add(new Coordinate(0, -1, 0));
+        expected.add(new Coordinate(0, 1, 0));
+        expected.add(new Coordinate(0, 0, -1));
+        expected.add(new Coordinate(0, 0, 1));
+
+        Board board = new Board(new Random());
+        Tile tileInQuestion = board.getTiles()[Utils.TILES_SPIRAL_LOCATION.length - 1];
+
+        for (Coordinate c : tileInQuestion.getCorners()) {
+            assertTrue(expected.remove(c));
+        }
+
+        assertTrue(expected.isEmpty());
+    }
+
 }
