@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -178,5 +179,18 @@ public class RoadBuildIntegrationTests {
                 new Coordinate(2, 0, 0)));
         assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
         assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
+    }
+
+    @Test
+    void buildRoad_NoEndsConnected_OtherRoadsOwnedByPlayer_ReturnsFalse() {
+        List<Player> player = createPlayerWithSettlementResources();
+        Board b = new Board();
+        b.createNewRoad(1, new Coordinate(0, -1, 0), new Coordinate(0, 0, -1));
+        b.createNewRoad(1, new Coordinate(1, 2, 0), new Coordinate(2, 1, 0));
+        Game g = new Game(b, player);
+
+        assertFalse(g.buildRoad(1,
+                new Coordinate(1, 0, 0),
+                new Coordinate(2, 0, 0)));
     }
 }
