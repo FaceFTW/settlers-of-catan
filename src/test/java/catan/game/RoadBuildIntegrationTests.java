@@ -208,4 +208,17 @@ public class RoadBuildIntegrationTests {
         assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
         assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
     }
+
+    @Test
+    void buildRoad_NotConnectedToSettlement_OtherSettlementsOwned_ReturnFalse() {
+        List<Player> player = createPlayerWithSettlementResources();
+        Board b = new Board();
+        b.createNewSettlement(new Coordinate(0, 0, -1), 1);
+
+        Game g = new Game(b, player);
+
+        assertFalse(g.buildRoad(1,
+                new Coordinate(1, 0, 0),
+                new Coordinate(2, 0, 0)));
+    }
 }
