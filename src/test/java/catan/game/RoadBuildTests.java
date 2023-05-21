@@ -370,15 +370,9 @@ public class RoadBuildTests {
 	@Test
 	void buildRoad_OneEndSatisfiesConditionOtherFails_BuildsRoad() {
 		List<Player> player = createPlayerWithSettlementResources();
-		List<Road> roads = new ArrayList<>();
-		roads.add(new Road(new Coordinate(1, 0, 0), new Coordinate(0, 0, -1), 1));
-		roads.add(new Road(new Coordinate(2, 0, 0), new Coordinate(2, 1, 0), 2));
-		Board b = EasyMock.createMock(Board.class);
-		EasyMock.expect(b.getSettlements()).andReturn(new ArrayList<>());
-		EasyMock.expect(b.getRoads()).andReturn(roads);
-		b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
-		EasyMock.expectLastCall();
-		EasyMock.replay(b);
+		Board b = new Board();
+		b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(0, 0, -1));
+		b.createNewRoad(2, new Coordinate(2, 0, 0), new Coordinate(2, 1, 0));
 		Game g = new Game(b, player);
 
 		assertTrue(g.buildRoad(1,
@@ -386,8 +380,6 @@ public class RoadBuildTests {
 				new Coordinate(2, 0, 0)));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
 		assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
-
-		EasyMock.verify(b);
 	}
 
 	@Test
