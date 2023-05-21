@@ -106,4 +106,25 @@ public class SettlementBuildIntegrationTests {
         assertEquals(0, player.get(0).getResourceCount(ResourceType.SHEEP));
         assertEquals(1, player.get(0).getVictoryPoints());
     }
+
+    @Test
+    void buildSettlement_ConnectedToARoadOwnedByPlayer_IsNotAdjacentToASettlement_RoadEnd_BuildsSettlement() {
+        List<Player> player = createPlayerWithSettlementResources();
+        Board b = new Board();
+        b.createNewSettlement(new Coordinate(2, 0, -1),
+                player.get(0).getPlayerId());
+        b.createNewRoad(1, new Coordinate(2, 0, 0), new Coordinate(1, 0, 0));
+        b.createNewRoad(1, new Coordinate(2, 0, 0), new Coordinate(2, 0, -1));
+
+        Game game = new Game(b, player);
+
+        Coordinate c = new Coordinate(1, 0, 0);
+
+        assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
+        assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
+        assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
+        assertEquals(0, player.get(0).getResourceCount(ResourceType.WHEAT));
+        assertEquals(0, player.get(0).getResourceCount(ResourceType.SHEEP));
+        assertEquals(1, player.get(0).getVictoryPoints());
+    }
 }
