@@ -329,5 +329,15 @@ public class SettlementBuildIntegrationTests {
         assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, true));
     }
 
+    @Test
+    void buildSettlement_InitialBuilding_ConditionsSatisfied_BuildsSettlement() {
+        List<Player> player = createPlayerWithSettlementResources();
 
+        Board b = new Board();
+
+        Game game = new Game(b, player);
+
+        Coordinate c = new Coordinate(1, 0, 0);
+        assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, true));
+    }
 }
