@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 
 public class LangUtils {
 	private static ResourceBundle bundle = ResourceBundle.getBundle("base", Locale.getDefault());
-	public static final Locale[] SUPPORTED_LOCALES = {Locale.US, Locale.ITALIAN };
+	public static final Locale[] SUPPORTED_LOCALES = {Locale.US, Locale.ITALIAN, Locale.GERMANY};
 
 	protected LangUtils() {
 	}
