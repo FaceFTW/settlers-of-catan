@@ -163,4 +163,19 @@ public class SettlementBuildIntegrationTests {
         assertEquals(0, player.get(0).getResourceCount(ResourceType.SHEEP));
         assertEquals(1, player.get(0).getVictoryPoints());
     }
+
+    @Test
+    void buildSettlement_onTwoToOneWheatPort_playerHasImprovedWheatTrade() {
+        List<Player> player = createPlayerWithSettlementResources();
+        Board b = new Board();
+
+        b.createNewRoad(1, new Coordinate(1, 0, -2), new Coordinate(1, 0, -3));
+
+        Game game = new Game(b, player);
+
+        Coordinate c = new Coordinate(1, 0, -3);
+        assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
+
+        assertEquals(2, player.get(0).getTradeValues().get(ResourceType.WHEAT));
+    }
 }
