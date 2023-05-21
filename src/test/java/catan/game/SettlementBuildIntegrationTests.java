@@ -193,4 +193,19 @@ public class SettlementBuildIntegrationTests {
 
         assertEquals(2, player.get(0).getTradeValues().get(ResourceType.ORE));
     }
+
+    @Test
+    void buildSettlement_onTwoToOneOrePort_playerHasImprovedSheepTrade() {
+        List<Player> player = createPlayerWithSettlementResources();
+        Board b = new Board();
+
+        b.createNewRoad(1, new Coordinate(0, 2, 1), new Coordinate(0, 3, 1));
+
+        Game game = new Game(b, player);
+
+        Coordinate c = new Coordinate(0, 3, 1);
+        assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
+
+        assertEquals(2, player.get(0).getTradeValues().get(ResourceType.SHEEP));
+    }
 }
