@@ -158,6 +158,17 @@ public class CatanWindow {
 				});
 			}
 		}
+
+		for (CoordinateButton button : boardPanel.getRobberButtons()) {
+			if (button.getActionListeners().length == 0) {
+				button.addActionListener(e -> {
+					if (pos1 == null) {
+						pos1 = button.getCoordinate();
+					}
+					latch.countDown();
+				});
+			}
+		}
 		this.boardPanel.hideCornerButtons();
 		frame.add(boardPanel, BorderLayout.CENTER);
 
@@ -415,7 +426,26 @@ public class CatanWindow {
 			}
 		}
 		this.label.setText(getString("rollResult", game.getTurn(), this.dieRoll));
-		game.distributeResources(dieRoll);
+		if (this.dieRoll == 7) {
+			thiefDiscardAction();
+			this.label.setText(getString("robberMove"));
+			this.boardPanel.showRobberButtons();
+			regenActionLatch(1);
+			occurred = false;
+			while (!occurred) {
+				try {
+					latch.await();
+					occurred = true;
+				} catch (InterruptedException e) {
+					return;
+				}
+			}
+			game.getBoard().setThiefPosition(pos1);
+			this.label.setText(getString("robberMoveSuccessful"));
+			this.boardPanel.hideRobberButtons();
+		} else {
+			game.distributeResources(dieRoll);
+		}
 		update();
 
 		// Enable all buttons except roll die
@@ -491,7 +521,6 @@ public class CatanWindow {
 			game.setTurn(i);
 			gameActionThread = new Thread(() -> {
 				buildSettlementAction();
-				// TODO Give resources
 				game.distributeInitialPlacement(game.getTurn(), pos1);
 				update();
 				buildRoadAction();
@@ -503,6 +532,54 @@ public class CatanWindow {
 
 			gameActionThread.start();
 			gameActionThread.join();
+		}
+	}
+
+	private void thiefDiscardAction() {
+		for (int i = 1; i <= Game.DEFAULT_NUM_PLAYERS; i++) {
+			Player p = game.getPlayer(i);
+			int resourceCount = p.getResourceCount(ResourceType.WOOD);
+			resourceCount += p.getResourceCount(ResourceType.BRICK);
+			resourceCount += p.getResourceCount(ResourceType.WHEAT);
+			resourceCount += p.getResourceCount(ResourceType.SHEEP);
+			resourceCount += p.getResourceCount(ResourceType.ORE);
+			if (resourceCount > 7) {
+				int discardCount = resourceCount / 2;
+				while (discardCount > 0) {
+					String[] resourceNames = { getString("wood"),
+							getString("brick"), getString("wheat"),
+							getString("sheep"), getString("ore") };
+
+					String selected = (String) JOptionPane.showInputDialog(frame,
+							getString("discardPrompt", p.getPlayerId()),
+							getString("discardTitle"),
+							JOptionPane.PLAIN_MESSAGE,
+							null,
+							resourceNames,
+							resourceNames[0]);
+
+					ResourceType type = null;
+					if (selected.equals(getString("wood"))) {
+						type = ResourceType.WOOD;
+					} else if (selected.equals(getString("brick"))) {
+						type = ResourceType.BRICK;
+					} else if (selected.equals(getString("wheat"))) {
+						type = ResourceType.WHEAT;
+					} else if (selected.equals(getString("sheep"))) {
+						type = ResourceType.SHEEP;
+					} else if (selected.equals(getString("ore"))) {
+						type = ResourceType.ORE;
+					}
+
+					if (p.getResourceCount(type) > 0) {
+						p.modifyResource(type, -1);
+						this.update();
+						discardCount--;
+					} else {
+						JOptionPane.showMessageDialog(frame, getString("invalidDiscard"));
+					}
+				}
+			}
 		}
 	}
 
