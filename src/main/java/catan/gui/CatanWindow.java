@@ -558,7 +558,7 @@ public class CatanWindow {
 							resourceNames,
 							resourceNames[0]);
 
-					ResourceType type = null;
+					ResourceType type = ResourceType.WOOD;
 					if (selected.equals(getString("wood"))) {
 						type = ResourceType.WOOD;
 					} else if (selected.equals(getString("brick"))) {
