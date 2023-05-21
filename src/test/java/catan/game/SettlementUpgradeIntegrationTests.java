@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SettlementUpgradeIntegrationTests {
     private List<Player> createPlayerWithUpgradeResources() {
@@ -76,6 +77,17 @@ public class SettlementUpgradeIntegrationTests {
         b.createNewSettlement(new Coordinate(1, 0, 0), 2);
         Game game = new Game(b, p);
 
+        assertFalse(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
+    }
+
+    @Test
+    void upgradeSettlement_SettlementAtPosIsACity_ReturnsFalse() {
+        List<Player> p = createPlayerWithUpgradeResources();
+        Board b = new Board();
+        b.createNewSettlement(new Coordinate(1, 0, 0), 1);
+        Game game = new Game(b, p);
+
+        assertTrue(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
         assertFalse(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
     }
 }
