@@ -419,7 +419,7 @@ public class SettlementBuildTests {
 	}
 
 	@Test
-	void buildSettlement_onThreeToOneWoodPort_playerHasImprovedTrades() {
+	void buildSettlement_onThreeToOnePort_playerHasImprovedTrades() {
 		List<Player> player = createPlayerWithSettlementResources();
 		Board b = EasyMock.mock(Board.class);
 

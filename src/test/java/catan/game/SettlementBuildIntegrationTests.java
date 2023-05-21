@@ -31,6 +31,7 @@ public class SettlementBuildIntegrationTests {
 
         return p;
     }
+
     @Test
     void buildSettlement_PosIsOccupied_ReturnsFalse() {
         List<Player> player = createPlayerWithSettlementResources();
@@ -93,7 +94,7 @@ public class SettlementBuildIntegrationTests {
         b.createNewSettlement(new Coordinate(2, 0, -1),
                 player.get(0).getPlayerId());
         b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
-        b.createNewRoad(1,new Coordinate(2, 0, 0), new Coordinate(2, 0, -1));
+        b.createNewRoad(1, new Coordinate(2, 0, 0), new Coordinate(2, 0, -1));
 
         Game game = new Game(b, player);
 
@@ -237,5 +238,24 @@ public class SettlementBuildIntegrationTests {
         assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
 
         assertEquals(2, player.get(0).getTradeValues().get(ResourceType.WOOD));
+    }
+
+    @Test
+    void buildSettlement_onThreeTwoOnePort_playerHasImprovedTrades() {
+        List<Player> player = createPlayerWithSettlementResources();
+        Board b = new Board();
+
+        b.createNewRoad(1, new Coordinate(3, 1, 0), new Coordinate(3, 2, 0));
+
+        Game game = new Game(b, player);
+
+        Coordinate c = new Coordinate(3, 2, 0);
+        assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
+
+        assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WOOD));
+        assertEquals(3, player.get(0).getTradeValues().get(ResourceType.BRICK));
+        assertEquals(3, player.get(0).getTradeValues().get(ResourceType.ORE));
+        assertEquals(3, player.get(0).getTradeValues().get(ResourceType.SHEEP));
+        assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WHEAT));
     }
 }
