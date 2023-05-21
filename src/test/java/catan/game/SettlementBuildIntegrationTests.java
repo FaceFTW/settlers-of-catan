@@ -13,7 +13,9 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SettlementBuildIntegrationTests {
 
@@ -82,5 +84,26 @@ public class SettlementBuildIntegrationTests {
         Coordinate c = new Coordinate(1, 0, 0);
 
         assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, false));
+    }
+
+    @Test
+    void buildSettlement_ConnectedToARoadOwnedByPlayer_IsNotAdjacentToASettlement_BuildsSettlement() {
+        List<Player> player = createPlayerWithSettlementResources();
+        Board b = new Board();
+        b.createNewSettlement(new Coordinate(2, 0, -1),
+                player.get(0).getPlayerId());
+        b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
+        b.createNewRoad(1,new Coordinate(2, 0, 0), new Coordinate(2, 0, -1));
+
+        Game game = new Game(b, player);
+
+        Coordinate c = new Coordinate(1, 0, 0);
+
+        assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
+        assertEquals(0, player.get(0).getResourceCount(ResourceType.BRICK));
+        assertEquals(0, player.get(0).getResourceCount(ResourceType.WOOD));
+        assertEquals(0, player.get(0).getResourceCount(ResourceType.WHEAT));
+        assertEquals(0, player.get(0).getResourceCount(ResourceType.SHEEP));
+        assertEquals(1, player.get(0).getVictoryPoints());
     }
 }
