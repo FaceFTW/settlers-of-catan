@@ -69,4 +69,18 @@ public class SettlementBuildIntegrationTests {
 
         assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, false));
     }
+
+    @Test
+    void buildSettlement_ConnectedToARoadOwnedByPlayer_IsAdjacentToASettlement_ReturnsFalse() {
+        List<Player> player = createPlayerWithSettlementResources();
+        Board b = new Board();
+        b.createNewSettlement(new Coordinate(2, 0, 0),
+                player.get(0).getPlayerId());
+        b.createNewRoad(1, new Coordinate(1, 0, 0), new Coordinate(2, 0, 0));
+        Game game = new Game(b, player);
+
+        Coordinate c = new Coordinate(1, 0, 0);
+
+        assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, false));
+    }
 }
