@@ -2,6 +2,7 @@ package catan.game;
 
 import catan.data.Player;
 import catan.data.ResourceType;
+import catan.data.Settlement;
 import catan.logic.Board;
 import catan.logic.Coordinate;
 import catan.logic.Game;
@@ -63,6 +64,16 @@ public class SettlementUpgradeIntegrationTests {
     void upgradeSettlement_NoSettlementAtPos_ReturnsFalse() {
         List<Player> p = createPlayerWithUpgradeResources();
         Board b = new Board();
+        Game game = new Game(b, p);
+
+        assertFalse(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
+    }
+
+    @Test
+    void upgradeSettlement_SettlementAtPosNotOwnedByPlayer_ReturnsFalse() {
+        List<Player> p = createPlayerWithUpgradeResources();
+        Board b = new Board();
+        b.createNewSettlement(new Coordinate(1, 0, 0), 2);
         Game game = new Game(b, p);
 
         assertFalse(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
