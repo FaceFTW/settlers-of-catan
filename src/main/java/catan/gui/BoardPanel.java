@@ -46,6 +46,7 @@ public final class BoardPanel extends JPanel {
 	private BufferedImage thiefImage;
 
 	private List<CoordinateButton> buttons = new ArrayList<CoordinateButton>();
+	private List<CoordinateButton> robberButtons = new ArrayList<CoordinateButton>();
 
 	public BoardPanel(Game game) {
 		this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -270,6 +271,25 @@ public final class BoardPanel extends JPanel {
 		for (Coordinate pos : buttonCoords) {
 			createCoordinateButton(pos);
 		}
+
+		List<Coordinate> cornerCoords = new ArrayList<Coordinate>(Arrays.asList(Utils.TILES_SPIRAL_LOCATION));
+		for (Coordinate pos : cornerCoords) {
+			createRobberCoordinateButton(pos);
+		}
+	}
+
+	private void createRobberCoordinateButton(Coordinate pos) {
+		CoordinateButton button = new CoordinateButton(pos);
+		int x = DEFAULT_WIDTH / 2
+				+ X_OFFSET * pos.getY()
+				+ X_SECONDARY_OFFSET * (pos.getX() + pos.getZ()) - 10;
+		int y = DEFAULT_HEIGHT / 2
+				- pos.getX() * Y_OFFSET
+				+ pos.getZ() * Y_OFFSET - 10;
+		button.setBounds(x, y, 20, 20);
+		button.setVisible(false);
+		robberButtons.add(button);
+		this.add(button);
 	}
 
 	private void createCoordinateButton(Coordinate pos) {
@@ -301,5 +321,21 @@ public final class BoardPanel extends JPanel {
 		for (CoordinateButton button : buttons) {
 			button.setVisible(false);
 		}
+	}
+
+	public void showRobberButtons() {
+		for (CoordinateButton button : robberButtons) {
+			button.setVisible(true);
+		}
+	}
+
+	public void hideRobberButtons() {
+		for (CoordinateButton button : robberButtons) {
+			button.setVisible(false);
+		}
+	}
+
+	public List<CoordinateButton> getRobberButtons() {
+		return robberButtons;
 	}
 }
