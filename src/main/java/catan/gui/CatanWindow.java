@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -68,6 +69,8 @@ public class CatanWindow {
 	private JPanel sidebarPanel = new JPanel(new GridBagLayout());
 	private GridBagConstraints constraints = new GridBagConstraints();
 
+	private JComboBox<String> languageBox;
+
 	public CatanWindow() {
 		frame = new JFrame("Catan");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,11 +84,33 @@ public class CatanWindow {
 	 * Arranges the components of the main Catan Window, then displays it.
 	 */
 	public void setupLayout() {
+		languageBox = new JComboBox<String>(LangUtils.getSupportedLanguages());
+		languageBox.addActionListener(e -> {
+			LangUtils.setLocale(LangUtils.SUPPORTED_LOCALES[languageBox.getSelectedIndex()]);
+			frame.dispose();
+			frame = new JFrame("Catan");
+			sidebarPanel = new JPanel(new GridBagLayout());
+			playerViewPanel = new JPanel();
+			actionsPanel = new JPanel(new BorderLayout());
+			gameActionsPanel = new JPanel();
+			startGameButton = new JButton(getString("startGame"));
+			endTurnButton = new JButton(getString("endTurn"));
+			buildSettlementButton = new JButton(getString("buildSettlement"));
+			buildRoadButton = new JButton(getString("buildRoad"));
+			upgradeSettlementButton = new JButton(getString("upgradeSettlement"));
+			requestTradeButton = new JButton(getString("requestTrade"));
+			exchangeResourcesButton = new JButton(getString("exchangeResources"));
+			rollDieButton = new JButton(getString("rollDie"));
+			cancelButton = new JButton(getString("cancelButton"));
+			setupLayout();
+		});
+		sidebarPanel.add(languageBox);
+
 		setupActionsPanel();
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 0;
-		constraints.gridy = 0;
+		constraints.gridy = GridBagConstraints.RELATIVE;
 		sidebarPanel.add(actionsPanel, constraints);
 
 		JPanel turnStatusPanel = new JPanel(new GridLayout(1, 2));
