@@ -314,4 +314,20 @@ public class SettlementBuildIntegrationTests {
         assertEquals(3, player.get(0).getTradeValues().get(ResourceType.SHEEP));
         assertEquals(3, player.get(0).getTradeValues().get(ResourceType.WHEAT));
     }
+
+    @Test
+    void buildSettlement_InitialBuilding_AdjacentSettlement_StillFails() {
+        List<Player> player = createPlayerWithSettlementResources();
+
+        Board b = new Board();
+
+        b.createNewSettlement(new Coordinate(2, 0, 0), 1);
+
+        Game game = new Game(b, player);
+
+        Coordinate c = new Coordinate(1, 0, 0);
+        assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, true));
+    }
+
+
 }
