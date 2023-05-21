@@ -178,4 +178,19 @@ public class SettlementBuildIntegrationTests {
 
         assertEquals(2, player.get(0).getTradeValues().get(ResourceType.WHEAT));
     }
+
+    @Test
+    void buildSettlement_onTwoToOneOrePort_playerHasImprovedOreTrade() {
+        List<Player> player = createPlayerWithSettlementResources();
+        Board b = new Board();
+
+        b.createNewRoad(1, new Coordinate(2, 0, -1), new Coordinate(3, 0, -1));
+
+        Game game = new Game(b, player);
+
+        Coordinate c = new Coordinate(3, 0, -1);
+        assertTrue(game.buildSettlement(player.get(0).getPlayerId(), c, false));
+
+        assertEquals(2, player.get(0).getTradeValues().get(ResourceType.ORE));
+    }
 }
