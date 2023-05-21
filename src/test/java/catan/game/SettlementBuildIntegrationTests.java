@@ -41,4 +41,17 @@ public class SettlementBuildIntegrationTests {
 
         assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, false));
     }
+
+    @Test
+    void buildSettlement_NotConnectedToARoad_ReturnsFalse() {
+        List<Player> player = createPlayerWithSettlementResources();
+        Board b = new Board();
+        b.createNewSettlement(new Coordinate(2, 2, 0),
+                player.get(0).getPlayerId());
+        Game game = new Game(b, player);
+
+        Coordinate c = new Coordinate(1, 0, 0);
+
+        assertFalse(game.buildSettlement(player.get(0).getPlayerId(), c, false));
+    }
 }
