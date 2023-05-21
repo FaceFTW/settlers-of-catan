@@ -34,4 +34,16 @@ public class SettlementUpgradeIntegrationTests {
 
         assertFalse(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
     }
+
+    @Test
+    void upgradeSettlement_NotEnoughOre_ReturnsFalse() {
+        List<Player> players = new ArrayList<>();
+        Player p = new Player(1);
+        p.modifyResource(ResourceType.WHEAT, 2);
+        players.add(p);
+        Board b = new Board();
+        Game game = new Game(b, players);
+
+        assertFalse(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
+    }
 }
