@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -89,5 +90,19 @@ public class SettlementUpgradeIntegrationTests {
 
         assertTrue(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
         assertFalse(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
+    }
+
+    @Test
+    void upgradeSettlement_OwnedByPlayer_UpgradesSettlement() {
+        List<Player> p = createPlayerWithUpgradeResources();
+        Board b = new Board();
+        b.createNewSettlement(new Coordinate(1, 0, 0), 1);
+
+        Game game = new Game(b, p);
+
+        assertTrue(game.upgradeSettlement(1, new Coordinate(1, 0, 0)));
+        assertEquals(0, p.get(0).getResourceCount(ResourceType.WHEAT));
+        assertEquals(0, p.get(0).getResourceCount(ResourceType.ORE));
+        assertEquals(1, p.get(0).getVictoryPoints());
     }
 }
