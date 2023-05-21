@@ -105,4 +105,16 @@ public class SettlementUpgradeIntegrationTests {
         assertEquals(0, p.get(0).getResourceCount(ResourceType.ORE));
         assertEquals(1, p.get(0).getVictoryPoints());
     }
+
+    @Test
+    void upgradeSettlement_NoneAtPosButOthersExist_ReturnsFalse() {
+        List<Player> p = createPlayerWithUpgradeResources();
+        Board b = new Board();
+        b.createNewSettlement(new Coordinate(1, 0, 0), 1);
+
+        Game game = new Game(b, p);
+
+        assertFalse(game.upgradeSettlement(1, new Coordinate(1, 0, 1)));
+
+    }
 }
