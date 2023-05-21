@@ -2,14 +2,11 @@ package catan.game;
 
 import catan.logic.Game;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+//CHECKSTYLE:OFF: checkstyle:magicnumber
 public class GameTurnIntegrationTests {
     @Test
     public void rollDie_CanMatchExpectedRange() {
